@@ -510,6 +510,22 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .acard,.fcardh,.qcardh{transition:transform .15s cubic-bezier(.3,1.3,.5,1)}
 .acard:active,.fcardh:active,.qcardh:active{transform:scale(.965)}
 .collect-fab{position:absolute;right:12px;bottom:96px;z-index:3}
+
+/* ===== LIGHT THEME ===== */
+.app[data-theme="light"]{--ink:#faf9f7;--ink-2:#ffffff;--surface:#ffffff;--surface-2:#f3f1ed;--surface-3:#e8e5df;--line:rgba(0,0,0,.09);--line-2:rgba(0,0,0,.15);--text:#151319;--muted:#5c5966;--muted-2:#8b8895}
+.app[data-theme="light"]{background:var(--ink)}
+.app[data-theme="light"] .mesh{opacity:.5}
+.app[data-theme="light"] .card{color:#f6f4fa}
+.app[data-theme="light"] .article .body p{color:#26242c}
+.app[data-theme="light"] .article .body h2,.app[data-theme="light"] .article .body .pull{color:#111114}
+.app[data-theme="light"] .qq,.app[data-theme="light"] .qopt{color:#151319}
+.app[data-theme="light"] .mbpt{color:#34323b}
+.app[data-theme="light"] .sr .srn,.app[data-theme="light"] .histrow .hn{color:#151319}
+.app[data-theme="light"] .tabbar{background:rgba(255,255,255,.9)}
+.app[data-theme="light"] .musicbar{background:rgba(255,255,255,.92)}
+.app[data-theme="light"] .musicbar .mt{color:#151319}
+.app[data-theme="light"] .tab.on{color:#151319}
+.app[data-theme="light"] .aibody{color:#26242c}
 </style>
 </head>
 <body>
@@ -590,6 +606,17 @@ function imgURL(seed,w,h){return`https://picsum.photos/seed/apex-${encodeURIComp
 function imgTag(seed,w,h,cls){return`<img class="imgload ${cls||''}" loading="lazy" decoding="async" src="${imgURL(seed,w,h)}" alt="" onload="this.classList.add('ready')" onerror="this.classList.add('failed')">`}
 /* history log */
 function logHist(kind,id,topic,title){if(!S.history)S.history=[];S.history=S.history.filter(h=>!(h.kind===kind&&h.id===id));S.history.unshift({kind,id,topic,title,t:Date.now()});if(S.history.length>60)S.history.length=60;save()}
+/* themes + accents */
+const ACCENTS={gold:["#f3d089","#e8b563","#c98f3a"],violet:["#b79bff","#8a5cff","#5a34d9"],ice:["#9fd0ff","#5aa2ff","#2f6fe0"],rose:["#ffa3c2","#ff5c8a","#d93a6b"],green:["#7ef0b8","#37d68a","#1fae6a"]};
+function applyTheme(){const a=ACCENTS[S.accent]||ACCENTS.gold,r=document.documentElement.style;r.setProperty("--gold",a[1]);r.setProperty("--gold-2",a[0]);r.setProperty("--grad-gold",`linear-gradient(135deg,${a[0]},${a[1]} 55%,${a[2]})`);const app=document.getElementById("app");if(app)app.setAttribute("data-theme",S.theme||"dark");const tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.setAttribute("content",S.theme==="light"?"#faf9f7":"#08080c")}
+/* difficulty + engagement affinity */
+const DIFF={life:"quick",discipline:"quick",mind:"quick",money:"quick",fit:"quick",health:"core",learn:"core",psych:"core",econ:"core",genius:"core",animal:"core",geo:"core",science:"core",history:"deep",physics:"deep",math:"deep",bio:"deep",astro:"deep",phil:"deep"};
+function diffOf(t){return DIFF[t]||"core"}
+function bumpAff(topic,n){if(!S.affinity)S.affinity={};S.affinity[topic]=Math.max(-8,Math.min(20,(S.affinity[topic]||0)+n))}
+/* word / challenge / on-this-day */
+const WORDS=[["Sonder","the realization that each passer-by is living a life as vivid as your own"],["Ataraxia","a lucid state of robust, unruffled calm"],["Eudaimonia","human flourishing; a life well-lived"],["Sisu","extraordinary grit in the face of adversity"],["Ikigai","your reason for being — what gets you up in the morning"],["Petrichor","the earthy scent after rain on dry ground"],["Numinous","feeling both tiny and awestruck before something vast"],["Kaizen","continuous improvement through tiny steps"],["Apricity","the warmth of the sun in winter"],["Meraki","doing something with soul, creativity and love"],["Wabi-sabi","beauty in imperfection and impermanence"],["Limerence","the involuntary, intoxicating early rush of infatuation"]];
+const CHALLENGES=["Do the hardest task on your list first — before anything else.","Put your phone in another room for one focused hour.","Message one person you've been meaning to thank.","Take a 10-minute walk with no phone, no podcast.","Write down three things you're grateful for.","Do 20 push-ups (or as many as you can) right now.","Read one deep-read article start to finish.","Drink a glass of water before your first coffee.","Sit for 5 minutes of quiet breathing.","Teach someone one thing you learned today.","No screens for the first 20 minutes after you wake.","Tidy one small surface completely."];
+const ONTHISDAY={"7-20":["1969","Apollo 11 lands the first humans on the Moon."],"8-10":["1846","The Smithsonian Institution is founded in Washington, D.C."],"11-9":["1989","The Berlin Wall falls, reuniting a divided city."],"12-17":["1903","The Wright brothers make the first powered flight."],"4-12":["1961","Yuri Gagarin becomes the first human in space."],"10-29":["1969","The first message is sent over ARPANET — the internet's ancestor."],"1-3":["1977","Apple Computer is incorporated."],"2-11":["1990","Nelson Mandela is released after 27 years in prison."],"6-6":["1944","D-Day: Allied forces land in Normandy."],"9-2":["1969","The first ATM in the U.S. opens for business."]};
 
 /* ===== FEED ===== */
 const FEED=[
@@ -1198,8 +1225,10 @@ const KEY="apex_v1",today=()=>new Date().toISOString().slice(0,10);
 let S={xp:0,streak:0,lastActive:null,reads:0,workouts:0,minutes:0,sessions:0,quizzes:0,
  likes:{},saves:{},ownComments:{},readProgress:{},done:{},videos:[],seeded:false,seedV:0,mood:"focus",
  quizBest:{},storiesSeen:{},mapsSeen:{},interests:null,onboarded:false,notify:false,
- history:[],collections:[],name:"You",avatar:"A",geminiKey:"",aiCache:{}};
+ history:[],collections:[],name:"You",avatar:"A",geminiKey:"",aiCache:{},
+ affinity:{},theme:"dark",accent:"gold",apiBase:"",audioAuto:false,aiIdeas:[],lastBrief:null,points:0};
 try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+if(Array.isArray(S.aiIdeas)&&S.aiIdeas.length)FEED.push(...S.aiIdeas);
 if(S.seedV!==SEED_V){const userAdded=(S.videos||[]).filter(v=>!v.seed);S.videos=SEED_VIDEOS.concat(userAdded);S.seedV=SEED_V;S.seeded=true}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function levelFor(x){return Math.floor(Math.sqrt(x/60))+1}
@@ -1271,6 +1300,16 @@ function renderHome(){
     <div class="eb">✦ Today's word</div>
     <div class="cq">${esc(q[0])}</div><div class="cby">— ${esc(q[1])}</div>
     <button class="go" data-open-art="${hero.id}"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Read today's piece</button></div>
+  ${(()=>{const di=Math.floor(Date.now()/864e5),wod=WORDS[di%WORDS.length],chal=CHALLENGES[di%CHALLENGES.length],md=(new Date().getMonth()+1)+"-"+new Date().getDate(),otd=ONTHISDAY[md],dIdea=FEED[(di*7)%FEED.length],dt=T[dIdea[0]]||T.life;return`
+  <div class="sec"><h3>🌅 Your daily brief</h3></div>
+  <div style="padding:0 18px;display:flex;flex-direction:column;gap:11px">
+   <div class="settingrow" data-open-feed="${(di*7)%FEED.length}" style="cursor:pointer"><span class="se">${dt.e}</span><div class="si"><b style="font-size:11px;color:var(--gold-2);text-transform:uppercase;letter-spacing:.05em">Idea of the day</b><p style="color:var(--text);font-size:14px;font-weight:650;margin-top:3px">${esc(dIdea[2])}</p></div></div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+    <div class="settingrow" style="flex-direction:column;align-items:flex-start;gap:4px"><b style="font-size:11px;color:var(--gold-2);text-transform:uppercase;letter-spacing:.05em">📖 Word</b><div style="font-size:16px;font-weight:800">${esc(wod[0])}</div><p>${esc(wod[1])}</p></div>
+    <div class="settingrow" style="flex-direction:column;align-items:flex-start;gap:4px"><b style="font-size:11px;color:var(--gold-2);text-transform:uppercase;letter-spacing:.05em">🎯 Challenge</b><p style="color:var(--text);font-size:13.5px;font-weight:600">${esc(chal)}</p></div>
+   </div>
+   ${otd?`<div class="settingrow"><span class="se">🏛️</span><div class="si"><b style="font-size:11px;color:var(--gold-2);text-transform:uppercase;letter-spacing:.05em">On this day · ${otd[0]}</b><p style="color:var(--text);font-size:13.5px;font-weight:600;margin-top:3px">${esc(otd[1])}</p></div></div>`:''}
+  </div>`})()}
   <div class="sec"><h3>Four pillars</h3></div>
   <div class="pillars">${pills.map(p=>`<div class="pil" style="${grad(p[0])}" data-goto="${p[4]}"><span class="pe">${p[2]}</span><div class="pn">${p[1]}</div><div class="pd">${p[3]}</div></div>`).join("")}</div>
   <div class="sec"><h3>🧭 Explore by subject</h3></div>
@@ -1306,7 +1345,7 @@ function fkey(i){return"f"+i}
 function feedHTML(i,inst){const f=FEED[i],[tp,ty,tx,ex,ex2]=f,t=T[tp],k=fkey(i);const liked=!!S.likes[k],saved=!!S.saves[k],own=(S.ownComments[k]||[]).length;const r=sd(k+"h"),h=pick(r,NAMES);
  const tl={fact:"Did you know",idea:"Principle",quote:"Words to keep",finance:"Money",story:"A small story"}[ty]||"";
  let mid=ty==="quote"?`<div class="ctype">${tl}</div><h2 class="insight quote">"${esc(tx)}"</h2><div class="qauthor">${esc(ex)}<span class="role">${esc(ex2||"")}</span></div>`:`<div class="ctype">${tl}</div><h2 class="insight">${esc(tx)}</h2><p class="kicker">${esc(ex)}</p>`;
- return`<section class="card" data-key="${k}" data-i="${i}" data-inst="${inst}" data-topic="${tp}"><div class="bg hasimg" style="${grad(tp)}">${imgTag(tp+i,900,1400,"cardimg")}</div><div class="grain"></div>
+ return`<section class="card" data-key="${k}" data-i="${i}" data-inst="${inst}" data-topic="${tp}"><div class="bg hasimg" style="${grad(tp)}">${imgTag(tp+"-"+(i%8),900,1400,"cardimg")}</div><div class="grain"></div>
   <span class="ktag"><span class="dot" style="background:${t.c}"></span>${t.e} ${t.l}</span>${mid}
   <div class="meta"><div class="handle">@<span class="at">${h}</span></div><div class="source">APEX · daily</div></div>
   <div class="rail-a">
@@ -1314,38 +1353,63 @@ function feedHTML(i,inst){const f=FEED[i],[tp,ty,tx,ex,ex2]=f,t=T[tp],k=fkey(i);
    <button class="act" data-a="comment"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></span><span class="n" data-n="comment">${fmt(baseC(k)+own)}</span></button>
    <button class="act save ${saved?'on-save':''}" data-a="save"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></span><span class="n">Save</span></button>
    <button class="act" data-a="ai"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l1.9 4.6L18.5 8l-3.6 3 1.2 4.8L12 13.6 7.9 15.8 9.1 11 5.5 8l4.6-1.4z"/></svg></span><span class="n">AI</span></button>
+   <button class="act" data-a="listen"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a3.5 3.5 0 0 0-2-3.15v6.3a3.5 3.5 0 0 0 2-3.15z"/></svg></span><span class="n">Listen</span></button>
    <button class="act" data-a="share"><span class="ico"><svg viewBox="0 0 24 24"><path d="M14 9V5l7 7-7 7v-4.1C9 12 6 13 3 17c1-6 5-8 11-8z"/></svg></span><span class="n">Share</span></button>
   </div>${inst===0?'<div class="hint" id="hint"><svg viewBox="0 0 24 24"><path d="M12 4l6 7h-4v9h-4v-9H6z"/></svg>swipe up for more</div>':''}</section>`}
-function fseq(){const r=mul((hs("f")()^Date.now())>>>0);const shuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function fseq(){const r=mul((hs("f")()^Date.now())>>>0);
  let idx=FEED.map((_,i)=>i);const q=(feedFilter.q||"").trim().toLowerCase();
  if(feedFilter.topic!=="all")idx=idx.filter(i=>FEED[i][0]===feedFilter.topic);
+ if(feedFilter.diff&&feedFilter.diff!=="all")idx=idx.filter(i=>diffOf(FEED[i][0])===feedFilter.diff);
  if(q)idx=idx.filter(i=>((FEED[i][2]||"")+" "+(FEED[i][3]||"")+" "+(FEED[i][4]||"")).toLowerCase().includes(q));
  if(idx.length===0)idx=FEED.map((_,i)=>i);
- shuf(idx);
- const ints=(S.interests&&S.interests.length)?new Set(S.interests):null;
- if(ints&&feedFilter.topic==="all"&&!q){const pri=idx.filter(i=>ints.has(FEED[i][0])),rest=idx.filter(i=>!ints.has(FEED[i][0])),out=[];let pi=0,ri=0;
-  while(pi<pri.length||ri<rest.length){if(pi<pri.length)out.push(pri[pi++]);if(pi<pri.length)out.push(pri[pi++]);if(ri<rest.length)out.push(rest[ri++])}return out}
+ const ints=(S.interests&&S.interests.length)?new Set(S.interests):null,aff=S.affinity||{};
+ if(feedFilter.topic==="all"&&!q){const score=i=>{const tp=FEED[i][0];let s=r()*3;if(ints&&ints.has(tp))s+=4;s+=(aff[tp]||0)*0.5;return s};idx.sort((a,b)=>score(b)-score(a))}
+ else{for(let i=idx.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]]}}
  return idx}
 function fappend(){const s=feedMeta.length,seq=fseq();let h="";seq.forEach((idx,k)=>{feedMeta.push(idx);h+=feedHTML(idx,s+k)});$("#feed").insertAdjacentHTML("beforeend",h);fobserve()}
 function buildFeed(){if(feedBuilt)return;feedBuilt=true;$("#feed").innerHTML="";feedMeta=[];fappend()}
 function fobserve(){if(!feedIO)feedIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.65)factive(e.target)}),{root:$("#feed"),threshold:[.66]});$("#feed").querySelectorAll(".card:not([data-obs])").forEach(c=>{c.setAttribute("data-obs","1");feedIO.observe(c)})}
-function factive(card){const inst=+card.dataset.inst;if(inst>=feedMeta.length-3)fappend();const fi=+card.dataset.i,ff=FEED[fi];if(ff)logHist("idea","f"+fi,ff[0],ff[2]);if(!counted.has(inst)){counted.add(inst);if(feedLast>=0)S.streak+=0;bump();S.reads++;feedLast=inst;const ms={5:"🔥 5 in a row",15:"🧠 15 read — big brain",30:"🏆 30! deep in it"}[S.reads];addXP(8,ms||`<span class="xp">+8 XP</span>`)}}
+function factive(card){const inst=+card.dataset.inst;if(inst>=feedMeta.length-3)fappend();const fi=+card.dataset.i,ff=FEED[fi];if(ff)logHist("idea","f"+fi,ff[0],ff[2]);if(S.audioAuto&&ff)speak(ff[2]+". "+(ff[3]||""));if(!counted.has(inst)){counted.add(inst);if(feedLast>=0)S.streak+=0;bump();S.reads++;feedLast=inst;if(aiConfigured()&&S.reads%16===0)aiExpandFeed();const ms={5:"🔥 5 in a row",15:"🧠 15 read — big brain",30:"🏆 30! deep in it"}[S.reads];addXP(8,ms||`<span class="xp">+8 XP</span>`)}}
 function scrollFeedTo(i){buildFeed();let c=[...$("#feed").querySelectorAll(".card")].find(x=>+x.dataset.i===i);if(!c){fappend();c=[...$("#feed").querySelectorAll(".card")].reverse().find(x=>+x.dataset.i===i)}if(c)requestAnimationFrame(()=>c.scrollIntoView())}
 $("#feed").addEventListener("click",e=>{const b=e.target.closest(".act");if(!b)return;const card=b.closest(".card"),k=card.dataset.key,tp=card.dataset.topic,a=b.dataset.a;
- if(a==="like")like(k,b);else if(a==="save")sv(k,b);else if(a==="comment")openC(k,tp);else if(a==="ai"){const f=FEED[+card.dataset.i];openAI(f[2],(f[3]||f[4]||""),tp)}else if(a==="share"){const f=FEED[+card.dataset.i];openShare(f[0],f[2],f[1]==="quote"?(f[3]+(f[4]?" — "+f[4]:"")):f[3],f[1])}});
+ if(a==="like")like(k,b);else if(a==="save")sv(k,b);else if(a==="comment")openC(k,tp);else if(a==="ai"){const f=FEED[+card.dataset.i];openAI(f[2],(f[3]||f[4]||""),tp)}else if(a==="listen"){const f=FEED[+card.dataset.i];speak(f[2]+". "+(f[3]||f[4]||""));toast("🔊 reading aloud")}else if(a==="share"){const f=FEED[+card.dataset.i];openShare(f[0],f[2],f[1]==="quote"?(f[3]+(f[4]?" — "+f[4]:"")):f[3],f[1])}});
 let lastTap=0;$("#feed").addEventListener("click",e=>{if(e.target.closest(".act"))return;const n=Date.now();if(n-lastTap<300){const c=e.target.closest(".card");if(c){const lb=c.querySelector(".like");if(!S.likes[c.dataset.key])lb.click();else{lb.classList.add("pop");setTimeout(()=>lb.classList.remove("pop"),400)}}}lastTap=n});
 $("#feed").addEventListener("scroll",()=>{const h=$("#hint");if(h&&$("#feed").scrollTop>40){h.style.opacity=0;setTimeout(()=>h.remove(),400)}},{passive:true});
-function like(k,b){const on=!S.likes[k];S.likes[k]=on;if(b){b.classList.toggle("on-like",on);b.classList.add("pop");setTimeout(()=>b.classList.remove("pop"),400);const n=b.querySelector('[data-n="like"]');if(n)n.textContent=fmt(baseL(k)+(on?1:0))}save()}
-function sv(k,b){const on=!S.saves[k];S.saves[k]=on;if(b){b.classList.toggle("on-save",on);b.classList.add("pop");setTimeout(()=>b.classList.remove("pop"),400)}toast(on?"🔖 saved":"removed");save()}
+/* swipe: right = save, left = skip */
+(function(){const feed=$("#feed");let sx=0,sy=0,card=null,drag=false;
+ feed.addEventListener("pointerdown",e=>{if(e.target.closest(".rail-a"))return;card=e.target.closest(".card");sx=e.clientX;sy=e.clientY;drag=false});
+ feed.addEventListener("pointermove",e=>{if(!card)return;const dx=e.clientX-sx,dy=e.clientY-sy;
+  if(!drag){if(Math.abs(dx)>14&&Math.abs(dx)>Math.abs(dy)*1.6)drag=true;else if(Math.abs(dy)>12){card=null;return}}
+  if(drag){card.style.transition="none";card.style.transform=`translateX(${dx}px) rotate(${dx*0.02}deg)`;card.style.opacity=String(Math.max(.45,1-Math.abs(dx)/520))}});
+ const reset=c=>{c.style.transition="transform .25s cubic-bezier(.3,1,.4,1),opacity .25s";c.style.transform="";c.style.opacity=""};
+ feed.addEventListener("pointerup",e=>{if(!card){return}const c=card;card=null;if(!drag){return}const dx=e.clientX-sx;
+  if(dx>92){const k=c.dataset.key,tp=c.dataset.topic;if(!S.saves[k]){S.saves[k]=true;bumpAff(tp,3);save();const lb=c.querySelector(".save");if(lb)lb.classList.add("on-save");toast("🔖 saved")}reset(c)}
+  else if(dx<-92){bumpAff(c.dataset.topic,-1);save();reset(c);const f=feed,h=f.clientHeight,cur2=Math.round(f.scrollTop/h);f.scrollTo({top:(cur2+1)*h,behavior:"smooth"});toast("⏭️ skipped")}
+  else reset(c);drag=false});
+ feed.addEventListener("pointercancel",()=>{if(card){card.style.transform="";card.style.opacity="";card=null}});
+})();
+function like(k,b){const on=!S.likes[k];S.likes[k]=on;if(b){const tp=b.closest(".card")?.dataset.topic;if(tp)bumpAff(tp,on?2:-2);b.classList.toggle("on-like",on);b.classList.add("pop");setTimeout(()=>b.classList.remove("pop"),400);const n=b.querySelector('[data-n="like"]');if(n)n.textContent=fmt(baseL(k)+(on?1:0))}save()}
+function sv(k,b){const on=!S.saves[k];S.saves[k]=on;if(b){const tp=b.closest(".card")?.dataset.topic;if(tp)bumpAff(tp,on?3:-1);b.classList.toggle("on-save",on);b.classList.add("pop");setTimeout(()=>b.classList.remove("pop"),400)}toast(on?"🔖 saved":"removed");save()}
 function shareT(t,s){const text=`${t}${s?"\n\n"+s:""}\n\n— via APEX`;if(navigator.share)navigator.share({text}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>toast("📋 copied")).catch(()=>toast("copied"));else toast("share unavailable")}
 
 /* ===== COMMENTS SHEET ===== */
 const cs=$("#cmtSheet"),cl=$("#commentsList"),cc=$("#cmtCount");let cK=null,cT=null,cB=0,cArr=[];
 function rc(c){const d=document.createElement("div");d.className="cmt";d.innerHTML=`<div class="ava" style="background:${c.own?'var(--grad-gold)':avaC(c.name)}">${c.own?'Y':ini(c.name)}</div><div class="cbody"><div class="tp"><span class="un">@${c.own?'you':esc(c.name)}</span>${c.own?'<span class="bd">you</span>':''}<span class="tm">· ${c.time}</span></div><div class="tx"></div><div class="ca"><button data-like><svg style="width:14px;height:14px;vertical-align:-2px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 21s-8-4.9-10.3-9.6C.2 8 2 4.7 5.2 4.7c2 0 3.3 1.1 4 2.2.7-1.1 2-2.2 4-2.2 3.2 0 5 3.3 3.5 6.7C20 16.1 12 21 12 21z"/></svg> <span>${fmt(c.likes)}</span></button><button>Reply</button></div></div>`;d.querySelector(".tx").textContent=c.txt;const lb=d.querySelector("[data-like]");lb.onclick=()=>{c.liked=!c.liked;c.likes+=c.liked?1:-1;lb.classList.toggle("liked",c.liked);lb.querySelector("span").textContent=fmt(c.likes)};return d}
 function drawC(){cl.innerHTML="";const own=(S.ownComments[cK]||[]).map(txt=>({own:true,txt,time:"now",likes:0}));[...own,...cArr].forEach(c=>cl.appendChild(rc(c)));const m=document.createElement("button");m.className="loadmore";m.textContent="load more";m.onclick=()=>{cB++;cArr=cArr.concat(gen(cK,cT,6,cB));drawC();cl.scrollTop=cl.scrollHeight-240};cl.appendChild(m);cc.textContent=fmt(baseC(cK)+own.length)+" comments"}
-function openC(k,tp){cK=k;cT=tp;cB=0;cArr=gen(k,tp,8,0);drawC();openSheet(cs)}
+function timeAgo(t){if(!t)return"now";const s=(Date.now()-t)/1000;if(s<60)return"now";if(s<3600)return Math.floor(s/60)+"m";if(s<86400)return Math.floor(s/3600)+"h";return Math.floor(s/86400)+"d"}
+async function openC(k,tp){cK=k;cT=tp;cB=0;cArr=gen(k,tp,8,0);drawC();openSheet(cs);
+ if(S.apiBase){try{const r=await fetch(S.apiBase+"/comments/"+encodeURIComponent(k));const j=await r.json();if(cK===k&&j&&j.items){cArr=j.items.map(c=>({name:c.name||"guest",txt:c.txt,likes:c.likes||0,time:timeAgo(c.t)})).concat(cArr).slice(0,60);drawC()}}catch(e){}}}
+function myId(){if(!S.uid){S.uid="u"+Math.random().toString(36).slice(2,10);save()}return S.uid}
+async function openLeaderboard(){openSearch();$("#sIn").placeholder="🏆 Leaderboard";const res=$("#sRes");res.innerHTML=`<div class="aidots" style="display:flex;justify-content:center;padding:24px"><i></i><i></i><i></i></div>`;
+ try{await fetch(S.apiBase+"/leaderboard",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:myId(),name:S.name||"You",xp:S.xp,streak:S.streak})}).catch(()=>{});
+  const r=await fetch(S.apiBase+"/leaderboard");const j=await r.json();const rows=(j.top||[]).sort((a,b)=>(b.xp||0)-(a.xp||0));
+  if(!rows.length){res.innerHTML=`<div class="shint">No scores yet — you're first on the board! 🏆</div>`;return}
+  res.innerHTML="";rows.slice(0,50).forEach((u,i)=>{const el=document.createElement("div");el.className="sr";const mine=u.id===S.uid;el.innerHTML=`<div class="srt" style="${grad('genius')};font-size:16px;font-weight:800">${i<3?["🥇","🥈","🥉"][i]:'#'+(i+1)}</div><div class="sri"><div class="srk">Lv ${levelFor(u.xp||0)} · 🔥 ${u.streak||0}${mine?' · you':''}</div><div class="srn">${esc(u.name||'Anon')} · ${u.xp||0} XP</div></div>`;res.appendChild(el)});
+ }catch(e){res.innerHTML=`<div class="shint">Couldn't reach the leaderboard.<br>Check your server URL in Settings → Connect your server.</div>`}}
 $("#cmtSend").onclick=postC;$("#cmtInput").addEventListener("keydown",e=>{if(e.key==="Enter")postC()});
-function postC(){const i=$("#cmtInput"),v=i.value.trim();if(!v||!cK)return;if(!S.ownComments[cK])S.ownComments[cK]=[];S.ownComments[cK].unshift(v);i.value="";save();drawC();cl.scrollTop=0;toast("💬 posted");addXP(3);const card=$("#feed").querySelector(`.card[data-key="${cK}"]`);if(card){const n=card.querySelector('[data-n="comment"]');if(n)n.textContent=fmt(baseC(cK)+S.ownComments[cK].length)}}
+function postC(){const i=$("#cmtInput"),v=i.value.trim();if(!v||!cK)return;if(!S.ownComments[cK])S.ownComments[cK]=[];S.ownComments[cK].unshift(v);i.value="";save();drawC();cl.scrollTop=0;toast("💬 posted");addXP(3);
+ if(S.apiBase){fetch(S.apiBase+"/comments/"+encodeURIComponent(cK),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:S.name||"You",txt:v,id:myId()})}).catch(()=>{})}
+ const card=$("#feed").querySelector(`.card[data-key="${cK}"]`);if(card){const n=card.querySelector('[data-n="comment"]');if(n)n.textContent=fmt(baseC(cK)+S.ownComments[cK].length)}}
 
 /* ===== TRAIN ===== */
 let trainFilter="All";
@@ -1408,17 +1472,18 @@ function openReader(id){const a=ARTICLES.find(x=>x.id===id);if(!a)return;const t
   <article class="article"><div class="atopic">${t.e} ${t.l}</div><h1>${esc(a.title)}</h1><p class="dek">${esc(a.dek)}</p>
    <div class="byline"><div class="ba2">A</div><div><b>${esc(a.author)}</b><br><span>APEX Originals</span></div><button class="aibtn" data-rai style="margin-left:auto"><svg viewBox="0 0 24 24"><path d="M12 2l1.9 4.6L18.5 8l-3.6 3 1.2 4.8L12 13.6 7.9 15.8 9.1 11 5.5 8l4.6-1.4z"/></svg>AI</button></div>
    <div class="body">${a.body.map(b=>b[0]==="h"?`<h2>${esc(b[1])}</h2>`:b[0]==="pull"?`<div class="pull">${esc(b[1])}</div>`:`<p>${esc(b[1])}</p>`).join("")}</div>
-   <div class="end"><button class="prim" data-rlike><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.9-10.3-9.6C.2 8 2 4.7 5.2 4.7c2 0 3.3 1.1 4 2.2.7-1.1 2-2.2 4-2.2 3.2 0 5 3.3 3.5 6.7C20 16.1 12 21 12 21z"/></svg>${liked?'Liked':'Like'}</button><button data-rsave><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>${saved?'Saved':'Save'}</button><button data-rcmt><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>Reflect</button></div></article>`;
+   <div class="end"><button class="prim" data-rlike><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.9-10.3-9.6C.2 8 2 4.7 5.2 4.7c2 0 3.3 1.1 4 2.2.7-1.1 2-2.2 4-2.2 3.2 0 5 3.3 3.5 6.7C20 16.1 12 21 12 21z"/></svg>${liked?'Liked':'Like'}</button><button data-rsave><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>${saved?'Saved':'Save'}</button><button data-rlisten><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a3.5 3.5 0 0 0-2-3.15v6.3a3.5 3.5 0 0 0 2-3.15z"/></svg>Listen</button><button data-rcmt><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>Reflect</button></div></article>`;
  reader.classList.add("show");reader.scrollTop=0;const prog=reader.querySelector("#rprog");let aw=!!S.done["r"+k];
  reader.onscroll=()=>{const mx=reader.scrollHeight-reader.clientHeight,pct=mx>0?reader.scrollTop/mx*100:0;prog.style.width=pct+"%";S.readProgress[k]=Math.max(S.readProgress[k]||0,pct);if(pct>85&&!aw){aw=true;S.done["r"+k]=true;S.reads++;bump();addXP(25,"📖 finished — <span class=xp>+25 XP</span>")}if(pct>2)save()};
  reader.querySelector("[data-rback]").onclick=closeReader;
  reader.querySelector("[data-rlike]").onclick=e=>{S.likes[k]=!S.likes[k];save();e.currentTarget.lastChild.textContent=S.likes[k]?'Liked':'Like'};
  reader.querySelector("[data-rsave]").onclick=e=>{S.saves[k]=!S.saves[k];save();e.currentTarget.lastChild.textContent=S.saves[k]?'Saved':'Save';toast(S.saves[k]?"🔖 saved":"removed")};
  reader.querySelector("[data-rcmt]").onclick=()=>openC(k,a.topic);
+ reader.querySelector("[data-rlisten]").onclick=()=>{speak(a.title+". "+a.body.filter(x=>x[0]==="p").map(x=>x[1]).join(" "));toast("🔊 reading the article")};
  reader.querySelector("[data-rai]").onclick=()=>openAI(a.title,a.dek,a.topic);
  logHist("article",a.id,a.topic,a.title);
 }
-function closeReader(){reader.classList.remove("show");reader.onscroll=null;save();if(cur==="home")renderHome()}
+function closeReader(){reader.classList.remove("show");reader.onscroll=null;stopSpeak();save();if(cur==="home")renderHome()}
 
 /* ===== TIMER + BREATHE ===== */
 const timerEl=$("#timer");let TT=null,ac=null;
@@ -1477,7 +1542,12 @@ function renderYou(){const lvl=levelFor(S.xp),p=xpIn(S.xp),pct=Math.round(p.cur/
   <div style="padding:0 18px">
    <div class="settingrow"><span class="se">🔔</span><div class="si"><b>Daily idea reminder</b><p>A fresh idea each day to keep your streak alive.</p></div><div class="toggle ${S.notify?'on':''}" id="notifyTog" role="switch" aria-checked="${S.notify}"></div></div>
    <div class="settingrow"><span class="se">🎯</span><div class="si"><b>Your interests</b><p>${S.interests&&S.interests.length?esc(S.interests.map(k=>(T[k]||T.life).l).join(" · ")):'Not set — personalize your feed'}</p></div><button class="dl" id="editInterests" style="padding:9px 13px;font-size:13px">Edit</button></div>
-   <div class="settingrow"><span class="se">✨</span><div class="si"><b>AI overview (Gemini)</b><p>${S.geminiKey?'Key added — AI explanations enabled.':'Add a free Gemini key to explain any idea.'}</p></div><button class="dl" id="aiKeyBtn" style="padding:9px 13px;font-size:13px">${S.geminiKey?'Change':'Add key'}</button></div>
+   <div class="settingrow"><span class="se">✨</span><div class="si"><b>AI overview (Gemini)</b><p>${S.apiBase?'Using your server — no key needed.':S.geminiKey?'Key added — AI enabled on this device.':'Add a free Gemini key to explain any idea, quiz you, and grow the feed.'}</p></div><button class="dl" id="aiKeyBtn" style="padding:9px 13px;font-size:13px">${S.geminiKey?'Change':'Add key'}</button></div>
+   <div class="settingrow"><span class="se">🌗</span><div class="si"><b>Appearance</b><p>Theme &amp; accent color</p></div><div class="toggle ${S.theme==='light'?'':'on'}" id="themeTog" role="switch" title="dark / light"></div></div>
+   <div style="display:flex;gap:9px;margin:-4px 2px 8px">${Object.keys(ACCENTS).map(a=>`<button data-accent="${a}" aria-label="${a}" style="width:30px;height:30px;border-radius:50%;border:2px solid ${S.accent===a?'var(--text)':'transparent'};background:linear-gradient(135deg,${ACCENTS[a][0]},${ACCENTS[a][2]});cursor:pointer"></button>`).join("")}</div>
+   <div class="settingrow"><span class="se">🔊</span><div class="si"><b>Auto read-aloud</b><p>Speak each idea as it appears in the feed.</p></div><div class="toggle ${S.audioAuto?'on':''}" id="audioTog" role="switch"></div></div>
+   <div class="settingrow"><span class="se">🛰️</span><div class="si"><b>Connect your server</b><p>${S.apiBase?esc(S.apiBase):'Optional: a Cloudflare Worker for shared comments, leaderboard &amp; keyless AI.'}</p></div><button class="dl" id="apiBtn" style="padding:9px 13px;font-size:13px">${S.apiBase?'Change':'Set URL'}</button></div>
+   ${S.apiBase?`<div class="settingrow"><span class="se">🏆</span><div class="si"><b>Leaderboard</b><p>See how your XP ranks.</p></div><button class="dl" id="lbBtn" style="padding:9px 13px;font-size:13px">Open</button></div>`:''}
    <div class="settingrow"><span class="se">💾</span><div class="si"><b>Backup &amp; restore</b><p>Your progress lives on this device — save a copy or move it to another.</p></div></div>
    <div class="setbtns"><button id="expBtn"><svg viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg>Export</button><button id="impBtn"><svg viewBox="0 0 24 24"><path d="M12 21V11m0 0l-4 4m4-4l4 4M4 7V4h16v3"/></svg>Import</button></div>
    <input type="file" id="impFile" accept="application/json,.json" style="display:none">
@@ -1495,6 +1565,11 @@ function renderYou(){const lvl=levelFor(S.xp),p=xpIn(S.xp),pct=Math.round(p.cur/
  $("#editInterests").onclick=()=>{S.onboarded=false;renderOnboard()};
  $("#expBtn").onclick=exportData;$("#impBtn").onclick=()=>$("#impFile").click();$("#impFile").onchange=e=>{if(e.target.files&&e.target.files[0])importData(e.target.files[0])};
  $("#aiKeyBtn").onclick=()=>{aiCtx={title:"AI overview",context:"",topic:"life"};renderAIKey();openSheet(aiSheet)};
+ $("#themeTog").onclick=()=>{S.theme=S.theme==="light"?"dark":"light";save();applyTheme();renderYou();toast(S.theme==="light"?"☀️ light":"🌙 dark")};
+ $("#audioTog").onclick=()=>{S.audioAuto=!S.audioAuto;save();if(!S.audioAuto)stopSpeak();renderYou();toast(S.audioAuto?"🔊 auto read on":"🔇 auto read off")};
+ $("#v-you").querySelectorAll("[data-accent]").forEach(bt=>bt.onclick=()=>{S.accent=bt.dataset.accent;save();applyTheme();renderYou()});
+ $("#apiBtn").onclick=()=>{const u=prompt("Your Worker URL (e.g. https://apex-api.you.workers.dev)",S.apiBase||"");if(u==null)return;S.apiBase=u.trim().replace(/\/+$/,"");save();renderYou();toast(S.apiBase?"🛰️ connected":"cleared")};
+ const lb=$("#lbBtn");if(lb)lb.onclick=openLeaderboard;
  $("#pEdit").onclick=editProfile;$("#pEdit2").onclick=editProfile;
  $("#newColl").onclick=()=>{const name=prompt("Name your collection");if(name==null)return;const nm=name.trim();if(!nm)return;S.collections.push({id:"c"+Date.now(),name:nm,items:[]});save();renderYou();toast("📁 created")};
  $("#v-you").querySelectorAll("[data-open-coll]").forEach(e=>e.onclick=()=>openCollection(e.dataset.openColl));
@@ -1621,14 +1696,20 @@ $("#shDownload").onclick=()=>saveCanvas($("#shCanvas"),"apex-card.png");
 $("#shShare").onclick=()=>{if(shareCv)shareCanvas($("#shCanvas"),shareCv.title)};
 
 /* ===== FEED filter / search ===== */
-let feedFilter={topic:"all",q:""};
-function openFilter(){const keys=["all","discipline","mind","learn","money","health","fit","genius","psych","phil","science","life","story"];
- $("#filtChips").innerHTML=`<input id="filtQ" placeholder="Search ideas…" value="${esc(feedFilter.q)}" autocomplete="off" style="width:100%;height:44px;background:var(--surface);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:0 14px;font-size:14px;outline:none;margin-bottom:6px">`+keys.map(k=>{const t=k==="all"?{e:"✨",l:"All topics"}:T[k];return`<button class="fchip ${feedFilter.topic===k?'on':''}" data-t="${k}">${t.e} ${t.l}</button>`}).join("");
+let feedFilter={topic:"all",q:"",diff:"all"};
+function openFilter(){const keys=["all","discipline","mind","learn","money","health","fit","genius","psych","phil","science","life","story","geo","physics","math","history","bio","econ","astro","animal"];
+ const diffs=[["all","All levels"],["quick","⚡ Quick"],["core","📘 Core"],["deep","🧠 Deep"]];
+ $("#filtChips").innerHTML=`<input id="filtQ" placeholder="Search ideas…" value="${esc(feedFilter.q)}" autocomplete="off" style="width:100%;height:44px;background:var(--surface);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:0 14px;font-size:14px;outline:none;margin-bottom:6px">
+  <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-2);width:100%;margin:2px 0 -2px">Depth</div>
+  ${diffs.map(d=>`<button class="fchip ${feedFilter.diff===d[0]?'on':''}" data-d="${d[0]}">${d[1]}</button>`).join("")}
+  <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-2);width:100%;margin:6px 0 -2px">Topic</div>
+  ${keys.map(k=>{const t=k==="all"?{e:"✨",l:"All topics"}:T[k];return`<button class="fchip ${feedFilter.topic===k?'on':''}" data-t="${k}">${t.e} ${t.l}</button>`}).join("")}`;
  const qi=$("#filtQ");qi.oninput=()=>{feedFilter.q=qi.value};qi.onkeydown=e=>{if(e.key==="Enter")applyFilter()};
- $("#filtChips").querySelectorAll(".fchip").forEach(b=>b.onclick=()=>{feedFilter.topic=b.dataset.t;applyFilter()});
+ $("#filtChips").querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{feedFilter.topic=b.dataset.t;applyFilter()});
+ $("#filtChips").querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{feedFilter.diff=b.dataset.d;applyFilter()});
  openSheet($("#filtSheet"));
 }
-function applyFilter(){closeSheets();feedBuilt=false;buildFeed();$("#feed").scrollTop=0;const on=feedFilter.topic!=="all"||!!feedFilter.q.trim();$("#filtFab").classList.toggle("filtered",on);if(on)toast("🔍 "+(feedFilter.topic==="all"?'“'+feedFilter.q+'”':T[feedFilter.topic].l))}
+function applyFilter(){closeSheets();feedBuilt=false;buildFeed();$("#feed").scrollTop=0;const on=feedFilter.topic!=="all"||!!feedFilter.q.trim()||feedFilter.diff!=="all";$("#filtFab").classList.toggle("filtered",on);if(on)toast("🔍 "+(feedFilter.topic!=="all"?T[feedFilter.topic].l:feedFilter.diff!=="all"?feedFilter.diff:'“'+feedFilter.q+'”'))}
 
 /* ===== BACKUP / RESTORE ===== */
 function exportData(){const b=new Blob([JSON.stringify(S)],{type:"application/json"}),name="apex-backup.json";if(window.claude&&window.claude.downloads){window.claude.downloads.save({filename:name,data:b}).then(()=>toast("✅ backup saved")).catch(()=>anchorBlob(b,name))}else anchorBlob(b,name)}
@@ -1653,21 +1734,46 @@ function renderAIKey(){aiSheet.innerHTML=`<div class="grab"></div><h3><span>✨ 
  $("#aiKeySave").onclick=()=>{const v=$("#aiKeyIn").value.trim();if(!v){toast("paste a key first");return}S.geminiKey=v;save();renderAI("simple");runAI("simple")};}
 function renderAI(mode){const modes=[["simple","Explain simply"],["deep","Go deeper"],["why","Why it matters"],["example","Give an example"]];
  aiSheet.innerHTML=`<div class="grab"></div><h3><span>✨ AI Overview</span><span class="close" id="aiX">✕</span></h3>
-  <div class="aichips" id="aiChips">${modes.map(m=>`<button class="aichip ${m[0]===mode?'on':''}" data-m="${m[0]}">${m[1]}</button>`).join("")}</div>
+  <div class="aichips" id="aiChips">${modes.map(m=>`<button class="aichip ${m[0]===mode?'on':''}" data-m="${m[0]}">${m[1]}</button>`).join("")}<button class="aichip" id="aiQuizBtn" style="background:linear-gradient(135deg,#8a5cff,#00c2ff);color:#fff;border:none">🧩 Quiz me</button></div>
   <div class="aibody" id="aiBody"><div class="aidots"><i></i><i></i><i></i></div></div>`;
- $("#aiX").onclick=closeSheets;aiSheet.querySelectorAll(".aichip").forEach(b=>b.onclick=()=>{renderAI(b.dataset.m);runAI(b.dataset.m)});}
+ $("#aiX").onclick=closeSheets;aiSheet.querySelectorAll(".aichip[data-m]").forEach(b=>b.onclick=()=>{renderAI(b.dataset.m);runAI(b.dataset.m)});$("#aiQuizBtn").onclick=()=>aiQuizMe(aiCtx.title,aiCtx.context,aiCtx.topic);}
 function aiPrompt(mode){const ins={simple:"Explain this idea simply and vividly in 3 short sentences.",deep:"Go deeper: explain the underlying mechanism and one surprising nuance in about 4 sentences.",why:"Explain why this matters in everyday life, in 3 sentences.",example:"Give one concrete, memorable real-world example that makes this click, in 3 sentences."}[mode]||"Explain simply.";
  return `Topic: ${aiCtx.topic}. Idea: "${aiCtx.title}".${aiCtx.context?" Context: "+aiCtx.context:""}\n\n${ins} Be concrete and engaging. Plain text, no markdown, no headings.`;}
 function aiHTML(t){return t.split(/\n{2,}/).map(p=>`<p>${esc(p.trim())}</p>`).join("")}
+/* one call path: your own Gemini key, or a Cloudflare Worker proxy (S.apiBase) that hides the key */
+function aiConfigured(){return !!(S.apiBase||S.geminiKey)}
+async function aiGenerate(prompt){
+ if(S.apiBase){const r=await fetch(S.apiBase.replace(/\/+$/,"")+"/ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});if(!r.ok)throw new Error("http"+r.status);const j=await r.json();return (j.text||"").trim()}
+ if(!S.geminiKey)throw new Error("nokey");
+ const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(S.geminiKey)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
+ if(!r.ok)throw new Error(r.status===400||r.status===403?"badkey":"http"+r.status);
+ const j=await r.json();return (((j.candidates||[])[0]||{}).content||{}).parts?.map(p=>p.text||"").join("").trim()||"";}
 async function runAI(mode){const body=$("#aiBody");if(!body)return;const ck=aiCtx.title+"|"+mode;
  if(S.aiCache&&S.aiCache[ck]){body.innerHTML=aiHTML(S.aiCache[ck]);return}
  body.innerHTML=`<div class="aidots"><i></i><i></i><i></i></div>`;
- try{const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(S.geminiKey)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:aiPrompt(mode)}]}]})});
-  if(!r.ok){throw new Error(r.status===400||r.status===403?"badkey":("http"+r.status))}
-  const j=await r.json();const parts=(((j.candidates||[])[0]||{}).content||{}).parts||[];const txt=parts.map(p=>p.text||"").join("").trim();
-  if(!txt)throw new Error("empty");S.aiCache[ck]=txt;save();body.innerHTML=aiHTML(txt);addXP(3);
- }catch(e){const m=(""+e.message);const msg=m==="badkey"?"That key was rejected — check it below.":m==="Failed to fetch"?"No connection — AI needs the internet.":"Couldn't reach Gemini right now.";
+ try{const txt=await aiGenerate(aiPrompt(mode));if(!txt)throw new Error("empty");S.aiCache[ck]=txt;save();body.innerHTML=aiHTML(txt);addXP(3);
+ }catch(e){const m=(""+e.message);const msg=m==="badkey"?"That key was rejected — check it below.":m.includes("fetch")?"No connection — AI needs the internet.":"Couldn't reach the AI right now.";
   body.innerHTML=`<p style="color:var(--muted)">${esc(msg)}</p>`;const btn=document.createElement("button");btn.className="aichip";btn.style.marginTop="8px";btn.textContent="Change API key";btn.onclick=()=>{S.geminiKey="";save();renderAIKey()};body.appendChild(btn);}}
+/* AI quiz-me: turn any idea into a fresh 3-question quiz */
+async function aiQuizMe(title,context,topic){openSheet(aiSheet);
+ aiSheet.innerHTML=`<div class="grab"></div><h3><span>🧩 AI Quiz</span><span class="close" id="aiX">✕</span></h3><div class="aibody" id="aiBody"><div class="aidots"><i></i><i></i><i></i></div></div>`;$("#aiX").onclick=closeSheets;
+ if(!aiConfigured()){renderAIKey();return}
+ try{const txt=await aiGenerate(`Create 3 multiple-choice questions that test understanding of the idea: "${title}".${context?" Context: "+context:""} Return ONLY a JSON array like [{"q":"question","o":["a","b","c","d"],"a":0,"e":"one-line why"}]. Exactly 4 options each, "a" is the 0-based index of the correct one. No markdown.`);
+  const m=txt.match(/\[[\s\S]*\]/);if(!m)throw 0;const qs=JSON.parse(m[0]).filter(x=>x&&x.q&&Array.isArray(x.o)&&x.o.length>=2&&typeof x.a==="number");if(!qs.length)throw 0;
+  closeSheets();QZ={q:{id:"ai"+Date.now(),topic:topic||"genius",title:"Quiz · "+title.slice(0,26),emoji:"🧩",qs:qs.slice(0,4)},i:0,score:0,answered:false};quizEl.classList.add("show");drawQuiz();addXP(4);
+ }catch(e){const body=$("#aiBody");if(body)body.innerHTML='<p style="color:var(--muted)">Couldn\'t generate a quiz right now. Try again in a moment.</p>'}}
+/* AI-infinite feed: quietly grow the feed with fresh on-topic ideas */
+let aiGenBusy=false;
+async function aiExpandFeed(){if(aiGenBusy||!aiConfigured())return;aiGenBusy=true;
+ try{const pool=(S.interests&&S.interests.length?S.interests:["science","history","psych","money","astro","bio","econ","phil"]);const pick=pool[Math.floor(Math.random()*pool.length)];
+  const txt=await aiGenerate(`Write 6 fresh, surprising micro-ideas about ${T[pick]?T[pick].l:pick} for a bite-size learning feed. Each has a punchy one-sentence title and a 1–2 sentence explanation. Return ONLY JSON: [{"title":"...","text":"..."}] with exactly 6 items. No markdown.`);
+  const m=txt.match(/\[[\s\S]*\]/);if(!m)return;const arr=JSON.parse(m[0]);const added=[];
+  arr.forEach(o=>{if(o&&o.title&&o.text){const it=[pick,"idea",(""+o.title).slice(0,150),(""+o.text).slice(0,340)];FEED.push(it);added.push(it)}});
+  if(added.length){S.aiIdeas=(S.aiIdeas||[]).concat(added).slice(-150);save();toast("✨ "+added.length+" fresh ideas added")}
+ }catch(e){}finally{aiGenBusy=false}}
+/* text-to-speech */
+function speak(text){if(!("speechSynthesis"in window)){toast("audio not supported here");return}try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=1;u.pitch=1;speechSynthesis.speak(u)}catch(e){}}
+function stopSpeak(){try{if("speechSynthesis"in window)speechSynthesis.cancel()}catch(e){}}
 
 /* ===== GLOBAL SEARCH ===== */
 const searchEl=$("#search");
@@ -1731,7 +1837,7 @@ window.addEventListener("keydown",e=>{if(e.key==="Escape"){if(searchEl.classList
  if(cur==="learn"){const f=$("#feed"),h=f.clientHeight,c=Math.round(f.scrollTop/h);if(e.key==="ArrowDown"){e.preventDefault();f.scrollTo({top:(c+1)*h,behavior:"smooth"})}if(e.key==="ArrowUp"){e.preventDefault();f.scrollTo({top:Math.max(0,(c-1)*h),behavior:"smooth"})}}});
 
 /* boot — open straight into the scrolling feed */
-updateHUD();setTab("learn");
+applyTheme();updateHUD();setTab("learn");
 if(!S.onboarded)renderOnboard();
 maybeDailyNotify(false);
 

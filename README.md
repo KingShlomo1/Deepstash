@@ -61,6 +61,25 @@ stored in the browser via `localStorage`.
   what you read/watched, and custom **collections** to organize saved items.
 - **Claude-style polish** — gradient-mesh backdrops, spring taps, photo fade-ins.
 
+### v3 — endless, smart & social
+
+- **AI-infinite feed** — with AI connected, the feed quietly generates fresh on-topic
+  ideas as you scroll, so it never runs out.
+- **Quiz me** — turn any idea into an instant AI-generated quiz.
+- **Smart ranking** — the feed learns from what you like, save and skip.
+- **Swipe gestures** — swipe a card right to save, left to skip (TikTok-style).
+- **Listen / read-aloud** — text-to-speech on any idea or article, plus an
+  auto-read-aloud mode for hands-free scrolling.
+- **Difficulty filter** — filter the feed by Quick / Core / Deep.
+- **Themes** — light & dark, plus five accent colors.
+- **Daily brief** — idea of the day, word of the day, a daily challenge, and
+  "on this day in history" on the Home screen.
+- **Bigger feed** — 250+ curated ideas across 20 subjects.
+- **Optional backend (`/worker`)** — a one-file Cloudflare Worker that adds keyless AI
+  (secret Gemini key), **shared comments**, and a **global leaderboard**. Deploy it in
+  ~5 min (see `worker/README.md`) and paste the URL into Settings → "Connect your
+  server". Everything works without it too; the Worker just adds the shared pieces.
+
 ## Deploy to Cloudflare Pages
 
 This is a static site — no framework, no build.
