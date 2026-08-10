@@ -425,6 +425,91 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .setbtns{display:flex;gap:10px}
 .setbtns button{flex:1;border-radius:12px;font-weight:800;font-size:13.5px;padding:12px;border:1px solid var(--line);background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center;gap:7px}
 .setbtns button svg{width:15px;height:15px;fill:currentColor}
+
+/* ===== IMAGES + skeleton shimmer ===== */
+.imgload{opacity:0;transition:opacity .5s}
+.imgload.ready{opacity:1}
+.imgload.failed{opacity:0!important}
+@keyframes shimmer{0%{background-position:-460px 0}100%{background-position:460px 0}}
+.skel{background:linear-gradient(100deg,rgba(255,255,255,.04) 30%,rgba(255,255,255,.10) 50%,rgba(255,255,255,.04) 70%);background-size:460px 100%;animation:shimmer 1.4s infinite linear}
+.cardimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.card .bg.hasimg{filter:saturate(1.05)}
+.th{position:relative}
+.th .thimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;z-index:0}
+.th .thov{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.55));z-index:1}
+.th .em,.th .tp{z-index:2}
+.rhero .rhimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.rhero .rhov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,12,.15),rgba(8,8,12,.55));z-index:1}
+.rhero .em{z-index:2}
+
+/* ===== EXPLORE by subject ===== */
+.explore{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0 18px}
+.xtile{position:relative;height:104px;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:13px;border:1px solid var(--line);cursor:pointer;transition:transform .15s cubic-bezier(.3,1.3,.5,1)}
+.xtile:active{transform:scale(.96)}
+.xtile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.xtile .xov{position:absolute;inset:0;z-index:1}
+.xtile .xe{position:relative;z-index:2;font-size:24px}
+.xtile .xn{position:relative;z-index:2;font-size:15px;font-weight:850;margin-top:auto;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.xtile .xc{position:relative;z-index:2;font-size:11px;font-weight:700;color:rgba(255,255,255,.8)}
+
+/* ===== SEARCH overlay ===== */
+.search{position:absolute;inset:0;z-index:108;background:var(--ink);display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+.search.show{opacity:1;visibility:visible}
+.searchbar{display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top) + 12px) 16px 10px;border-bottom:1px solid var(--line)}
+.searchbar input{flex:1;height:44px;background:var(--surface);border:1px solid var(--line);border-radius:12px;color:var(--text);font-size:15px;padding:0 14px;outline:none}
+.searchbar input:focus{border-color:var(--gold)}
+.searchbar .sxc{width:40px;height:40px;border-radius:10px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;flex:0 0 auto;color:var(--text)}
+.searchbar .sxc svg{width:19px;height:19px;fill:currentColor}
+.sresults{flex:1;overflow-y:auto;padding:8px 14px 20px}
+.sr{display:flex;gap:12px;align-items:center;padding:11px 6px;border-bottom:1px solid var(--line);cursor:pointer}
+.sr .srt{width:46px;height:46px;border-radius:12px;flex:0 0 auto;display:grid;place-items:center;font-size:22px}
+.sr .sri{flex:1;min-width:0}.sr .srk{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-2)}
+.sr .srn{font-size:14.5px;font-weight:700;margin-top:2px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.shint{text-align:center;color:var(--muted);padding:30px 20px;font-size:14px;line-height:1.6}
+
+/* ===== AI overview sheet ===== */
+.aisheet{position:absolute;left:0;right:0;bottom:0;z-index:96;max-height:82%;display:flex;flex-direction:column;background:var(--ink-2);border-top-left-radius:22px;border-top-right-radius:22px;border:1px solid var(--line);border-bottom:none;transform:translateY(102%);transition:transform .3s cubic-bezier(.32,.72,0,1);padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+.aisheet.show{transform:none}
+.aisheet h3{padding:14px 18px 10px;font-size:15px;display:flex;align-items:center;gap:8px}.aisheet h3 .close{margin-left:auto;color:var(--muted);font-size:22px;cursor:pointer}
+.aibody{overflow-y:auto;padding:4px 18px 8px;font-size:15px;line-height:1.6;color:#e9e6f2}
+.aibody p{margin:0 0 12px}
+.aibody .aispark{display:inline-block;width:18px;height:18px;vertical-align:-3px;margin-right:6px}
+.aichips{display:flex;gap:8px;padding:10px 18px 4px;flex-wrap:wrap}
+.aichip{font-size:12.5px;font-weight:750;padding:8px 13px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:#eee9f5}
+.aichip.on{background:var(--grad-gold);color:#1a1206;border-color:transparent}
+.aidots{display:inline-flex;gap:5px;padding:8px 0}
+.aidots i{width:8px;height:8px;border-radius:50%;background:var(--gold);opacity:.5;animation:aidot 1s infinite}
+.aidots i:nth-child(2){animation-delay:.15s}.aidots i:nth-child(3){animation-delay:.3s}
+@keyframes aidot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
+.aikey{margin:6px 18px;background:rgba(127,176,255,.08);border:1px solid rgba(127,176,255,.25);border-radius:12px;padding:12px}
+.aikey input{width:100%;height:40px;background:var(--surface);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:0 12px;font-size:13px;outline:none;margin-top:8px}
+.aikey .akrow{display:flex;gap:8px;margin-top:8px}
+.aikey .akrow button{flex:1;border:none;border-radius:10px;padding:11px;font-weight:800;font-size:13.5px}
+.aikey .akrow .prim{background:var(--grad-gold);color:#1a1206}.aikey .akrow .sec{background:var(--surface-2);color:var(--text);border:1px solid var(--line)}
+.aibtn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#8a5cff,#00c2ff);border:none;color:#fff;font-weight:800;font-size:13.5px;padding:10px 15px;border-radius:11px}
+.aibtn svg{width:15px;height:15px;fill:currentColor}
+
+/* ===== PROFILE / history / collections ===== */
+.pa.edit{cursor:pointer}
+.namerow{display:flex;align-items:center;gap:8px;justify-content:center}
+.namerow .editp{width:26px;height:26px;border-radius:50%;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted)}
+.namerow .editp svg{width:14px;height:14px;fill:currentColor}
+.histrow{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.histrow .he{width:40px;height:40px;border-radius:11px;flex:0 0 auto;display:grid;place-items:center;font-size:19px}
+.histrow .hi{flex:1;min-width:0}.histrow .hk{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted-2)}
+.histrow .hn{font-size:14px;font-weight:650;margin-top:2px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.colls{display:flex;gap:11px;overflow-x:auto;padding:2px 18px 4px}
+.coll{flex:0 0 auto;width:150px;height:96px;border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:12px;cursor:pointer;background:var(--surface)}
+.coll .ce{font-size:22px;position:absolute;top:10px;left:12px}
+.coll .cn{font-size:14.5px;font-weight:800}.coll .cc{font-size:11.5px;color:var(--muted);font-weight:700}
+.coll.newc{align-items:center;justify-content:center;border-style:dashed;color:var(--muted)}
+.coll.newc .plus{font-size:28px;line-height:1}.coll.newc .lbl{font-size:12px;font-weight:750;margin-top:4px}
+
+/* ===== gradient mesh + spring ===== */
+.mesh{position:absolute;inset:0;z-index:-1;background:radial-gradient(60% 50% at 20% 10%,rgba(124,92,255,.20),transparent 60%),radial-gradient(50% 45% at 90% 20%,rgba(255,92,138,.16),transparent 60%),radial-gradient(60% 60% at 60% 100%,rgba(0,194,255,.12),transparent 60%);pointer-events:none}
+.acard,.fcardh,.qcardh{transition:transform .15s cubic-bezier(.3,1.3,.5,1)}
+.acard:active,.fcardh:active,.qcardh:active{transform:scale(.965)}
+.collect-fab{position:absolute;right:12px;bottom:96px;z-index:3}
 </style>
 </head>
 <body>
@@ -465,6 +550,9 @@ button{font-family:inherit;color:inherit;cursor:pointer}
   <div class="filtsheet" id="filtSheet"><div class="grab"></div><h3><span>Filter the feed</span><span class="close" data-closefilt>✕</span></h3><div class="fchips" id="filtChips"></div></div>
   <div class="sharemodal" id="shareModal"><div class="grab"></div><h3><span>📤 Share as image</span><span class="close" id="shClose">✕</span></h3><div class="shprev"><canvas id="shCanvas"></canvas></div><div class="shbtns"><button id="shDownload"><svg viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg>Download</button><button class="prim" id="shShare"><svg viewBox="0 0 24 24"><path d="M14 9V5l7 7-7 7v-4.1C9 12 6 13 3 17c1-6 5-8 11-8z"/></svg>Share</button></div></div>
   <div class="onboard" id="onboard"></div>
+  <div class="search" id="search"></div>
+  <div class="aisheet" id="aiSheet"></div>
+  <div class="filtsheet" id="collSheet"><div class="grab"></div><h3><span>Add to collection</span><span class="close" data-closefilt>✕</span></h3><div class="fchips" id="collChips"></div></div>
 </div>
 
 <script>
@@ -487,8 +575,21 @@ const T={
  story:{l:"Stories",e:"✍️",c:"#7ad1c2",g:["#0d2a2a","#123f3a"]},
  health:{l:"Health",e:"🫀",c:"#ff5e7a",g:["#2a1119","#451a28"]},
  fit:{l:"Fitness",e:"💪",c:"#ff8a3c",g:["#2a1a0e","#45280f"]},
+ geo:{l:"Geography",e:"🌍",c:"#34c6a8",g:["#0d2a26","#12403a"]},
+ physics:{l:"Physics",e:"⚛️",c:"#6ea8ff",g:["#101a34","#182a52"]},
+ math:{l:"Math",e:"🔢",c:"#ff9a5a",g:["#2a1c0e","#452c12"]},
+ history:{l:"History",e:"🏺",c:"#d9a05a",g:["#2a2110","#453516"]},
+ bio:{l:"Biology",e:"🧬",c:"#4fd18b",g:["#0f2a1e","#12402d"]},
+ econ:{l:"Economy",e:"📊",c:"#5ad1c2",g:["#0d2a2a","#123f3a"]},
+ astro:{l:"Astronomy",e:"🔭",c:"#9a8bff",g:["#161232","#241a4f"]},
+ animal:{l:"Animals",e:"🦁",c:"#ffbe4d",g:["#2a2210","#453816"]},
 };
 function grad(t){const x=T[t]||T.life;return`background:linear-gradient(150deg,${x.g[0]},${x.g[1]})`}
+/* real photos (deterministic by seed) with graceful gradient fallback + offline caching via SW */
+function imgURL(seed,w,h){return`https://picsum.photos/seed/apex-${encodeURIComponent(seed)}/${w}/${h}`}
+function imgTag(seed,w,h,cls){return`<img class="imgload ${cls||''}" loading="lazy" decoding="async" src="${imgURL(seed,w,h)}" alt="" onload="this.classList.add('ready')" onerror="this.classList.add('failed')">`}
+/* history log */
+function logHist(kind,id,topic,title){if(!S.history)S.history=[];S.history=S.history.filter(h=>!(h.kind===kind&&h.id===id));S.history.unshift({kind,id,topic,title,t:Date.now()});if(S.history.length>60)S.history.length=60;save()}
 
 /* ===== FEED ===== */
 const FEED=[
@@ -617,6 +718,58 @@ const FEED=[
  ["fit","quote","Take care of your body. It's the only place you have to live.","Jim Rohn","—"],
  ["phil","idea","The obstacle is the way.","What blocks the path becomes the path. Every difficulty carries the exact lesson or strength you were missing."],
  ["science","fact","Bananas are radioactive — and harmless.","They're rich in potassium, a fraction of which is naturally radioactive. You'd need millions in one sitting to matter. Eat up."],
+ ["geo","fact","Russia spans 11 time zones.","When it's morning in one corner it's night in another. The country is so wide the sun never fully sets on all of it at once."],
+ ["geo","fact","Africa is bigger than it looks on most maps.","The Mercator projection shrinks the equator and inflates the poles. Africa could swallow the US, China, India and most of Europe combined."],
+ ["geo","fact","The Sahara was green just 6,000 years ago.","Lush with lakes and hippos. A slow wobble in Earth's orbit turned a savanna into the largest hot desert on the planet."],
+ ["geo","idea","Every river is older than every border.","Geography wrote the first map. Mountains, coasts and rivers shaped where people settled long before any line was drawn on paper."],
+ ["geo","fact","The Pacific is wider than the Moon.","At its widest the Pacific Ocean stretches farther than the diameter of the Moon — you could line up moons across it."],
+ ["geo","fact","There's a country inside a city inside a country.","Vatican City sits inside Rome, inside Italy — the world's smallest nation, at about 0.2 square miles."],
+ ["physics","fact","Nothing can escape a black hole — not even light.","Past the event horizon, escaping would mean moving faster than light, which the universe forbids. It's a one-way door in spacetime."],
+ ["physics","idea","Energy is never created or destroyed.","It only changes costume — chemical to motion to heat. The total in the universe has stayed the same since the beginning of time."],
+ ["physics","fact","You can never touch anything, technically.","The atoms in your hand and the table repel each other electromagnetically. 'Touch' is really fields pushing back a hair's width away."],
+ ["physics","fact","Time runs slower for your feet than your head.","Gravity bends time. Closer to Earth's mass, clocks tick very slightly slower — measured, not theory. You age faster upstairs."],
+ ["physics","idea","Light is both a wave and a particle.","Depending on how you look, it's ripples or bullets. Reality at the smallest scale refuses to fit our everyday categories."],
+ ["physics","quote","If you think you understand quantum mechanics, you don't understand quantum mechanics.","Richard Feynman","—"],
+ ["math","fact","There are more ways to shuffle a deck than atoms on Earth.","52 cards can be ordered 52! ways — a number so vast that any shuffle you make has almost certainly never existed before."],
+ ["math","idea","Zero was a radical invention.","For millennia math had no symbol for nothing. Treating 'nothing' as a number unlocked algebra, calculus and the digital age."],
+ ["math","fact","The number π never repeats or ends.","We've computed trillions of digits and found no pattern. A perfect circle hides an infinite, unrepeating number inside it."],
+ ["math","idea","Compounding is exponential — and your brain isn't.","Humans think in straight lines; growth curves fool us. That gap is why savings, viruses and habits all surprise us."],
+ ["math","fact","The Fibonacci sequence hides in sunflowers.","1, 1, 2, 3, 5, 8… the same numbers arrange seeds, petals and pinecones. Nature keeps reusing the most efficient packing."],
+ ["math","idea","A bigger sample beats a clever guess.","Intuition is noisy; numbers average the noise out. When in doubt, count — the data usually knows something you don't."],
+ ["history","fact","Cleopatra lived closer to the iPhone than the pyramids.","The Great Pyramid was already ~2,500 years old in her time. Human history is far deeper than it feels."],
+ ["history","idea","Those who don't study history repeat it.","Patterns rhyme across centuries — bubbles, empires, revolutions. History is the largest dataset we have on human behavior."],
+ ["history","fact","Oxford University is older than the Aztec Empire.","Teaching began at Oxford around 1096; the Aztecs founded Tenochtitlán in 1325. 'Ancient' and 'medieval' overlap more than we assume."],
+ ["history","fact","The Great Wall isn't one wall.","It's many walls built over 2,000 years by different dynasties — and no, you can't actually see it from space with the naked eye."],
+ ["history","idea","Most revolutions begin with rising hope, not rock bottom.","People rebel when things start improving and expectations outrun reality — not at the darkest hour. Progress can be destabilizing."],
+ ["history","quote","The only thing we learn from history is that we learn nothing from history.","Hegel","—"],
+ ["bio","fact","You share about 60% of your DNA with a banana.","Life reuses the same core toolkit. The instructions for a cell — energy, repair, division — are ancient and shared across kingdoms."],
+ ["bio","fact","Your body swaps out ~330 billion cells a day.","You are less a fixed object than a standing wave — constantly rebuilt from the food you eat and the air you breathe."],
+ ["bio","idea","Your gut has its own 'brain'.","Hundreds of millions of neurons line your gut, talking constantly to your head. Mood, hunger and even decisions get a vote from below."],
+ ["bio","fact","Trees talk through underground fungal networks.","Roots and fungi form a 'wood wide web' that shuttles sugar and warning signals between trees. The forest is a single, cooperating system."],
+ ["bio","fact","Your DNA would stretch to the Sun and back — many times.","Uncoiled, the DNA in your body would reach billions of kilometres. It's packed into cells you can't even see."],
+ ["bio","idea","Evolution optimizes for 'good enough', not perfect.","Your eye's blind spot, your bad back — nature builds by tinkering with what came before, never from a clean sheet."],
+ ["econ","idea","Incentives run the world.","Show me how someone is rewarded and I'll show you how they'll behave. To change outcomes, change the payoff, not the pep talk."],
+ ["econ","fact","Inflation quietly halves money about every 25–30 years.","At ~2–3% a year, prices double over a generation. Cash left idle slowly melts; that's why people invest to stay ahead."],
+ ["econ","idea","There's no such thing as a free lunch.","Every choice spends something — money, time, or a road not taken. Opportunity cost is the price tag you don't see on the receipt."],
+ ["econ","idea","Prices are messages, not just numbers.","A rising price shouts 'scarce — make more'; a falling one says 'enough'. Markets coordinate millions of strangers with signals, not orders."],
+ ["econ","fact","Comparative advantage means everyone can gain from trade.","Even if one side is better at everything, both win by specializing in what they give up least to make. Cooperation beats self-sufficiency."],
+ ["astro","fact","There are more stars than grains of sand on Earth.","Hundreds of billions of galaxies, each with hundreds of billions of stars. The sky you see is a rounding error of the whole."],
+ ["astro","fact","A day on Venus is longer than its year.","Venus spins so slowly it laps its own orbit around the Sun before finishing a single rotation."],
+ ["astro","idea","Look up and you're looking back in time.","The Sun you see is 8 minutes old; some stars, thousands of years. The night sky is a museum of light that left long ago."],
+ ["astro","fact","Neutron star material weighs a billion tons per teaspoon.","Collapsed stars pack a sun's mass into a city-sized ball. A sugar-cube of it would outweigh Mount Everest."],
+ ["astro","fact","Saturn would float in water.","It's a giant ball of gas less dense than water — if you had a bathtub big enough, the ringed planet would bob on top."],
+ ["astro","idea","We are made of star-stuff.","The calcium in your bones, the iron in your blood — all forged inside stars that died so the next generation could exist."],
+ ["animal","fact","Octopuses have three hearts and blue blood.","Two pump to the gills, one to the body — and it stops when they swim, so they often prefer to crawl."],
+ ["animal","fact","A group of flamingos is called a flamboyance.","Their pink comes from the shrimp and algae they eat. Take away the diet and the color fades — you are what you eat, literally."],
+ ["animal","fact","Wombats poop cubes.","Their intestines shape droppings into little cubes so they don't roll away — perfect for marking territory on slopes."],
+ ["animal","fact","Tardigrades can survive space.","These microscopic 'water bears' shrug off boiling, freezing, radiation and the vacuum of space. Toughest animals we know of."],
+ ["animal","idea","Ants farm, herd and wage war.","Colonies grow fungus gardens, 'milk' aphids, and mount coordinated raids — complex civilization running on simple local rules."],
+ ["animal","fact","Crows hold grudges — and tell their friends.","They recognize individual human faces, remember who wronged them, and pass the warning to other crows. Don't mess with corvids."],
+ ["psych","idea","We judge ourselves by intentions, others by actions.","You know you meant well; you only see what they did. Remembering this gap dissolves half your resentments."],
+ ["psych","idea","The map is not the territory.","Your model of reality isn't reality. Stay humble about the difference and you'll be wrong less often and learn faster."],
+ ["life","idea","Boredom is where creativity is born.","Constant stimulation crowds out the mind-wandering that connects ideas. Let yourself be bored — that's when the good stuff arrives."],
+ ["life","idea","Done is better than perfect.","Perfectionism is procrastination in a nicer outfit. Ship the imperfect thing; the feedback teaches more than another polish ever could."],
+ ["genius","idea","Hold two opposing ideas and still function.","The mark of a first-rate mind, Fitzgerald said, is keeping two contradictory thoughts in play while still deciding and acting."],
 ];
 
 /* ===== ARTICLES ===== */
@@ -705,6 +858,36 @@ const ARTICLES=[
   ["h","A feature, not a bug"],
   ["p","You might expect evolution to fix this. It's the opposite. A perfectly instantaneous but unsynchronized stream of raw sensation would be useless — you'd flinch at echoes and trip over your reflexes. By buffering reality for a fraction of a second, your brain buys time to sort, align, and predict, handing your conscious mind a clean, stable world instead of chaos. So when a moment feels perfectly present, savor the craftsmanship. Someone worked hard, in the dark, a few dozen milliseconds ago, to make sure you'd never notice you were late. That someone was you."],
  ]},
+ {id:"h1",topic:"history",emoji:"🏛️",minutes:6,author:"APEX",img:"rome-forum",title:"Rome Didn't Fall in a Day — It Faded for 300 Years",dek:"The greatest empire in history didn't collapse. It slowly stopped being able to afford itself.",body:[
+  ["p","We picture the fall of Rome as a single dramatic event: barbarians at the gates, a city in flames, the lights of civilization snuffed out overnight. The truth is slower, stranger, and far more useful. Rome didn't fall so much as fade — over roughly three centuries of compounding problems no single emperor could reverse."],
+  ["h","Death by a thousand costs"],
+  ["p","An empire is expensive. Rome's genius was building roads, armies, and cities faster than anyone else; its curse was that all of it needed constant funding. As conquest slowed, fresh plunder dried up, but the bills didn't. To pay soldiers, emperors quietly shrank the silver in their coins — ancient inflation — until money people trusted for centuries became almost worthless."],
+  ["pull","Complex systems rarely die from one blow. They die when the cost of holding them together finally exceeds what anyone can pay."],
+  ["h","The barbarians were often inside"],
+  ["p","By the end, many 'barbarian invaders' were people Rome had already hired, settled, and depended on. The frontier didn't so much break as blur. When a system relies on outsiders it never fully includes, it becomes fragile in a way that looks fine right up until it doesn't."],
+  ["h","Why it still matters"],
+  ["p","Historians count over 200 proposed causes for Rome's decline — climate shifts, plagues, overreach, political rot. That's the lesson: big things fail for many small reasons at once, not one. Watch for the slow leaks, not just the dramatic breaks, and you'll see trouble a generation before it arrives."],
+ ]},
+ {id:"as1",topic:"astro",emoji:"🛸",minutes:5,author:"APEX",img:"night-sky-stars",title:"The Fermi Paradox: If the Universe Is So Big, Where Is Everyone?",dek:"Billions of Earth-like worlds, billions of years to evolve. So why is the sky so silent?",body:[
+  ["p","Our galaxy holds hundreds of billions of stars, many with planets in the 'just right' zone for liquid water. The universe has had over 13 billion years to cook up life. By the numbers, the sky should be crowded with civilizations. Yet we've heard nothing. Physicist Enrico Fermi summed it up with a simple, haunting question: 'Where is everybody?'"],
+  ["h","The great silence"],
+  ["p","This gap between how much life we'd expect and how much we've found is the Fermi Paradox. It isn't proof we're alone — it's a puzzle sharp enough that every answer to it is unsettling."],
+  ["pull","Either we are extraordinarily rare, or something reliably stops civilizations before they can call out. Neither is comforting."],
+  ["h","The Great Filter"],
+  ["p","One idea: somewhere between dead chemistry and a galaxy-spanning civilization sits a 'Great Filter' — a step almost nothing gets past. If the filter is behind us (life itself is a fluke), we may be alone but safe. If it's ahead of us, then advanced civilizations tend to destroy themselves — and we're walking toward the same cliff."],
+  ["h","Why the question is a gift"],
+  ["p","We may never meet another mind among the stars. But the paradox does something valuable right now: it makes this pale blue dot, and the fragile experiment happening on it, look precious and worth protecting. If intelligence is rare, then wasting it would be the greatest tragedy in the cosmos."],
+ ]},
+ {id:"g2",topic:"geo",emoji:"🗺️",minutes:5,author:"APEX",img:"world-map-old",title:"Why Every Map You've Seen Is Lying to You",dek:"You can't flatten a globe without distorting it. The only question is which lie you prefer.",body:[
+  ["p","Here's an uncomfortable fact: it is mathematically impossible to draw the round Earth on flat paper without stretching, squashing, or tearing something. Every map is a compromise — a chosen distortion. The famous one you grew up with makes that choice in a way that quietly warps how you see the world."],
+  ["h","The Mercator trick"],
+  ["p","The classic Mercator map was built for sailors: it keeps directions true so you can steer a straight compass line. The price is size. The closer to the poles, the more things balloon. Greenland looks as big as Africa — but Africa is fourteen times larger. Europe and North America appear to loom over a shrunken equator that holds most of humanity."],
+  ["pull","A map is an argument about what matters, disguised as a neutral picture of the world."],
+  ["h","No neutral projection"],
+  ["p","Other maps make other trade-offs. Equal-area maps get sizes right but bend the shapes. There's no 'true' flat map, only maps tuned for a purpose — navigation, area, or beauty. The mistake isn't using one; it's forgetting you chose it."],
+  ["h","Learn to read the lie"],
+  ["p","This is a habit worth carrying past geography. Every chart, headline, and dashboard is a projection — real information flattened by someone's choices about what to preserve and what to distort. Ask of any picture of reality: what did this have to sacrifice to fit on the page?"],
+ ]},
 ];
 
 /* ===== WORKOUTS + SESSIONS ===== */
@@ -771,6 +954,24 @@ const QUIZZES=[
    {q:"The calcium in your bones was originally forged…",o:["In the ocean","Inside dying stars","By plants","In volcanoes"],a:1,e:"Heavy elements are made in stars. You are, quite literally, made of stardust."},
    {q:"Roughly how does 3,000-year-old honey hold up?",o:["Turns to poison","Still edible — honey doesn't spoil","Evaporates","Becomes sugar rock"],a:1,e:"Honey's chemistry is naturally hostile to bacteria; archaeologists found edible honey in Egyptian tombs."},
  ]},
+ {id:"qz9",topic:"geo",title:"World Geography",emoji:"🌍",qs:[
+   {q:"Why does the Mercator map make Greenland look huge?",o:["It really is that big","It stretches area near the poles","A printing error","Greenland is closer"],a:1,e:"Mercator preserves direction but inflates size toward the poles — Africa is ~14× bigger than Greenland."},
+   {q:"How many time zones does Russia span?",o:["3","7","11","24"],a:2,e:"Eleven — it's so wide the sun is rising in one part while setting in another."},
+   {q:"The Sahara 6,000 years ago was…",o:["Bigger","Green with lakes","Frozen","Underwater"],a:1,e:"A slow orbital wobble turned a green savanna with hippos into the largest hot desert."},
+   {q:"The world's smallest country is…",o:["Monaco","Vatican City","Nauru","Malta"],a:1,e:"Vatican City — about 0.2 square miles, tucked inside Rome."},
+ ]},
+ {id:"qz10",topic:"history",title:"History Timelines",emoji:"🏺",qs:[
+   {q:"Cleopatra lived closer in time to…",o:["The pyramids' construction","The Moon landing / iPhone","Julius Caesar only","The Ice Age"],a:1,e:"The Great Pyramid was ~2,500 years old in her day; she's closer to us than to the pyramids."},
+   {q:"Oxford University is older than…",o:["Paper","The Aztec Empire","The wheel","Rome"],a:1,e:"Teaching began at Oxford ~1096; the Aztecs founded Tenochtitlán in 1325."},
+   {q:"Rome's decline was mainly…",o:["One battle","A slow, multi-cause fade over centuries","A single plague","A volcano"],a:1,e:"Historians list 200+ causes — big systems fail for many small reasons at once."},
+   {q:"Revolutions most often ignite when…",o:["Things hit rock bottom","Things start improving and hopes outrun reality","Nothing changes","Winter arrives"],a:1,e:"Rising expectations, not the darkest hour, tend to spark revolt."},
+ ]},
+ {id:"qz11",topic:"astro",title:"Space & The Cosmos",emoji:"🔭",qs:[
+   {q:"When you look at distant stars, you see…",o:["The present","Light from the past","The future","A reflection"],a:1,e:"Light takes time to arrive — the night sky is a museum of old light."},
+   {q:"A teaspoon of neutron-star material weighs about…",o:["A gram","A ton","A billion tons","Nothing"],a:2,e:"Collapsed stars pack a sun's mass into a city — absurdly dense."},
+   {q:"The Fermi Paradox asks…",o:["Why the sky is blue","If the universe is huge, where is everyone?","How stars form","Why Pluto isn't a planet"],a:1,e:"Given billions of worlds and years, the silence is a genuine puzzle."},
+   {q:"Saturn is unusual because it…",o:["Has no moons","Would float in water","Is the hottest planet","Spins backward"],a:1,e:"It's less dense than water — a giant, light ball of gas."},
+ ]},
 ];
 
 /* ===== KNOWLEDGE MAPS ===== */
@@ -823,6 +1024,24 @@ const MAPS=[
    {l:"Rest",e:"🌿",pts:["Take real breaks","Walk to think","Sleep consolidates"]},
    {l:"Measure",e:"📊",pts:["Track deep hours","Shrink shallow work","Review weekly"]},
  ]},
+ {id:"mp9",topic:"astro",root:"The Solar System",emoji:"🪐",sub:"Our cosmic neighborhood at a glance",branches:[
+   {l:"The Sun",e:"☀️",pts:["99.8% of all the mass","Fuses hydrogen → helium","Light takes 8 min to reach us"]},
+   {l:"Rocky planets",e:"🪨",pts:["Mercury · Venus · Earth · Mars","Small, dense, solid","Earth: the only known life"]},
+   {l:"Gas giants",e:"🌪️",pts:["Jupiter · Saturn","Huge, stormy, ringed","Saturn floats in water"]},
+   {l:"Ice & edges",e:"❄️",pts:["Uranus · Neptune","Kuiper Belt & Pluto","Oort Cloud far beyond"]},
+ ]},
+ {id:"mp10",topic:"history",root:"Eras of History",emoji:"🏺",sub:"The big chapters of the human story",branches:[
+   {l:"Ancient",e:"🏛️",pts:["First cities & writing","Egypt · Greece · Rome","Foundations of law & math"]},
+   {l:"Medieval",e:"🏰",pts:["Empires rise & fall","Trade routes connect worlds","Universities begin"]},
+   {l:"Early modern",e:"⛵",pts:["Exploration & printing","Scientific revolution","Global exchange"]},
+   {l:"Modern",e:"⚙️",pts:["Industry & electricity","Information age","Accelerating change"]},
+ ]},
+ {id:"mp11",topic:"bio",root:"The Human Body",emoji:"🧬",sub:"Systems that keep you alive",branches:[
+   {l:"Power",e:"🫀",pts:["Heart pumps ~100k times/day","Blood carries oxygen","Lungs trade gases"]},
+   {l:"Control",e:"🧠",pts:["Brain & nerves","Hormones as messengers","Gut has its own 'brain'"]},
+   {l:"Defense",e:"🛡️",pts:["Immune system","Skin as a barrier","Fever fights invaders"]},
+   {l:"Renewal",e:"🔁",pts:["~330B cells replaced daily","Sleep repairs & files","Food becomes you"]},
+ ]},
 ];
 
 /* ===== STORIES (tap-through) ===== */
@@ -866,7 +1085,7 @@ const STORIES=[
 ];
 
 /* ===== WATCH (curated safe searches — creators open on the real platform) ===== */
-const WATCH_TOPICS=["Home workout","HIIT no equipment","Ab workout","Full body dumbbell","Yoga & mobility","Stretching routine","Beginner workout","Glute workout","Push day","Meditation guided","Deep focus music","Motivation"];
+const WATCH_TOPICS=["Home workout","HIIT no equipment","Ab workout","Yoga & mobility","Meditation guided","Kurzgesagt","Veritasium","Crash Course history","TED-Ed","Physics explained","Math visualized","Astronomy documentary","Ancient history","Biology basics","Economics explained","Philosophy crash course","Animal facts","Deep focus music"];
 /* Curated workout & movement videos. YouTube plays inline; Instagram/TikTok open on-platform.
    Swap these links for your own favourites any time — the app parses any pasted URL. */
 const SEED_V=2;
@@ -898,7 +1117,8 @@ const PLAT_COLOR={YouTube:"#ff0033",TikTok:"#00f2ea",Instagram:"#e1306c",Vimeo:"
 const KEY="apex_v1",today=()=>new Date().toISOString().slice(0,10);
 let S={xp:0,streak:0,lastActive:null,reads:0,workouts:0,minutes:0,sessions:0,quizzes:0,
  likes:{},saves:{},ownComments:{},readProgress:{},done:{},videos:[],seeded:false,seedV:0,mood:"focus",
- quizBest:{},storiesSeen:{},mapsSeen:{},interests:null,onboarded:false,notify:false};
+ quizBest:{},storiesSeen:{},mapsSeen:{},interests:null,onboarded:false,notify:false,
+ history:[],collections:[],name:"You",avatar:"A",geminiKey:"",aiCache:{}};
 try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
 if(S.seedV!==SEED_V){const userAdded=(S.videos||[]).filter(v=>!v.seed);S.videos=SEED_VIDEOS.concat(userAdded);S.seedV=SEED_V;S.seeded=true}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -963,8 +1183,9 @@ function renderHome(){
  const cont=Object.keys(S.readProgress).filter(k=>S.readProgress[k]>3&&S.readProgress[k]<96).map(k=>ARTICLES.find(a=>a.id===k)).filter(Boolean);
  const pills=[["learn","Learn","🧠","Ideas that stick","learn"],["train","Train","🎖️","Body & mind","train"],["watch","Watch","🎬","Real creators","watch"],["mind","Breathe","🧘","Reset in 2 min","train"]];
  $("#v-home").innerHTML=`
-  <div class="top"><div class="brandrow"><span class="mk">A</span><div><div class="h1">APEX</div><div class="sub">${g} — become your highest self.</div></div>
-   <div class="pillrow"><div class="pill">🔥 <span data-streak>${S.streak}</span><small>streak</small></div><div class="pill"><small>Lv</small> <span data-lvl>${levelFor(S.xp)}</span></div></div></div></div>
+  <div class="mesh"></div>
+  <div class="top"><div class="brandrow"><span class="mk">${esc(S.avatar||'A')}</span><div><div class="h1">APEX</div><div class="sub">${g}, ${esc(S.name||'you')}.</div></div>
+   <div class="pillrow"><button class="pill" id="homeSearch" aria-label="Search" style="border:1px solid var(--line)">🔎</button><div class="pill">🔥 <span data-streak>${S.streak}</span></div><div class="pill"><small>Lv</small> <span data-lvl>${levelFor(S.xp)}</span></div></div></div></div>
   <div class="storybar">${STORIES.map(s=>`<div class="storyav ${S.storiesSeen[s.id]?'seen':''}" data-open-story="${s.id}"><div class="ring"><div class="inr">${s.emoji}</div></div><div class="sl">${esc(s.title)}</div></div>`).join("")}</div>
   <div class="cine" id="cineHero"><canvas></canvas><div class="cov"></div>
     <div class="eb">✦ Today's word</div>
@@ -972,19 +1193,23 @@ function renderHome(){
     <button class="go" data-open-art="${hero.id}"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Read today's piece</button></div>
   <div class="sec"><h3>Four pillars</h3></div>
   <div class="pillars">${pills.map(p=>`<div class="pil" style="${grad(p[0])}" data-goto="${p[4]}"><span class="pe">${p[2]}</span><div class="pn">${p[1]}</div><div class="pd">${p[3]}</div></div>`).join("")}</div>
-  ${cont.length?`<div class="sec"><h3>⏳ Jump back in</h3></div><div class="hs">${cont.map(a=>`<div class="acard" data-open-art="${a.id}"><div class="th" style="${grad(a.topic)}"><span class="em">${a.emoji}</span><span class="tp">${Math.round(S.readProgress[a.id])}% read</span></div><div class="rt">${esc(a.title)}</div><div class="rm">${a.minutes} min</div></div>`).join("")}</div>`:""}
+  <div class="sec"><h3>🧭 Explore by subject</h3></div>
+  <div class="explore">${[["geo","Geography"],["history","History"],["physics","Physics"],["astro","Astronomy"],["bio","Biology"],["math","Math"],["econ","Economy"],["animal","Animals"],["phil","Philosophy"],["money","Money"]].map(([k,l])=>{const t=T[k]||T.life;return`<div class="xtile" data-explore="${k}">${imgTag('subject-'+k,600,360)}<div class="xov" style="${grad(k)};opacity:.5"></div><span class="xe">${t.e}</span><div class="xn">${l}</div><div class="xc">Dive in →</div></div>`}).join("")}</div>
+  ${cont.length?`<div class="sec"><h3>⏳ Jump back in</h3></div><div class="hs">${cont.map(a=>`<div class="acard" data-open-art="${a.id}"><div class="th" style="${grad(a.topic)}">${imgTag(a.img||a.id,600,360,'thimg')}<div class="thov"></div><span class="em">${a.emoji}</span><span class="tp">${Math.round(S.readProgress[a.id])}% read</span></div><div class="rt">${esc(a.title)}</div><div class="rm">${a.minutes} min</div></div>`).join("")}</div>`:""}
   <div class="sec"><h3>📖 Long reads<span class="more" data-goto="learn">Feed</span></h3></div>
-  <div class="hs">${ARTICLES.slice(0,7).map(a=>`<div class="acard" data-open-art="${a.id}"><div class="th" style="${grad(a.topic)}"><span class="em">${a.emoji}</span><span class="tp">${T[a.topic].l}</span></div><div class="rt">${esc(a.title)}</div><div class="rd">${esc(a.dek)}</div><div class="rm">${a.minutes} min read</div></div>`).join("")}</div>
+  <div class="hs">${ARTICLES.slice(0,8).map(a=>`<div class="acard" data-open-art="${a.id}"><div class="th" style="${grad(a.topic)}">${imgTag(a.img||a.id,600,360,'thimg')}<div class="thov"></div><span class="em">${a.emoji}</span><span class="tp">${T[a.topic].l}</span></div><div class="rt">${esc(a.title)}</div><div class="rd">${esc(a.dek)}</div><div class="rm">${a.minutes} min read</div></div>`).join("")}</div>
   <div class="sec"><h3>💡 Ideas that stick<span class="more" data-goto="learn">Enter feed</span></h3></div>
   <div class="hs">${FEED.map((f,i)=>[f,i]).filter(([f])=>["idea","quote","finance"].includes(f[1])).slice(0,12).map(([f,i])=>`<div class="fcardh" data-open-feed="${i}"><div class="ft">${esc(f[1]==='quote'?'"'+f[2]+'"':f[2])}</div><div class="fm">${T[f[0]].e} ${f[1]==='quote'?esc(f[3]):T[f[0]].l}</div></div>`).join("")}</div>
   <div class="sec"><h3>🧩 Test yourself<span class="more">${S.quizzes} taken</span></h3></div>
   <div class="hs">${QUIZZES.map(q=>{const best=S.quizBest[q.id];return`<div class="qcardh" data-open-quiz="${q.id}"><div class="qe">${q.emoji}</div><div class="qtt">${esc(q.title)}</div><div class="qmeta"><span>${q.qs.length} questions</span>${best!=null?`<span class="qbest">★ ${best}%</span>`:'<span>tap to start</span>'}</div></div>`}).join("")}</div>
   <div class="sec"><h3>🗺️ Knowledge maps<span class="more">${MAPS.length}</span></h3></div>
-  <div class="hs">${MAPS.map(m=>{const t=T[m.topic]||T.life;return`<div class="acard" data-open-map="${m.id}"><div class="th" style="${grad(m.topic)}"><span class="em">${m.emoji}</span><span class="tp">${t.l}</span></div><div class="rt">${esc(m.root)}</div><div class="rd">${esc(m.sub)}</div><div class="rm">${m.branches.length} branches · ${S.mapsSeen[m.id]?'explored':'new'}</div></div>`}).join("")}</div>
+  <div class="hs">${MAPS.map(m=>{const t=T[m.topic]||T.life;return`<div class="acard" data-open-map="${m.id}"><div class="th" style="${grad(m.topic)}">${imgTag('map-'+m.id,600,360,'thimg')}<div class="thov"></div><span class="em">${m.emoji}</span><span class="tp">${t.l}</span></div><div class="rt">${esc(m.root)}</div><div class="rd">${esc(m.sub)}</div><div class="rm">${m.branches.length} branches · ${S.mapsSeen[m.id]?'explored':'new'}</div></div>`}).join("")}</div>
   <div class="sec"><h3>🎬 Workout videos<span class="more" data-goto="watch">Watch</span></h3></div>
-  <div class="hs">${SEED_VIDEOS.slice(0,6).map(v=>{const t=T[v.topic]||T.life;return`<div class="acard" data-goto="watch"><div class="th" style="${grad(v.topic||'fit')}"><span class="em">${/instagram/.test(v.url)?'📸':'▶️'}</span><span class="tp">${/instagram/.test(v.url)?'Instagram':'YouTube'}</span></div><div class="rt">${esc(v.title)}</div><div class="rm">${t.l}</div></div>`}).join("")}</div>
+  <div class="hs">${SEED_VIDEOS.slice(0,6).map(v=>{const t=T[v.topic]||T.life,ig=/instagram/.test(v.url);return`<div class="acard" data-goto="watch"><div class="th" style="${grad(v.topic||'fit')}">${imgTag('vid-'+v.id,600,360,'thimg')}<div class="thov"></div><span class="em">${ig?'📸':'▶️'}</span><span class="tp">${ig?'Instagram':'YouTube'}</span></div><div class="rt">${esc(v.title)}</div><div class="rm">${t.l}</div></div>`}).join("")}</div>
   <div class="credit">APEX · train your mind & body<br>A living library — it keeps growing.</div>`;
  wire($("#v-home"));
+ $("#homeSearch").onclick=openSearch;
+ $("#v-home").querySelectorAll("[data-explore]").forEach(e=>e.onclick=()=>{feedFilter={topic:e.dataset.explore,q:""};feedBuilt=false;buildFeed();$("#feed").scrollTop=0;$("#filtFab").classList.add("filtered");setTab("learn");toast("🧭 "+(T[e.dataset.explore]||T.life).l)});
  startCine($("#cineHero").querySelector("canvas"));
 }
 /* cinematic canvas: drifting particles/embers */
@@ -1001,13 +1226,14 @@ function fkey(i){return"f"+i}
 function feedHTML(i,inst){const f=FEED[i],[tp,ty,tx,ex,ex2]=f,t=T[tp],k=fkey(i);const liked=!!S.likes[k],saved=!!S.saves[k],own=(S.ownComments[k]||[]).length;const r=sd(k+"h"),h=pick(r,NAMES);
  const tl={fact:"Did you know",idea:"Principle",quote:"Words to keep",finance:"Money",story:"A small story"}[ty]||"";
  let mid=ty==="quote"?`<div class="ctype">${tl}</div><h2 class="insight quote">"${esc(tx)}"</h2><div class="qauthor">${esc(ex)}<span class="role">${esc(ex2||"")}</span></div>`:`<div class="ctype">${tl}</div><h2 class="insight">${esc(tx)}</h2><p class="kicker">${esc(ex)}</p>`;
- return`<section class="card" data-key="${k}" data-i="${i}" data-inst="${inst}" data-topic="${tp}"><div class="bg" style="${grad(tp)}"></div><div class="grain"></div>
+ return`<section class="card" data-key="${k}" data-i="${i}" data-inst="${inst}" data-topic="${tp}"><div class="bg hasimg" style="${grad(tp)}">${imgTag(tp+i,900,1400,"cardimg")}</div><div class="grain"></div>
   <span class="ktag"><span class="dot" style="background:${t.c}"></span>${t.e} ${t.l}</span>${mid}
   <div class="meta"><div class="handle">@<span class="at">${h}</span></div><div class="source">APEX · daily</div></div>
   <div class="rail-a">
    <button class="act like ${liked?'on-like':''}" data-a="like"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.9-10.3-9.6C.2 8 2 4.7 5.2 4.7c2 0 3.3 1.1 4 2.2.7-1.1 2-2.2 4-2.2 3.2 0 5 3.3 3.5 6.7C20 16.1 12 21 12 21z"/></svg></span><span class="n" data-n="like">${fmt(baseL(k)+(liked?1:0))}</span></button>
    <button class="act" data-a="comment"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></span><span class="n" data-n="comment">${fmt(baseC(k)+own)}</span></button>
    <button class="act save ${saved?'on-save':''}" data-a="save"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></span><span class="n">Save</span></button>
+   <button class="act" data-a="ai"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l1.9 4.6L18.5 8l-3.6 3 1.2 4.8L12 13.6 7.9 15.8 9.1 11 5.5 8l4.6-1.4z"/></svg></span><span class="n">AI</span></button>
    <button class="act" data-a="share"><span class="ico"><svg viewBox="0 0 24 24"><path d="M14 9V5l7 7-7 7v-4.1C9 12 6 13 3 17c1-6 5-8 11-8z"/></svg></span><span class="n">Share</span></button>
   </div>${inst===0?'<div class="hint" id="hint"><svg viewBox="0 0 24 24"><path d="M12 4l6 7h-4v9h-4v-9H6z"/></svg>swipe up for more</div>':''}</section>`}
 function fseq(){const r=mul((hs("f")()^Date.now())>>>0);const shuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -1023,10 +1249,10 @@ function fseq(){const r=mul((hs("f")()^Date.now())>>>0);const shuf=a=>{for(let i
 function fappend(){const s=feedMeta.length,seq=fseq();let h="";seq.forEach((idx,k)=>{feedMeta.push(idx);h+=feedHTML(idx,s+k)});$("#feed").insertAdjacentHTML("beforeend",h);fobserve()}
 function buildFeed(){if(feedBuilt)return;feedBuilt=true;$("#feed").innerHTML="";feedMeta=[];fappend()}
 function fobserve(){if(!feedIO)feedIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.65)factive(e.target)}),{root:$("#feed"),threshold:[.66]});$("#feed").querySelectorAll(".card:not([data-obs])").forEach(c=>{c.setAttribute("data-obs","1");feedIO.observe(c)})}
-function factive(card){const inst=+card.dataset.inst;if(inst>=feedMeta.length-3)fappend();if(!counted.has(inst)){counted.add(inst);if(feedLast>=0)S.streak+=0;bump();S.reads++;feedLast=inst;const ms={5:"🔥 5 in a row",15:"🧠 15 read — big brain",30:"🏆 30! deep in it"}[S.reads];addXP(8,ms||`<span class="xp">+8 XP</span>`)}}
+function factive(card){const inst=+card.dataset.inst;if(inst>=feedMeta.length-3)fappend();const fi=+card.dataset.i,ff=FEED[fi];if(ff)logHist("idea","f"+fi,ff[0],ff[2]);if(!counted.has(inst)){counted.add(inst);if(feedLast>=0)S.streak+=0;bump();S.reads++;feedLast=inst;const ms={5:"🔥 5 in a row",15:"🧠 15 read — big brain",30:"🏆 30! deep in it"}[S.reads];addXP(8,ms||`<span class="xp">+8 XP</span>`)}}
 function scrollFeedTo(i){buildFeed();let c=[...$("#feed").querySelectorAll(".card")].find(x=>+x.dataset.i===i);if(!c){fappend();c=[...$("#feed").querySelectorAll(".card")].reverse().find(x=>+x.dataset.i===i)}if(c)requestAnimationFrame(()=>c.scrollIntoView())}
 $("#feed").addEventListener("click",e=>{const b=e.target.closest(".act");if(!b)return;const card=b.closest(".card"),k=card.dataset.key,tp=card.dataset.topic,a=b.dataset.a;
- if(a==="like")like(k,b);else if(a==="save")sv(k,b);else if(a==="comment")openC(k,tp);else if(a==="share"){const f=FEED[+card.dataset.i];openShare(f[0],f[2],f[1]==="quote"?(f[3]+(f[4]?" — "+f[4]:"")):f[3],f[1])}});
+ if(a==="like")like(k,b);else if(a==="save")sv(k,b);else if(a==="comment")openC(k,tp);else if(a==="ai"){const f=FEED[+card.dataset.i];openAI(f[2],(f[3]||f[4]||""),tp)}else if(a==="share"){const f=FEED[+card.dataset.i];openShare(f[0],f[2],f[1]==="quote"?(f[3]+(f[4]?" — "+f[4]:"")):f[3],f[1])}});
 let lastTap=0;$("#feed").addEventListener("click",e=>{if(e.target.closest(".act"))return;const n=Date.now();if(n-lastTap<300){const c=e.target.closest(".card");if(c){const lb=c.querySelector(".like");if(!S.likes[c.dataset.key])lb.click();else{lb.classList.add("pop");setTimeout(()=>lb.classList.remove("pop"),400)}}}lastTap=n});
 $("#feed").addEventListener("scroll",()=>{const h=$("#hint");if(h&&$("#feed").scrollTop>40){h.style.opacity=0;setTimeout(()=>h.remove(),400)}},{passive:true});
 function like(k,b){const on=!S.likes[k];S.likes[k]=on;if(b){b.classList.toggle("on-like",on);b.classList.add("pop");setTimeout(()=>b.classList.remove("pop"),400);const n=b.querySelector('[data-n="like"]');if(n)n.textContent=fmt(baseL(k)+(on?1:0))}save()}
@@ -1090,6 +1316,7 @@ function bindV(card){card.querySelector(".vposter").onclick=()=>{const embed=car
   if(inline&&embed){const src=embed+(embed.includes("?")?"&":"?")+"autoplay=1";const frame=card.querySelector(".vframe");
    frame.innerHTML=`<iframe src="${esc(src)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>`;}
   else{window.open(open,"_blank","noopener")}
+  const vv=(S.videos||[]).find(v=>v.id===card.dataset.id);if(vv)logHist("video",vv.id,vv.topic||"fit",vv.title||"Video");
   addXP(4);bump();save()};
  card.querySelectorAll("[data-a]").forEach(b=>b.onclick=e=>{e.stopPropagation();const id=card.dataset.id,a=b.dataset.a;if(a==="save"){S.saves[id]=!S.saves[id];b.classList.toggle("on-save",S.saves[id]);save();toast(S.saves[id]?"🔖 saved":"removed")}else{S.videos=S.videos.filter(v=>v.id!==id);save();renderWatch();toast("removed")}})}
 
@@ -1097,9 +1324,9 @@ function bindV(card){card.querySelector(".vposter").onclick=()=>{const embed=car
 const reader=$("#reader");
 function openReader(id){const a=ARTICLES.find(x=>x.id===id);if(!a)return;const t=T[a.topic],k=a.id,liked=!!S.likes[k],saved=!!S.saves[k];
  reader.innerHTML=`<div class="rprog" id="rprog"></div><div class="rback"><button data-rback aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="rbt">${a.minutes} min · ${t.e} ${t.l}</span></div>
-  <div class="rhero" style="${grad(a.topic)}"><span class="em">${a.emoji}</span></div>
+  <div class="rhero" style="${grad(a.topic)}">${imgTag(a.img||a.id,900,500,"rhimg")}<div class="rhov"></div><span class="em">${a.emoji}</span></div>
   <article class="article"><div class="atopic">${t.e} ${t.l}</div><h1>${esc(a.title)}</h1><p class="dek">${esc(a.dek)}</p>
-   <div class="byline"><div class="ba2">A</div><div><b>${esc(a.author)}</b><br><span>APEX Originals</span></div></div>
+   <div class="byline"><div class="ba2">A</div><div><b>${esc(a.author)}</b><br><span>APEX Originals</span></div><button class="aibtn" data-rai style="margin-left:auto"><svg viewBox="0 0 24 24"><path d="M12 2l1.9 4.6L18.5 8l-3.6 3 1.2 4.8L12 13.6 7.9 15.8 9.1 11 5.5 8l4.6-1.4z"/></svg>AI</button></div>
    <div class="body">${a.body.map(b=>b[0]==="h"?`<h2>${esc(b[1])}</h2>`:b[0]==="pull"?`<div class="pull">${esc(b[1])}</div>`:`<p>${esc(b[1])}</p>`).join("")}</div>
    <div class="end"><button class="prim" data-rlike><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.9-10.3-9.6C.2 8 2 4.7 5.2 4.7c2 0 3.3 1.1 4 2.2.7-1.1 2-2.2 4-2.2 3.2 0 5 3.3 3.5 6.7C20 16.1 12 21 12 21z"/></svg>${liked?'Liked':'Like'}</button><button data-rsave><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>${saved?'Saved':'Save'}</button><button data-rcmt><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>Reflect</button></div></article>`;
  reader.classList.add("show");reader.scrollTop=0;const prog=reader.querySelector("#rprog");let aw=!!S.done["r"+k];
@@ -1108,6 +1335,8 @@ function openReader(id){const a=ARTICLES.find(x=>x.id===id);if(!a)return;const t
  reader.querySelector("[data-rlike]").onclick=e=>{S.likes[k]=!S.likes[k];save();e.currentTarget.lastChild.textContent=S.likes[k]?'Liked':'Like'};
  reader.querySelector("[data-rsave]").onclick=e=>{S.saves[k]=!S.saves[k];save();e.currentTarget.lastChild.textContent=S.saves[k]?'Saved':'Save';toast(S.saves[k]?"🔖 saved":"removed")};
  reader.querySelector("[data-rcmt]").onclick=()=>openC(k,a.topic);
+ reader.querySelector("[data-rai]").onclick=()=>openAI(a.title,a.dek,a.topic);
+ logHist("article",a.id,a.topic,a.title);
 }
 function closeReader(){reader.classList.remove("show");reader.onscroll=null;save();if(cur==="home")renderHome()}
 
@@ -1159,7 +1388,8 @@ function finishSession(s){if(TT&&TT.btimer)clearTimeout(TT.btimer);TT=null;S.ses
 function renderYou(){const lvl=levelFor(S.xp),p=xpIn(S.xp),pct=Math.round(p.cur/p.need*100),c=2*Math.PI*33,saved=savedIds();
  const quizzesDone=Object.keys(S.quizBest).length,storiesDone=Object.keys(S.storiesSeen).length,mapsDone=Object.keys(S.mapsSeen).length,aces=Object.values(S.quizBest).filter(p=>p===100).length;
  const ach=[{e:"🌱",n:"Day one",d:"First read",g:S.reads>=1},{e:"🔥",n:"Streak x3",d:"3-day streak",g:S.streak>=3},{e:"📖",n:"Scholar",d:"Finish an article",g:Object.keys(S.done).some(k=>k[0]==="r")},{e:"🎖️",n:"Forged",d:"3 workouts",g:S.workouts>=3},{e:"🧘",n:"Still mind",d:"3 sessions",g:S.sessions>=3},{e:"🧩",n:"Quizzed",d:"Take a quiz",g:quizzesDone>=1},{e:"💯",n:"Perfect",d:"Ace a quiz",g:aces>=1},{e:"✨",n:"Storyteller",d:"Read 3 stories",g:storiesDone>=3},{e:"🗺️",n:"Cartographer",d:"Explore 3 maps",g:mapsDone>=3},{e:"💬",n:"Voice",d:"Post a reflection",g:Object.values(S.ownComments).some(a=>a.length)},{e:"🔖",n:"Curator",d:"Save 5",g:saved.length>=5},{e:"🚀",n:"Ascend",d:"Reach Lv 6",g:lvl>=6}];
- $("#v-you").innerHTML=`<div class="prof"><div class="pring"><svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="33" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="6"/><circle cx="46" cy="46" r="33" fill="none" stroke="url(#gg)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct/100)}" transform="rotate(-90 46 46)"/></svg><div class="pa">A</div></div><div class="pn">You</div><div class="pl">Level ${lvl} · ${p.cur}/${p.need} XP to Level ${lvl+1}</div></div>
+ const hist=(S.history||[]).slice(0,12);
+ $("#v-you").innerHTML=`<div class="prof"><div class="pring" id="pEdit"><svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="33" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="6"/><circle cx="46" cy="46" r="33" fill="none" stroke="url(#gg)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct/100)}" transform="rotate(-90 46 46)"/></svg><div class="pa edit">${esc(S.avatar||'A')}</div></div><div class="namerow"><div class="pn">${esc(S.name||'You')}</div><button class="editp" id="pEdit2" aria-label="Edit profile"><svg viewBox="0 0 24 24"><path d="M4 20h4L18 10l-4-4L4 16v4zM17 3l4 4"/></svg></button></div><div class="pl">Level ${lvl} · ${p.cur}/${p.need} XP to Level ${lvl+1}</div></div>
   <div class="statgrid"><div class="scell"><div class="sv">${S.streak}</div><div class="sl">Streak</div></div><div class="scell"><div class="sv">${S.reads}</div><div class="sl">Read</div></div><div class="scell"><div class="sv">${S.workouts+S.sessions}</div><div class="sl">Trained</div></div><div class="scell"><div class="sv">${saved.length}</div><div class="sl">Saved</div></div></div>
   <div class="sec"><h3>📱 Make it an app</h3></div>
   <div style="padding:0 18px"><div class="iconbox"><canvas id="appIcon" width="70" height="70"></canvas><div><div class="ibt">Install APEX</div><div class="ibd">Add APEX to your home screen for a full-screen, offline app. On iPhone: Share → “Add to Home Screen”.</div><button class="dl" id="installBtn"><svg viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg>Install app</button></div></div></div>
@@ -1167,20 +1397,30 @@ function renderYou(){const lvl=levelFor(S.xp),p=xpIn(S.xp),pct=Math.round(p.cur/
   <div style="padding:0 18px">
    <div class="settingrow"><span class="se">🔔</span><div class="si"><b>Daily idea reminder</b><p>A fresh idea each day to keep your streak alive.</p></div><div class="toggle ${S.notify?'on':''}" id="notifyTog" role="switch" aria-checked="${S.notify}"></div></div>
    <div class="settingrow"><span class="se">🎯</span><div class="si"><b>Your interests</b><p>${S.interests&&S.interests.length?esc(S.interests.map(k=>(T[k]||T.life).l).join(" · ")):'Not set — personalize your feed'}</p></div><button class="dl" id="editInterests" style="padding:9px 13px;font-size:13px">Edit</button></div>
+   <div class="settingrow"><span class="se">✨</span><div class="si"><b>AI overview (Gemini)</b><p>${S.geminiKey?'Key added — AI explanations enabled.':'Add a free Gemini key to explain any idea.'}</p></div><button class="dl" id="aiKeyBtn" style="padding:9px 13px;font-size:13px">${S.geminiKey?'Change':'Add key'}</button></div>
    <div class="settingrow"><span class="se">💾</span><div class="si"><b>Backup &amp; restore</b><p>Your progress lives on this device — save a copy or move it to another.</p></div></div>
    <div class="setbtns"><button id="expBtn"><svg viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg>Export</button><button id="impBtn"><svg viewBox="0 0 24 24"><path d="M12 21V11m0 0l-4 4m4-4l4 4M4 7V4h16v3"/></svg>Import</button></div>
    <input type="file" id="impFile" accept="application/json,.json" style="display:none">
   </div>
   <div class="sec"><h3>🏅 Achievements</h3><div class="achv">${ach.map(a=>`<div class="ba ${a.g?'':'locked'}"><div class="be">${a.e}</div><div class="bn">${a.n}</div><div class="bd">${a.d}</div></div>`).join("")}</div></div>
+  <div class="sec"><h3>📁 Collections</h3></div>
+  <div class="colls">${S.collections.map(c=>`<div class="coll" data-open-coll="${c.id}"><span class="ce">📁</span><div class="cn">${esc(c.name)}</div><div class="cc">${c.items.length} saved</div></div>`).join("")}<div class="coll newc" id="newColl"><div class="plus">＋</div><div class="lbl">New</div></div></div>
   <div class="sec"><h3>🔖 Your stash ${saved.length?`· ${saved.length}`:''}</h3></div>
-  <div class="savewrap">${saved.length?saved.slice().reverse().map(k=>{const it=itemText(k);if(!it)return"";const t=T[it.t]||T.life;return`<div class="saveitem" data-open-saved="${k}"><div class="st" style="background:${t.c}"></div><div><div class="sx">${esc(it.x)}</div><div class="stopic">${t.e} ${t.l}</div></div></div>`}).join(""):`<div class="empty"><div class="big">🔖</div>Nothing saved yet.<br>Tap Save on anything that moves you.</div>`}</div>
+  <div class="savewrap">${saved.length?saved.slice().reverse().map(k=>{const it=itemText(k);if(!it)return"";const t=T[it.t]||T.life;return`<div class="saveitem"><div class="st" style="background:${t.c}"></div><div style="flex:1;min-width:0" data-open-saved="${k}"><div class="sx">${esc(it.x)}</div><div class="stopic">${t.e} ${t.l}</div></div><button class="editp" data-coll="${k}" aria-label="Add to collection" style="flex:0 0 auto">📁</button></div>`}).join(""):`<div class="empty"><div class="big">🔖</div>Nothing saved yet.<br>Tap Save on anything that moves you.</div>`}</div>
+  ${hist.length?`<div class="sec"><h3>🕘 History</h3></div><div class="savewrap">${hist.map(h=>{const t=T[h.topic]||T.life;return`<div class="histrow" data-open-hist="${h.kind}|${h.id}"><div class="he" style="${grad(h.topic)}">${t.e}</div><div class="hi"><div class="hk">${h.kind} · ${t.l}</div><div class="hn">${esc(h.title)}</div></div></div>`}).join("")}</div>`:""}
   <div class="credit">APEX · train your mind & body<br>Free · your data stays on your device</div>`;
  wire($("#v-you"));drawAppIcon($("#appIcon"),70);
  $("#installBtn").onclick=()=>{if(window.__apexInstall)window.__apexInstall();else toast("Use your browser menu → Add to Home Screen")};
  $("#notifyTog").onclick=toggleNotify;
  $("#editInterests").onclick=()=>{S.onboarded=false;renderOnboard()};
  $("#expBtn").onclick=exportData;$("#impBtn").onclick=()=>$("#impFile").click();$("#impFile").onchange=e=>{if(e.target.files&&e.target.files[0])importData(e.target.files[0])};
- $("#v-you").querySelectorAll("[data-open-saved]").forEach(e=>e.onclick=()=>{const k=e.dataset.openSaved;if(k[0]==="f"){setTab("learn");scrollFeedTo(+k.slice(1))}else if(STORIES.some(s=>s.id===k)){openStories(k)}else if(MAPS.some(m=>m.id===k)){openMap(k)}else if(S.videos.some(v=>v.id===k)){setTab("watch")}else openReader(k)});
+ $("#aiKeyBtn").onclick=()=>{aiCtx={title:"AI overview",context:"",topic:"life"};renderAIKey();openSheet(aiSheet)};
+ $("#pEdit").onclick=editProfile;$("#pEdit2").onclick=editProfile;
+ $("#newColl").onclick=()=>{const name=prompt("Name your collection");if(name==null)return;const nm=name.trim();if(!nm)return;S.collections.push({id:"c"+Date.now(),name:nm,items:[]});save();renderYou();toast("📁 created")};
+ $("#v-you").querySelectorAll("[data-open-coll]").forEach(e=>e.onclick=()=>openCollection(e.dataset.openColl));
+ $("#v-you").querySelectorAll("[data-coll]").forEach(e=>e.onclick=ev=>{ev.stopPropagation();openCollPicker(e.dataset.coll)});
+ $("#v-you").querySelectorAll("[data-open-hist]").forEach(e=>e.onclick=()=>{const[kind,id]=e.dataset.openHist.split("|");if(kind==="article")openReader(id);else if(kind==="idea")openSavedKey(id);else openSavedKey(id)});
+ $("#v-you").querySelectorAll("[data-open-saved]").forEach(e=>e.onclick=()=>openSavedKey(e.dataset.openSaved));
 }
 /* app icon */
 function drawAppIcon(cv,size){if(!cv)return;const dpr=Math.min(3,devicePixelRatio||1);cv.width=size*dpr;cv.height=size*dpr;const x=cv.getContext("2d");x.scale(dpr,dpr);const r=size*.225;x.beginPath();rr(x,0,0,size,size,r);x.clip();const g=x.createLinearGradient(0,0,size,size);g.addColorStop(0,"#f3d089");g.addColorStop(.55,"#e8b563");g.addColorStop(1,"#c98f3a");x.fillStyle=g;x.fillRect(0,0,size,size);const rg=x.createRadialGradient(size*.3,size*.28,0,size*.3,size*.28,size*.8);rg.addColorStop(0,"rgba(255,255,255,.4)");rg.addColorStop(1,"rgba(255,255,255,0)");x.fillStyle=rg;x.fillRect(0,0,size,size);
@@ -1204,6 +1444,7 @@ function drawStory(){const s=STORIES.find(x=>x.id===ST.order[ST.idx]);if(!s){ret
  $("#szPrev").onclick=()=>stepStory(-1);$("#szNext").onclick=()=>stepStory(1);
  $("#stSave").onclick=e=>{e.stopPropagation();S.saves[s.id]=!S.saves[s.id];save();toast(S.saves[s.id]?"🔖 story saved":"removed");drawStory()};
  $("#stShare").onclick=e=>{e.stopPropagation();openShare(s.topic,sl.h,sl.p,"idea")};
+ logHist("story",s.id,s.topic,s.title);
  const bar=storiesEl.querySelector(".sbar.active i");if(bar){bar.addEventListener("animationend",()=>stepStory(1),{once:true})}
  if(!S.storiesSeen[s.id]){S.storiesSeen[s.id]=true;bump();addXP(6,"✨ story · <span class=xp>+6 XP</span>");save()}
 }
@@ -1215,7 +1456,7 @@ function closeStories(){storiesEl.classList.remove("show");setTimeout(()=>{stori
 
 /* ===== QUIZ engine ===== */
 const quizEl=$("#quiz");let QZ=null;
-function openQuiz(id){const q=QUIZZES.find(x=>x.id===id);if(!q)return;QZ={q,i:0,score:0,answered:false};quizEl.classList.add("show");drawQuiz()}
+function openQuiz(id){const q=QUIZZES.find(x=>x.id===id);if(!q)return;QZ={q,i:0,score:0,answered:false};logHist("quiz",q.id,q.topic,q.title);quizEl.classList.add("show");drawQuiz()}
 function drawQuiz(){const q=QZ.q,n=QZ.i,item=q.qs[n],t=T[q.topic]||T.life,total=q.qs.length,pct=Math.round((n)/total*100);
  quizEl.innerHTML=`<div class="qtop"><button id="qX" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></button><div class="qbar"><i style="width:${pct}%"></i></div><span class="qn">${n+1}/${total}</span></div>
   <div class="qwrap"><div class="qcat">${t.e} ${esc(q.title)}</div><div class="qq">${esc(item.q)}</div>
@@ -1246,7 +1487,7 @@ function closeQuiz(){quizEl.classList.remove("show");QZ=null;setTimeout(()=>{qui
 
 /* ===== MAP viewer ===== */
 const mapEl=$("#mapview");
-function openMap(id){const m=MAPS.find(x=>x.id===id);if(!m)return;const t=T[m.topic]||T.life,saved=!!S.saves[m.id];
+function openMap(id){const m=MAPS.find(x=>x.id===id);if(!m)return;const t=T[m.topic]||T.life,saved=!!S.saves[m.id];logHist("map",m.id,m.topic,m.root);
  mapEl.innerHTML=`<div class="qtop"><button id="mX" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="qbar"><i style="width:100%;background:${t.c}"></i></div><span class="qn">${t.e} map</span></div>
   <div class="mapwrap"><div class="maproot"><div class="mrbadge" style="${grad(m.topic)}">${m.emoji}</div><div class="mrt">${esc(m.root)}</div><div class="mrs">${esc(m.sub)}</div></div><div class="mstem"></div>
    ${m.branches.map((b,i)=>`<div class="mbranch" style="animation-delay:${i*.09}s"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:${t.c}"></span>
@@ -1321,9 +1562,69 @@ function maybeDailyNotify(force){if(!S.notify||!("Notification" in window)||Noti
  const f=FEED[Math.floor(Math.random()*FEED.length)],body=f[2];
  try{if(navigator.serviceWorker&&navigator.serviceWorker.ready){navigator.serviceWorker.ready.then(reg=>{if(reg&&reg.showNotification)reg.showNotification("💡 Today's idea",{body,icon:"/icon.svg",badge:"/favicon.svg",tag:"apex-daily"});else new Notification("💡 Today's idea",{body})}).catch(()=>{try{new Notification("💡 Today's idea",{body})}catch(e){}})}else new Notification("💡 Today's idea",{body})}catch(e){}}
 
+/* ===== AI OVERVIEW (bring-your-own Gemini key) ===== */
+const aiSheet=$("#aiSheet");let aiCtx=null;
+function openAI(title,context,topic){aiCtx={title,context:context||"",topic};if(!S.geminiKey){renderAIKey()}else{renderAI("simple");runAI("simple")}openSheet(aiSheet)}
+function renderAIKey(){aiSheet.innerHTML=`<div class="grab"></div><h3><span>✨ AI Overview</span><span class="close" id="aiX">✕</span></h3>
+  <div class="aikey"><b>Add your Gemini API key</b><p style="font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5">Get a free key at aistudio.google.com/apikey. It's stored only on this device and powers AI explanations of any idea.</p>
+   <input id="aiKeyIn" type="password" placeholder="Paste your Gemini API key" autocomplete="off">
+   <div class="akrow"><button class="sec" id="aiKeyCancel">Cancel</button><button class="prim" id="aiKeySave">Save &amp; go</button></div></div>`;
+ $("#aiX").onclick=closeSheets;$("#aiKeyCancel").onclick=closeSheets;
+ $("#aiKeySave").onclick=()=>{const v=$("#aiKeyIn").value.trim();if(!v){toast("paste a key first");return}S.geminiKey=v;save();renderAI("simple");runAI("simple")};}
+function renderAI(mode){const modes=[["simple","Explain simply"],["deep","Go deeper"],["why","Why it matters"],["example","Give an example"]];
+ aiSheet.innerHTML=`<div class="grab"></div><h3><span>✨ AI Overview</span><span class="close" id="aiX">✕</span></h3>
+  <div class="aichips" id="aiChips">${modes.map(m=>`<button class="aichip ${m[0]===mode?'on':''}" data-m="${m[0]}">${m[1]}</button>`).join("")}</div>
+  <div class="aibody" id="aiBody"><div class="aidots"><i></i><i></i><i></i></div></div>`;
+ $("#aiX").onclick=closeSheets;aiSheet.querySelectorAll(".aichip").forEach(b=>b.onclick=()=>{renderAI(b.dataset.m);runAI(b.dataset.m)});}
+function aiPrompt(mode){const ins={simple:"Explain this idea simply and vividly in 3 short sentences.",deep:"Go deeper: explain the underlying mechanism and one surprising nuance in about 4 sentences.",why:"Explain why this matters in everyday life, in 3 sentences.",example:"Give one concrete, memorable real-world example that makes this click, in 3 sentences."}[mode]||"Explain simply.";
+ return `Topic: ${aiCtx.topic}. Idea: "${aiCtx.title}".${aiCtx.context?" Context: "+aiCtx.context:""}\n\n${ins} Be concrete and engaging. Plain text, no markdown, no headings.`;}
+function aiHTML(t){return t.split(/\n{2,}/).map(p=>`<p>${esc(p.trim())}</p>`).join("")}
+async function runAI(mode){const body=$("#aiBody");if(!body)return;const ck=aiCtx.title+"|"+mode;
+ if(S.aiCache&&S.aiCache[ck]){body.innerHTML=aiHTML(S.aiCache[ck]);return}
+ body.innerHTML=`<div class="aidots"><i></i><i></i><i></i></div>`;
+ try{const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(S.geminiKey)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:aiPrompt(mode)}]}]})});
+  if(!r.ok){throw new Error(r.status===400||r.status===403?"badkey":("http"+r.status))}
+  const j=await r.json();const parts=(((j.candidates||[])[0]||{}).content||{}).parts||[];const txt=parts.map(p=>p.text||"").join("").trim();
+  if(!txt)throw new Error("empty");S.aiCache[ck]=txt;save();body.innerHTML=aiHTML(txt);addXP(3);
+ }catch(e){const m=(""+e.message);const msg=m==="badkey"?"That key was rejected — check it below.":m==="Failed to fetch"?"No connection — AI needs the internet.":"Couldn't reach Gemini right now.";
+  body.innerHTML=`<p style="color:var(--muted)">${esc(msg)}</p>`;const btn=document.createElement("button");btn.className="aichip";btn.style.marginTop="8px";btn.textContent="Change API key";btn.onclick=()=>{S.geminiKey="";save();renderAIKey()};body.appendChild(btn);}}
+
+/* ===== GLOBAL SEARCH ===== */
+const searchEl=$("#search");
+function openSearch(){searchEl.classList.add("show");
+ searchEl.innerHTML=`<div class="searchbar"><input id="sIn" placeholder="Search ideas, articles, quizzes, maps…" autocomplete="off"><button class="sxc" id="sX" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></button></div><div class="sresults" id="sRes"><div class="shint">Search everything — ideas, deep reads, quizzes, maps, stories & videos.</div></div>`;
+ const inp=$("#sIn");$("#sX").onclick=closeSearch;inp.oninput=()=>doSearch(inp.value);setTimeout(()=>inp.focus(),90);}
+function closeSearch(){searchEl.classList.remove("show");setTimeout(()=>searchEl.innerHTML="",220)}
+function srRow(topic,kind,title,act){const t=T[topic]||T.life,el=document.createElement("div");el.className="sr";el.innerHTML=`<div class="srt" style="${grad(topic)}">${t.e}</div><div class="sri"><div class="srk">${kind} · ${t.l}</div><div class="srn">${esc(title)}</div></div>`;el.onclick=act;return el}
+function doSearch(q){q=(q||"").trim().toLowerCase();const res=$("#sRes");if(!res)return;
+ if(q.length<2){res.innerHTML=`<div class="shint">Search everything — ideas, deep reads, quizzes, maps, stories & videos.</div>`;return}
+ const rows=[];
+ FEED.forEach((f,i)=>{if(((f[2]||"")+" "+(f[3]||"")+" "+(f[4]||"")).toLowerCase().includes(q))rows.push(srRow(f[0],"Idea",f[2],()=>{closeSearch();setTab("learn");scrollFeedTo(i)}))});
+ ARTICLES.forEach(a=>{if((a.title+" "+a.dek).toLowerCase().includes(q))rows.push(srRow(a.topic,"Deep read",a.title,()=>{closeSearch();openReader(a.id)}))});
+ QUIZZES.forEach(z=>{if((z.title+" "+z.qs.map(x=>x.q).join(" ")).toLowerCase().includes(q))rows.push(srRow(z.topic,"Quiz",z.title,()=>{closeSearch();openQuiz(z.id)}))});
+ MAPS.forEach(m=>{if((m.root+" "+m.sub).toLowerCase().includes(q))rows.push(srRow(m.topic,"Map",m.root,()=>{closeSearch();openMap(m.id)}))});
+ STORIES.forEach(s=>{if((s.title+" "+s.slides.map(sl=>sl.h+sl.p).join(" ")).toLowerCase().includes(q))rows.push(srRow(s.topic,"Story",s.title,()=>{closeSearch();openStories(s.id)}))});
+ (S.videos||[]).forEach(v=>{if((v.title||"").toLowerCase().includes(q))rows.push(srRow(v.topic||"fit","Video",v.title,()=>{closeSearch();setTab("watch")}))});
+ if(!rows.length){res.innerHTML=`<div class="shint">No matches for “${esc(q)}”.<br>Try “space”, “money”, “rome”, or “habit”.</div>`;return}
+ res.innerHTML="";rows.slice(0,50).forEach(r=>res.appendChild(r));}
+
+/* ===== COLLECTIONS ===== */
+function openSavedKey(k){if(k[0]==="f"){setTab("learn");scrollFeedTo(+k.slice(1))}else if(STORIES.some(s=>s.id===k))openStories(k);else if(MAPS.some(m=>m.id===k))openMap(k);else if(QUIZZES.some(z=>z.id===k))openQuiz(k);else if((S.videos||[]).some(v=>v.id===k))setTab("watch");else openReader(k)}
+function openCollPicker(itemId){const cc=$("#collChips");
+ cc.innerHTML=(S.collections.length?S.collections.map(c=>`<button class="fchip ${c.items.includes(itemId)?'on':''}" data-c="${c.id}">${c.items.includes(itemId)?'✓ ':''}${esc(c.name)}</button>`).join(""):`<div class="shint" style="padding:8px 4px 14px">No collections yet — create one below.</div>`)+`<button class="fchip" data-newc style="border-style:dashed">＋ New collection</button>`;
+ cc.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{const c=S.collections.find(x=>x.id===b.dataset.c);if(!c)return;if(c.items.includes(itemId))c.items=c.items.filter(x=>x!==itemId);else{c.items.push(itemId);toast("added to "+c.name)}save();openCollPicker(itemId)});
+ cc.querySelector("[data-newc]").onclick=()=>{const name=prompt("Name your collection");if(name==null)return;const nm=name.trim();if(!nm)return;S.collections.push({id:"c"+Date.now(),name:nm,items:[itemId]});save();toast("📁 created");openCollPicker(itemId)};
+ openSheet($("#collSheet"));}
+function openCollection(id){const c=S.collections.find(x=>x.id===id);if(!c)return;openSearch();$("#sIn").placeholder=c.name+" · collection";const res=$("#sRes");
+ if(!c.items.length){res.innerHTML=`<div class="shint">“${esc(c.name)}” is empty.<br>Tap the 📁 on any saved item to add it here.</div>`;return}
+ res.innerHTML="";c.items.forEach(k=>{const it=itemText(k);if(!it)return;res.appendChild(srRow(it.t,"Saved",it.x,()=>{closeSearch();openSavedKey(k)}))});}
+function editProfile(){const n=prompt("Your name",S.name||"You");if(n!=null&&n.trim())S.name=n.trim().slice(0,24);
+ const av=prompt("Pick an avatar emoji or letter",S.avatar||"A");if(av!=null&&av.trim())S.avatar=[...av.trim()][0];
+ save();renderYou();toast("✅ profile updated");}
+
 /* ===== SHEETS / MUSIC UI / ROUTER ===== */
 function openSheet(s){$("#scrim").classList.add("show");s.classList.add("show")}
-function closeSheets(){$("#scrim").classList.remove("show");cs.classList.remove("show");$("#filtSheet").classList.remove("show");$("#shareModal").classList.remove("show")}
+function closeSheets(){$("#scrim").classList.remove("show");cs.classList.remove("show");$("#filtSheet").classList.remove("show");$("#shareModal").classList.remove("show");$("#collSheet").classList.remove("show");$("#aiSheet").classList.remove("show")}
 $("#scrim").onclick=closeSheets;document.querySelectorAll("[data-close],[data-closefilt]").forEach(b=>b.onclick=closeSheets);
 $("#filtFab").onclick=openFilter;
 function syncMusicUI(){const on=Music.isPlaying();$("#musicbar").classList.toggle("playing",on);$("#mPP").innerHTML=on?'<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';$("#mSub").textContent=on?"Now playing · "+Music.current():"Tap play for atmosphere";$("#mMood").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.mood===Music.current()))}
@@ -1345,7 +1646,7 @@ function setTab(name){cur=name;document.querySelectorAll(".tab").forEach(t=>t.cl
  if(name==="home")renderHome();else if(name==="learn")buildFeed();else if(name==="train")renderTrain();else if(name==="watch")renderWatch();else if(name==="you")renderYou();
  $("#v-"+name).scrollTop=name==="learn"?$("#v-"+name).scrollTop:0}
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>setTab(t.dataset.tab));
-window.addEventListener("keydown",e=>{if(e.key==="Escape"){if(storiesEl.classList.contains("show"))closeStories();else if(quizEl.classList.contains("show"))closeQuiz();else if(mapEl.classList.contains("show"))closeMap();else if(reader.classList.contains("show"))closeReader();else if(TT)stopTimer();else closeSheets()}
+window.addEventListener("keydown",e=>{if(e.key==="Escape"){if(searchEl.classList.contains("show"))closeSearch();else if(storiesEl.classList.contains("show"))closeStories();else if(quizEl.classList.contains("show"))closeQuiz();else if(mapEl.classList.contains("show"))closeMap();else if(reader.classList.contains("show"))closeReader();else if(TT)stopTimer();else closeSheets()}
  if(storiesEl.classList.contains("show")){if(e.key==="ArrowRight")stepStory(1);if(e.key==="ArrowLeft")stepStory(-1)}
  if(cur==="learn"){const f=$("#feed"),h=f.clientHeight,c=Math.round(f.scrollTop/h);if(e.key==="ArrowDown"){e.preventDefault();f.scrollTo({top:(c+1)*h,behavior:"smooth"})}if(e.key==="ArrowUp"){e.preventDefault();f.scrollTo({top:Math.max(0,(c-1)*h),behavior:"smooth"})}}});
 

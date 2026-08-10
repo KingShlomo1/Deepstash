@@ -17,7 +17,7 @@ self.addEventListener("install", (e) => {
 self.addEventListener("activate", (e) => {
   e.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE && k !== CACHE + "-img").map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -38,8 +38,21 @@ self.addEventListener("fetch", (e) => {
 
   const url = new URL(req.url);
 
-  // Only handle our own origin; let YouTube/Instagram/etc. go straight to network.
-  if (url.origin !== self.location.origin) return;
+  // Cross-origin images (photos): cache-first so the feed has pictures offline after first view.
+  const IMG_HOSTS = ["picsum.photos", "fastly.picsum.photos", "images.unsplash.com", "upload.wikimedia.org"];
+  if (url.origin !== self.location.origin) {
+    if (IMG_HOSTS.includes(url.hostname)) {
+      e.respondWith(
+        caches.open(CACHE + "-img").then((c) =>
+          c.match(req).then((hit) =>
+            hit || fetch(req).then((res) => { c.put(req, res.clone()); return res; }).catch(() => hit)
+          )
+        )
+      );
+    }
+    // Everything else cross-origin (YouTube/Instagram/Gemini): straight to network.
+    return;
+  }
 
   // Navigation requests: network first, fall back to cached shell (offline).
   if (req.mode === "navigate") {

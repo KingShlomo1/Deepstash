@@ -40,6 +40,27 @@ stored in the browser via `localStorage`.
 - **PWA** — installable to the home screen (real PNG + maskable icons) and works
   offline via a service worker.
 
+### v2 — the "scroll to get smarter" social app
+
+- **11 subjects, 200+ ideas** — Geography, Physics, Math, History, Biology,
+  Economy, Astronomy, Animals, Philosophy, Psychology, Science and more, plus the
+  original mind/body/money tracks.
+- **Real photos** — every card and hero pulls a real photo (deterministic per item,
+  free-license via Lorem Picsum) with a **graceful gradient fallback** if a photo
+  can't load, and the **service worker caches photos** so they work offline after
+  first view. Swap `imgURL()` for your own curated Unsplash/Wikimedia set anytime.
+- **Explore by subject** — an image tile grid on Home that filters the infinite feed
+  to any subject.
+- **Global search** — one search across ideas, deep reads, quizzes, maps, stories
+  and videos.
+- **AI Overview (bring-your-own Gemini key)** — tap ✨ on any idea/article to get an
+  "Explain simply / Go deeper / Why it matters / Give an example" AI take. Add a free
+  key from aistudio.google.com/apikey in Settings; it's stored only on the device.
+  (For a public launch, move the key behind a Cloudflare Worker so it stays secret.)
+- **Profile, history & collections** — editable name + avatar, an auto **history** of
+  what you read/watched, and custom **collections** to organize saved items.
+- **Claude-style polish** — gradient-mesh backdrops, spring taps, photo fade-ins.
+
 ## Deploy to Cloudflare Pages
 
 This is a static site — no framework, no build.
