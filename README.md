@@ -80,19 +80,31 @@ stored in the browser via `localStorage`.
   ~5 min (see `worker/README.md`) and paste the URL into Settings → "Connect your
   server". Everything works without it too; the Worker just adds the shared pieces.
 
-## Deploy to Cloudflare Pages
+## Deploy to Cloudflare
 
-This is a static site — no framework, no build.
+This is a static site — no framework, no build. Two ways to ship it:
 
-1. Push this repo to GitHub (already done on the `main` branch).
-2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**,
-   and pick this repository.
-3. Build settings:
-   - **Framework preset:** `None`
-   - **Build command:** *(leave empty)*
-   - **Build output directory:** `/`
-4. Deploy. Cloudflare serves `index.html` directly; `_redirects` provides the
-   single-page fallback, and `manifest.webmanifest` + `sw.js` make it installable.
+### A) Workers (Git-connected, `wrangler deploy`) — recommended
+
+The repo includes a root **`wrangler.jsonc`** so `npx wrangler deploy` "just works":
+it serves this folder as static assets with single-page-app fallback. An
+**`.assetsignore`** keeps `.git`, `worker/` and docs out of the upload.
+
+- Deploy command: `npx wrangler deploy`
+- No build command, no `_redirects` needed (SPA fallback is set in `wrangler.jsonc`
+  via `not_found_handling: "single-page-application"`).
+
+> Note: don't ship a Pages-style `_redirects` file with the Workers deploy — a
+> `/* /index.html 200` rule is rejected by Workers as an infinite loop. SPA fallback
+> is handled by `wrangler.jsonc` instead.
+
+### B) Cloudflare Pages (dashboard)
+
+1. **Workers & Pages → Create → Pages → Connect to Git**, pick this repo.
+2. Build settings: **Framework preset** `None`, **Build command** *(empty)*,
+   **Build output directory** `/`.
+3. Deploy. Cloudflare serves `index.html` directly; `manifest.webmanifest` + `sw.js`
+   make it installable. (Pages provides SPA fallback automatically.)
 
 ### Optional: enable analytics & link previews
 
