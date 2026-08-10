@@ -26,10 +26,19 @@ stored in the browser via `localStorage`.
 - **Watch** — a workout-video feed seeded with curated YouTube & Instagram creators.
   YouTube clips **play inline**; Instagram/TikTok open on-platform. Paste any video
   link to add it to your feed.
-- **You** — level/XP ring, streak, stats, 12 achievements, a saved "stash", and a
-  generated app icon you can download.
+- **You** — level/XP ring, streak, stats, 12 achievements, a saved "stash",
+  **settings** (daily-reminder toggle, edit interests, backup & restore), and an
+  install button.
+- **Personalized onboarding** — a first-run interest picker that tunes the feed order.
+- **Share as image** — tap share on any idea or story to generate a branded,
+  Instagram-Story-ready image (rendered on a canvas) to download or share.
+- **Feed filter & search** — filter the Learn feed by topic or search the text.
+- **Backup & restore** — export/import your progress as a JSON file (data is
+  device-local by default).
+- **Daily reminder** — opt-in notification with a fresh idea to keep your streak.
 - **Ambient music** — a generative, royalty-free score engine (calm / focus / epic).
-- **PWA** — installable to the home screen and works offline via a service worker.
+- **PWA** — installable to the home screen (real PNG + maskable icons) and works
+  offline via a service worker.
 
 ## Deploy to Cloudflare Pages
 
@@ -44,6 +53,16 @@ This is a static site — no framework, no build.
    - **Build output directory:** `/`
 4. Deploy. Cloudflare serves `index.html` directly; `_redirects` provides the
    single-page fallback, and `manifest.webmanifest` + `sw.js` make it installable.
+
+### Optional: enable analytics & link previews
+
+- **Cloudflare Web Analytics** (free, cookieless): in the Cloudflare dashboard go to
+  **Analytics & Logs → Web Analytics**, add your site, copy the token, then uncomment
+  the beacon `<script>` near the top of `index.html` and paste your token in.
+- **Link preview image**: `og-image.png` (1200×630) is already referenced via
+  Open Graph / Twitter meta. Once you have your custom domain, you can change the
+  `og:image` / `twitter:image` paths to the absolute `https://yourdomain/og-image.png`
+  for maximum compatibility with scrapers.
 
 To preview locally, serve the folder with any static server, e.g.:
 

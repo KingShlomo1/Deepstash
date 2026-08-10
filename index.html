@@ -8,7 +8,7 @@
 <meta name="description" content="APEX — smart-reading microlearning. Swipe bite-sized ideas, take quizzes, explore knowledge maps, tap through stories, train with timers & breathing, and follow YouTube & Instagram workout creators.">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/favicon.svg">
-<link rel="apple-touch-icon" href="/icon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="APEX">
@@ -16,6 +16,16 @@
 <meta property="og:title" content="APEX — train your mind & body">
 <meta property="og:description" content="Ideas, quizzes, knowledge maps, stories & workout videos. Smart reading, TikTok-style.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="APEX — train your mind & body">
+<meta name="twitter:description" content="Ideas, quizzes, knowledge maps, stories & workout videos. Smart reading, TikTok-style.">
+<meta name="twitter:image" content="/og-image.png">
+<!-- Cloudflare Web Analytics (free, cookieless). Enable it: Cloudflare dashboard →
+     Analytics & Logs → Web Analytics → add your site → copy the token, then uncomment: -->
+<!-- <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_TOKEN_HERE"}'></script> -->
 <meta name="theme-color" content="#08080c">
 <style>
 :root{
@@ -372,6 +382,49 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .qcardh .qmeta{font-size:11.5px;color:var(--muted-2);font-weight:700;margin-top:8px;display:flex;gap:8px;align-items:center}
 .qcardh .qbest{color:var(--gold);font-weight:800}
 @media(prefers-reduced-motion:reduce){.mbranch{animation:none;opacity:1;transform:none}.sbar.active i{animation:none;width:100%}}
+
+/* ===== ONBOARDING ===== */
+.onboard{position:absolute;inset:0;z-index:120;background:radial-gradient(120% 70% at 50% -10%,#1a1526 0,transparent 55%),var(--ink);display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 30px) 24px calc(20px + env(safe-area-inset-bottom));opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.onboard.show{opacity:1;visibility:visible}
+.onboard .omk{width:56px;height:56px;border-radius:16px;background:var(--grad-gold);display:grid;place-items:center;font-weight:900;color:#1a1206;font-size:28px;margin-bottom:18px}
+.onboard h1{font-size:30px;font-weight:850;letter-spacing:-.02em;line-height:1.12}
+.onboard .osub{font-size:15px;color:var(--muted);margin-top:8px;font-weight:600;line-height:1.5}
+.onboard .ochips{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;overflow-y:auto;align-content:flex-start;flex:1;padding-bottom:8px}
+.ochip{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:750;padding:11px 15px;border-radius:999px;background:var(--surface);border:1.5px solid var(--line);color:#eee9f5;transition:transform .12s}
+.ochip:active{transform:scale(.95)}
+.ochip.on{background:var(--grad-gold);color:#1a1206;border-color:transparent}
+.onboard .ostart{margin-top:14px;border:none;border-radius:15px;background:var(--grad-gold);color:#1a1206;font-weight:850;font-size:16.5px;padding:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+.onboard .ostart:disabled{opacity:.5}
+.onboard .oskip{margin-top:10px;background:none;border:none;color:var(--muted);font-size:14px;font-weight:700}
+
+/* ===== SHARE CARD MODAL ===== */
+.sharemodal{position:absolute;left:0;right:0;bottom:0;z-index:95;background:var(--ink-2);border-top-left-radius:22px;border-top-right-radius:22px;border:1px solid var(--line);border-bottom:none;transform:translateY(102%);transition:transform .3s cubic-bezier(.32,.72,0,1);max-height:92%;display:flex;flex-direction:column;padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+.sharemodal.show{transform:none}
+.sharemodal h3{padding:14px 18px 10px;font-size:15px;display:flex;align-items:center;gap:8px}.sharemodal h3 .close{margin-left:auto;color:var(--muted);font-size:22px;line-height:1;cursor:pointer}
+.shprev{align-self:center;width:min(74%,300px);border-radius:16px;overflow:hidden;box-shadow:0 18px 44px -14px rgba(0,0,0,.7);margin:4px 0 14px}
+.shprev canvas{display:block;width:100%;height:auto}
+.shbtns{display:flex;gap:11px;padding:0 18px}
+.shbtns button{flex:1;border-radius:14px;font-weight:800;font-size:15px;padding:14px;border:1px solid var(--line);background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center;gap:8px}
+.shbtns button svg{width:17px;height:17px;fill:currentColor}.shbtns button.prim{background:var(--grad-gold);border:none;color:#1a1206}
+
+/* ===== FEED filter FAB + sheet ===== */
+.filtfab{position:absolute;top:calc(env(safe-area-inset-top) + 14px);right:14px;z-index:8;width:42px;height:42px;border-radius:50%;background:rgba(8,8,12,.55);border:1px solid var(--line-2);backdrop-filter:blur(8px);display:grid;place-items:center;color:#fff}
+.filtfab svg{width:20px;height:20px;fill:currentColor}
+.filtfab.filtered{background:var(--grad-gold);color:#1a1206;border-color:transparent}
+.filtsheet{position:absolute;left:0;right:0;bottom:0;z-index:91;max-height:80%;display:flex;flex-direction:column;background:var(--ink-2);border-top-left-radius:22px;border-top-right-radius:22px;border:1px solid var(--line);border-bottom:none;transform:translateY(102%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.filtsheet.show{transform:none}
+.filtsheet .fchips{display:flex;flex-wrap:wrap;gap:9px;padding:6px 18px 18px;overflow-y:auto}
+
+/* ===== toggle + backup ===== */
+.settingrow{display:flex;align-items:center;gap:13px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 15px;margin-bottom:11px}
+.settingrow .se{font-size:22px;flex:0 0 auto}
+.settingrow .si{flex:1;min-width:0}.settingrow .si b{font-size:14.5px;font-weight:800}.settingrow .si p{font-size:12px;color:var(--muted);line-height:1.4;margin-top:2px}
+.toggle{flex:0 0 auto;width:48px;height:28px;border-radius:999px;background:var(--surface-3);border:1px solid var(--line);position:relative;transition:background .2s;cursor:pointer}
+.toggle::after{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s}
+.toggle.on{background:var(--green)}.toggle.on::after{transform:translateX(20px)}
+.setbtns{display:flex;gap:10px}
+.setbtns button{flex:1;border-radius:12px;font-weight:800;font-size:13.5px;padding:12px;border:1px solid var(--line);background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center;gap:7px}
+.setbtns button svg{width:15px;height:15px;fill:currentColor}
 </style>
 </head>
 <body>
@@ -380,7 +433,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 <div class="app" id="app">
   <div class="views" id="views">
     <section class="view active" id="v-home"></section>
-    <section class="view nopad" id="v-learn"><div class="feed" id="feed"></div></section>
+    <section class="view nopad" id="v-learn"><div class="feed" id="feed"></div><button class="filtfab" id="filtFab" aria-label="Filter feed"><svg viewBox="0 0 24 24"><path d="M3 5h18v2l-7 7v5l-4 2v-7L3 7z"/></svg></button></section>
     <section class="view" id="v-train"></section>
     <section class="view" id="v-watch"></section>
     <section class="view" id="v-you"></section>
@@ -409,6 +462,9 @@ button{font-family:inherit;color:inherit;cursor:pointer}
   <div class="stories" id="stories"></div>
   <div class="quiz" id="quiz"></div>
   <div class="mapview" id="mapview"></div>
+  <div class="filtsheet" id="filtSheet"><div class="grab"></div><h3><span>Filter the feed</span><span class="close" data-closefilt>✕</span></h3><div class="fchips" id="filtChips"></div></div>
+  <div class="sharemodal" id="shareModal"><div class="grab"></div><h3><span>📤 Share as image</span><span class="close" id="shClose">✕</span></h3><div class="shprev"><canvas id="shCanvas"></canvas></div><div class="shbtns"><button id="shDownload"><svg viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg>Download</button><button class="prim" id="shShare"><svg viewBox="0 0 24 24"><path d="M14 9V5l7 7-7 7v-4.1C9 12 6 13 3 17c1-6 5-8 11-8z"/></svg>Share</button></div></div>
+  <div class="onboard" id="onboard"></div>
 </div>
 
 <script>
@@ -703,6 +759,18 @@ const QUIZZES=[
    {q:"Chesterton's Fence warns you not to…",o:["Build fences","Remove a rule before you know why it exists","Ask questions","Change your mind"],a:1,e:"If you can't see a rule's purpose, you're the least qualified person to remove it — understand first."},
    {q:"The '5 Whys' technique finds…",o:["Five excuses","The root cause under the symptom","Who to blame","The fastest shortcut"],a:1,e:"The first answer is a symptom; keep asking 'why' and the real problem surfaces by about the fifth."},
  ]},
+ {id:"qz7",topic:"phil",title:"Stoic Wisdom",emoji:"🏛️",qs:[
+   {q:"The core Stoic move is to divide the world into…",o:["Good and evil people","What you control and what you don't","Rich and poor","Past and future"],a:1,e:"Peace comes from pouring energy into what's yours — judgment, effort, response — and releasing the rest."},
+   {q:"'Amor fati' means…",o:["Fear of fate","Love your fate — use what happens as fuel","Change your fate","Ignore fate"],a:1,e:"Don't just accept what happens; make it fuel. The obstacle isn't in the way of the path — it is the path."},
+   {q:"'Memento mori' is meant to be…",o:["Morbid and depressing","Clarifying — finitude gives time value","A funeral rite","About money"],a:1,e:"Remembering you'll die burns away trivial worries and makes the present vivid. Finitude is what makes time precious."},
+   {q:"The Stoic 'morning rehearsal' prepares you by…",o:["Expecting a perfect day","Expecting friction so it can't ambush you","Skipping breakfast","Planning every minute"],a:1,e:"Pre-live the difficulty and you meet the rude driver with a nod, not a spiral."},
+ ]},
+ {id:"qz8",topic:"science",title:"Mind-Blowing Science",emoji:"🔭",qs:[
+   {q:"How many hearts does an octopus have?",o:["One","Two","Three","Zero"],a:2,e:"Three — two pump blood to the gills, one to the body. Two stop when it swims, so it often prefers to crawl."},
+   {q:"On Venus, a single day is…",o:["A few minutes","Shorter than an hour","Longer than its year","Exactly 24 hours"],a:2,e:"Venus spins so slowly it laps its own orbit around the Sun before finishing one rotation."},
+   {q:"The calcium in your bones was originally forged…",o:["In the ocean","Inside dying stars","By plants","In volcanoes"],a:1,e:"Heavy elements are made in stars. You are, quite literally, made of stardust."},
+   {q:"Roughly how does 3,000-year-old honey hold up?",o:["Turns to poison","Still edible — honey doesn't spoil","Evaporates","Becomes sugar rock"],a:1,e:"Honey's chemistry is naturally hostile to bacteria; archaeologists found edible honey in Egyptian tombs."},
+ ]},
 ];
 
 /* ===== KNOWLEDGE MAPS ===== */
@@ -742,6 +810,18 @@ const MAPS=[
    {l:"Prepare",e:"🌅",pts:["Rehearse friction at dawn","Negative visualization","Nothing can ambush you"]},
    {l:"Act",e:"⚙️",pts:["Virtue is the only good","Do the right thing now","The obstacle is the way"]},
    {l:"Reflect",e:"📓",pts:["Journal each night","What went well / poorly","Memento mori"]},
+ ]},
+ {id:"mp7",topic:"health",root:"Sleep Better Tonight",emoji:"😴",sub:"The pillars of deep, restorative sleep",branches:[
+   {l:"Light",e:"☀️",pts:["Morning sun in your eyes","Dim screens after sunset","Dark, cool bedroom"]},
+   {l:"Timing",e:"⏰",pts:["Consistent sleep/wake","No caffeine after 2pm","Last meal 2–3h before bed"]},
+   {l:"Wind-down",e:"🛁",pts:["Screen curfew","Warm shower → cool body","Read, don't scroll"]},
+   {l:"Environment",e:"🌙",pts:["Cool (~18°C)","Quiet & dark","Bed = sleep only"]},
+ ]},
+ {id:"mp8",topic:"genius",root:"Deep Work",emoji:"🎯",sub:"Produce your best, focused work",branches:[
+   {l:"Protect",e:"🛡️",pts:["Block distraction-free time","Phone in another room","Single-task on purpose"]},
+   {l:"Ritual",e:"🔁",pts:["Same time & place","A start cue","Define 'done'"]},
+   {l:"Rest",e:"🌿",pts:["Take real breaks","Walk to think","Sleep consolidates"]},
+   {l:"Measure",e:"📊",pts:["Track deep hours","Shrink shallow work","Review weekly"]},
  ]},
 ];
 
@@ -787,18 +867,21 @@ const STORIES=[
 
 /* ===== WATCH (curated safe searches — creators open on the real platform) ===== */
 const WATCH_TOPICS=["Home workout","HIIT no equipment","Ab workout","Full body dumbbell","Yoga & mobility","Stretching routine","Beginner workout","Glute workout","Push day","Meditation guided","Deep focus music","Motivation"];
-/* Curated workout & movement creators. YouTube plays inline; TikTok/Instagram open on-platform.
+/* Curated workout & movement videos. YouTube plays inline; Instagram/TikTok open on-platform.
    Swap these links for your own favourites any time — the app parses any pasted URL. */
+const SEED_V=2;
 const SEED_VIDEOS=[
- {id:"seedyt1",url:"https://www.youtube.com/watch?v=ml6cT4AZdqI",title:"10 Min Full Body No-Equipment Workout",topic:"fit",seed:true},
- {id:"seedyt2",url:"https://www.youtube.com/watch?v=UBMk30rjy0o",title:"Beginner HIIT — No Jumping, No Equipment",topic:"fit",seed:true},
- {id:"seedyt3",url:"https://www.youtube.com/watch?v=2pLT-olgUJs",title:"15 Min Ab Workout — Follow Along",topic:"fit",seed:true},
- {id:"seedyt4",url:"https://www.youtube.com/watch?v=oAPCPjnU1wA",title:"20 Min Full Body — No Repeat Sweat",topic:"fit",seed:true},
- {id:"seedyt5",url:"https://www.youtube.com/watch?v=v7AYKMP6rOE","title":"Yoga For Complete Beginners — 20 Min",topic:"mind",seed:true},
- {id:"seedyt6",url:"https://www.youtube.com/watch?v=4pKly2JojMw",title:"10 Min Morning Mobility & Stretch Flow",topic:"health",seed:true},
- {id:"seedig1",url:"https://www.instagram.com/reel/C2xN0m1oQ4s/",title:"Reel · 3 moves for stronger glutes",topic:"fit",seed:true},
- {id:"seedig2",url:"https://www.instagram.com/reel/C9pQ2rUsi1a/",title:"Reel · perfect push-up form fix",topic:"fit",seed:true},
- {id:"seedig3",url:"https://www.instagram.com/reel/Cx7rL0kIabc/",title:"Reel · 60-second desk posture reset",topic:"health",seed:true},
+ {id:"seedyt1",url:"https://www.youtube.com/watch?v=uZbig5yMlN8",title:"20 Min Full Body Home Workout — No Equipment",topic:"fit",seed:true},
+ {id:"seedyt2",url:"https://www.youtube.com/watch?v=hLVh5IBsCxk",title:"20 Min Killer HIIT — No Repeat, No Equipment",topic:"fit",seed:true},
+ {id:"seedyt3",url:"https://www.youtube.com/watch?v=QfehTcFAt-A",title:"10 Min Ab Workout — Follow Along (Beginner→Adv)",topic:"fit",seed:true},
+ {id:"seedyt4",url:"https://www.youtube.com/watch?v=1f8yoFFdkcY",title:"10 Min Beginner Ab Workout — No Equipment",topic:"fit",seed:true},
+ {id:"seedyt5",url:"https://www.youtube.com/watch?v=J-5IcLRGMFk",title:"40 Min Total Body + Ab Finisher (Weights)",topic:"fit",seed:true},
+ {id:"seedyt6",url:"https://www.youtube.com/watch?v=v7AYKMP6rOE",title:"Yoga for Complete Beginners — 20 Min",topic:"mind",seed:true},
+ {id:"seedyt7",url:"https://www.youtube.com/watch?v=AnYl6Nk9GOA",title:"10 Min Ab Workout — No Equipment",topic:"fit",seed:true},
+ {id:"seedyt8",url:"https://www.youtube.com/watch?v=LY5Dp0s4IxI",title:"10 Min Abs for Beginners",topic:"fit",seed:true},
+ {id:"seedig1",url:"https://www.instagram.com/madfit/",title:"MadFit · quick home-workout reels",topic:"fit",seed:true},
+ {id:"seedig2",url:"https://www.instagram.com/pamela_rf/",title:"Pamela Reif · workout reels",topic:"fit",seed:true},
+ {id:"seedig3",url:"https://www.instagram.com/syattfitness/",title:"Syatt Fitness · form & strength reels",topic:"fit",seed:true},
 ];
 function searchURL(plat,q){const e=encodeURIComponent(q);if(plat==="YouTube")return`https://www.youtube.com/results?search_query=${e}`;if(plat==="TikTok")return`https://www.tiktok.com/search?q=${e}`;return`https://www.instagram.com/explore/tags/${q.toLowerCase().replace(/[^a-z0-9]/g,"")}/`}
 function parseVideo(raw){let url=(raw||"").trim();if(!url)return null;if(!/^https?:\/\//i.test(url))url="https://"+url;let u;try{u=new URL(url)}catch(e){return null}const h=u.hostname.replace(/^www\./,"");let m;
@@ -814,10 +897,10 @@ const PLAT_COLOR={YouTube:"#ff0033",TikTok:"#00f2ea",Instagram:"#e1306c",Vimeo:"
 /* ===== STATE ===== */
 const KEY="apex_v1",today=()=>new Date().toISOString().slice(0,10);
 let S={xp:0,streak:0,lastActive:null,reads:0,workouts:0,minutes:0,sessions:0,quizzes:0,
- likes:{},saves:{},ownComments:{},readProgress:{},done:{},videos:[],seeded:false,mood:"focus",
- quizBest:{},storiesSeen:{},mapsSeen:{}};
+ likes:{},saves:{},ownComments:{},readProgress:{},done:{},videos:[],seeded:false,seedV:0,mood:"focus",
+ quizBest:{},storiesSeen:{},mapsSeen:{},interests:null,onboarded:false,notify:false};
 try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
-if(!S.seeded){S.videos=SEED_VIDEOS.slice();S.seeded=true}
+if(S.seedV!==SEED_V){const userAdded=(S.videos||[]).filter(v=>!v.seed);S.videos=SEED_VIDEOS.concat(userAdded);S.seedV=SEED_V;S.seeded=true}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function levelFor(x){return Math.floor(Math.sqrt(x/60))+1}
 function xpIn(x){const l=levelFor(x),b=(l-1)*(l-1)*60,n=l*l*60;return{cur:x-b,need:n-b}}
@@ -927,14 +1010,23 @@ function feedHTML(i,inst){const f=FEED[i],[tp,ty,tx,ex,ex2]=f,t=T[tp],k=fkey(i);
    <button class="act save ${saved?'on-save':''}" data-a="save"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></span><span class="n">Save</span></button>
    <button class="act" data-a="share"><span class="ico"><svg viewBox="0 0 24 24"><path d="M14 9V5l7 7-7 7v-4.1C9 12 6 13 3 17c1-6 5-8 11-8z"/></svg></span><span class="n">Share</span></button>
   </div>${inst===0?'<div class="hint" id="hint"><svg viewBox="0 0 24 24"><path d="M12 4l6 7h-4v9h-4v-9H6z"/></svg>swipe up for more</div>':''}</section>`}
-function fseq(){let p=FEED.map((_,i)=>i);const r=mul((hs("f")()^Date.now())>>>0);for(let i=p.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[p[i],p[j]]=[p[j],p[i]]}return p}
+function fseq(){const r=mul((hs("f")()^Date.now())>>>0);const shuf=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+ let idx=FEED.map((_,i)=>i);const q=(feedFilter.q||"").trim().toLowerCase();
+ if(feedFilter.topic!=="all")idx=idx.filter(i=>FEED[i][0]===feedFilter.topic);
+ if(q)idx=idx.filter(i=>((FEED[i][2]||"")+" "+(FEED[i][3]||"")+" "+(FEED[i][4]||"")).toLowerCase().includes(q));
+ if(idx.length===0)idx=FEED.map((_,i)=>i);
+ shuf(idx);
+ const ints=(S.interests&&S.interests.length)?new Set(S.interests):null;
+ if(ints&&feedFilter.topic==="all"&&!q){const pri=idx.filter(i=>ints.has(FEED[i][0])),rest=idx.filter(i=>!ints.has(FEED[i][0])),out=[];let pi=0,ri=0;
+  while(pi<pri.length||ri<rest.length){if(pi<pri.length)out.push(pri[pi++]);if(pi<pri.length)out.push(pri[pi++]);if(ri<rest.length)out.push(rest[ri++])}return out}
+ return idx}
 function fappend(){const s=feedMeta.length,seq=fseq();let h="";seq.forEach((idx,k)=>{feedMeta.push(idx);h+=feedHTML(idx,s+k)});$("#feed").insertAdjacentHTML("beforeend",h);fobserve()}
 function buildFeed(){if(feedBuilt)return;feedBuilt=true;$("#feed").innerHTML="";feedMeta=[];fappend()}
 function fobserve(){if(!feedIO)feedIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.65)factive(e.target)}),{root:$("#feed"),threshold:[.66]});$("#feed").querySelectorAll(".card:not([data-obs])").forEach(c=>{c.setAttribute("data-obs","1");feedIO.observe(c)})}
 function factive(card){const inst=+card.dataset.inst;if(inst>=feedMeta.length-3)fappend();if(!counted.has(inst)){counted.add(inst);if(feedLast>=0)S.streak+=0;bump();S.reads++;feedLast=inst;const ms={5:"🔥 5 in a row",15:"🧠 15 read — big brain",30:"🏆 30! deep in it"}[S.reads];addXP(8,ms||`<span class="xp">+8 XP</span>`)}}
 function scrollFeedTo(i){buildFeed();let c=[...$("#feed").querySelectorAll(".card")].find(x=>+x.dataset.i===i);if(!c){fappend();c=[...$("#feed").querySelectorAll(".card")].reverse().find(x=>+x.dataset.i===i)}if(c)requestAnimationFrame(()=>c.scrollIntoView())}
 $("#feed").addEventListener("click",e=>{const b=e.target.closest(".act");if(!b)return;const card=b.closest(".card"),k=card.dataset.key,tp=card.dataset.topic,a=b.dataset.a;
- if(a==="like")like(k,b);else if(a==="save")sv(k,b);else if(a==="comment")openC(k,tp);else if(a==="share"){const f=FEED[+card.dataset.i];shareT(f[2],f[3])}});
+ if(a==="like")like(k,b);else if(a==="save")sv(k,b);else if(a==="comment")openC(k,tp);else if(a==="share"){const f=FEED[+card.dataset.i];openShare(f[0],f[2],f[1]==="quote"?(f[3]+(f[4]?" — "+f[4]:"")):f[3],f[1])}});
 let lastTap=0;$("#feed").addEventListener("click",e=>{if(e.target.closest(".act"))return;const n=Date.now();if(n-lastTap<300){const c=e.target.closest(".card");if(c){const lb=c.querySelector(".like");if(!S.likes[c.dataset.key])lb.click();else{lb.classList.add("pop");setTimeout(()=>lb.classList.remove("pop"),400)}}}lastTap=n});
 $("#feed").addEventListener("scroll",()=>{const h=$("#hint");if(h&&$("#feed").scrollTop>40){h.style.opacity=0;setTimeout(()=>h.remove(),400)}},{passive:true});
 function like(k,b){const on=!S.likes[k];S.likes[k]=on;if(b){b.classList.toggle("on-like",on);b.classList.add("pop");setTimeout(()=>b.classList.remove("pop"),400);const n=b.querySelector('[data-n="like"]');if(n)n.textContent=fmt(baseL(k)+(on?1:0))}save()}
@@ -1070,12 +1162,24 @@ function renderYou(){const lvl=levelFor(S.xp),p=xpIn(S.xp),pct=Math.round(p.cur/
  $("#v-you").innerHTML=`<div class="prof"><div class="pring"><svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="33" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="6"/><circle cx="46" cy="46" r="33" fill="none" stroke="url(#gg)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct/100)}" transform="rotate(-90 46 46)"/></svg><div class="pa">A</div></div><div class="pn">You</div><div class="pl">Level ${lvl} · ${p.cur}/${p.need} XP to Level ${lvl+1}</div></div>
   <div class="statgrid"><div class="scell"><div class="sv">${S.streak}</div><div class="sl">Streak</div></div><div class="scell"><div class="sv">${S.reads}</div><div class="sl">Read</div></div><div class="scell"><div class="sv">${S.workouts+S.sessions}</div><div class="sl">Trained</div></div><div class="scell"><div class="sv">${saved.length}</div><div class="sl">Saved</div></div></div>
   <div class="sec"><h3>📱 Make it an app</h3></div>
-  <div style="padding:0 18px"><div class="iconbox"><canvas id="appIcon" width="70" height="70"></canvas><div><div class="ibt">Add APEX to your Home Screen</div><div class="ibd">Download the icon, then use a Home-Screen shortcut. For a true installable, offline app with in-app video playback, ask for the hosted PWA version.</div><button class="dl" id="dlIcon"><svg viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg>Download icon</button></div></div></div>
+  <div style="padding:0 18px"><div class="iconbox"><canvas id="appIcon" width="70" height="70"></canvas><div><div class="ibt">Install APEX</div><div class="ibd">Add APEX to your home screen for a full-screen, offline app. On iPhone: Share → “Add to Home Screen”.</div><button class="dl" id="installBtn"><svg viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg>Install app</button></div></div></div>
+  <div class="sec"><h3>⚙️ Settings</h3></div>
+  <div style="padding:0 18px">
+   <div class="settingrow"><span class="se">🔔</span><div class="si"><b>Daily idea reminder</b><p>A fresh idea each day to keep your streak alive.</p></div><div class="toggle ${S.notify?'on':''}" id="notifyTog" role="switch" aria-checked="${S.notify}"></div></div>
+   <div class="settingrow"><span class="se">🎯</span><div class="si"><b>Your interests</b><p>${S.interests&&S.interests.length?esc(S.interests.map(k=>(T[k]||T.life).l).join(" · ")):'Not set — personalize your feed'}</p></div><button class="dl" id="editInterests" style="padding:9px 13px;font-size:13px">Edit</button></div>
+   <div class="settingrow"><span class="se">💾</span><div class="si"><b>Backup &amp; restore</b><p>Your progress lives on this device — save a copy or move it to another.</p></div></div>
+   <div class="setbtns"><button id="expBtn"><svg viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg>Export</button><button id="impBtn"><svg viewBox="0 0 24 24"><path d="M12 21V11m0 0l-4 4m4-4l4 4M4 7V4h16v3"/></svg>Import</button></div>
+   <input type="file" id="impFile" accept="application/json,.json" style="display:none">
+  </div>
   <div class="sec"><h3>🏅 Achievements</h3><div class="achv">${ach.map(a=>`<div class="ba ${a.g?'':'locked'}"><div class="be">${a.e}</div><div class="bn">${a.n}</div><div class="bd">${a.d}</div></div>`).join("")}</div></div>
   <div class="sec"><h3>🔖 Your stash ${saved.length?`· ${saved.length}`:''}</h3></div>
   <div class="savewrap">${saved.length?saved.slice().reverse().map(k=>{const it=itemText(k);if(!it)return"";const t=T[it.t]||T.life;return`<div class="saveitem" data-open-saved="${k}"><div class="st" style="background:${t.c}"></div><div><div class="sx">${esc(it.x)}</div><div class="stopic">${t.e} ${t.l}</div></div></div>`}).join(""):`<div class="empty"><div class="big">🔖</div>Nothing saved yet.<br>Tap Save on anything that moves you.</div>`}</div>
   <div class="credit">APEX · train your mind & body<br>Free · your data stays on your device</div>`;
- wire($("#v-you"));drawAppIcon($("#appIcon"),70);$("#dlIcon").onclick=downloadIcon;
+ wire($("#v-you"));drawAppIcon($("#appIcon"),70);
+ $("#installBtn").onclick=()=>{if(window.__apexInstall)window.__apexInstall();else toast("Use your browser menu → Add to Home Screen")};
+ $("#notifyTog").onclick=toggleNotify;
+ $("#editInterests").onclick=()=>{S.onboarded=false;renderOnboard()};
+ $("#expBtn").onclick=exportData;$("#impBtn").onclick=()=>$("#impFile").click();$("#impFile").onchange=e=>{if(e.target.files&&e.target.files[0])importData(e.target.files[0])};
  $("#v-you").querySelectorAll("[data-open-saved]").forEach(e=>e.onclick=()=>{const k=e.dataset.openSaved;if(k[0]==="f"){setTab("learn");scrollFeedTo(+k.slice(1))}else if(STORIES.some(s=>s.id===k)){openStories(k)}else if(MAPS.some(m=>m.id===k)){openMap(k)}else if(S.videos.some(v=>v.id===k)){setTab("watch")}else openReader(k)});
 }
 /* app icon */
@@ -1099,7 +1203,7 @@ function drawStory(){const s=STORIES.find(x=>x.id===ST.order[ST.idx]);if(!s){ret
  $("#stX").onclick=closeStories;
  $("#szPrev").onclick=()=>stepStory(-1);$("#szNext").onclick=()=>stepStory(1);
  $("#stSave").onclick=e=>{e.stopPropagation();S.saves[s.id]=!S.saves[s.id];save();toast(S.saves[s.id]?"🔖 story saved":"removed");drawStory()};
- $("#stShare").onclick=e=>{e.stopPropagation();shareT(sl.h,sl.p)};
+ $("#stShare").onclick=e=>{e.stopPropagation();openShare(s.topic,sl.h,sl.p,"idea")};
  const bar=storiesEl.querySelector(".sbar.active i");if(bar){bar.addEventListener("animationend",()=>stepStory(1),{once:true})}
  if(!S.storiesSeen[s.id]){S.storiesSeen[s.id]=true;bump();addXP(6,"✨ story · <span class=xp>+6 XP</span>");save()}
 }
@@ -1156,10 +1260,72 @@ function openMap(id){const m=MAPS.find(x=>x.id===id);if(!m)return;const t=T[m.to
 }
 function closeMap(){mapEl.classList.remove("show");setTimeout(()=>{mapEl.innerHTML=""},300);if(cur==="home")renderHome();if(cur==="you")renderYou()}
 
+/* ===== ONBOARDING ===== */
+const onboardEl=$("#onboard");
+function renderOnboard(){const keys=["discipline","mind","learn","money","health","fit","genius","psych","phil","science","life","story"];const sel=new Set(S.interests||[]);
+ onboardEl.innerHTML=`<div class="omk">A</div><h1>What do you<br>want to grow?</h1><div class="osub">Pick a few. We'll tune your daily feed to match — you can change it anytime.</div>
+  <div class="ochips" id="ochips">${keys.map(k=>{const t=T[k];return`<button class="ochip ${sel.has(k)?'on':''}" data-k="${k}">${t.e} ${t.l}</button>`}).join("")}</div>
+  <button class="ostart" id="ostart" ${sel.size?'':'disabled'}>Start learning →</button>
+  <button class="oskip" id="oskip">Skip for now</button>`;
+ onboardEl.querySelectorAll(".ochip").forEach(b=>b.onclick=()=>{const k=b.dataset.k;if(sel.has(k))sel.delete(k);else sel.add(k);b.classList.toggle("on");$("#ostart").disabled=sel.size===0});
+ $("#ostart").onclick=()=>{S.interests=[...sel];S.onboarded=true;save();addXP(5,"✨ feed personalized");closeOnboard()};
+ $("#oskip").onclick=()=>{S.interests=[];S.onboarded=true;save();closeOnboard()};
+ onboardEl.classList.add("show");
+}
+function closeOnboard(){onboardEl.classList.remove("show");setTimeout(()=>onboardEl.innerHTML="",320);feedBuilt=false;buildFeed();}
+
+/* ===== SHARE-AS-IMAGE cards ===== */
+function wrapLines(x,text,maxW){const words=(""+text).split(/\s+/);let line="",lines=[];for(const w of words){const test=line?line+" "+w:w;if(x.measureText(test).width>maxW&&line){lines.push(line);line=w}else line=test}if(line)lines.push(line);return lines}
+function drawShareCard(cv,topic,title,sub,kind){const W=1080,H=1350,x=cv.getContext("2d"),t=T[topic]||T.life,pad=100;cv.width=W;cv.height=H;
+ const g=x.createLinearGradient(0,0,W*.4,H);g.addColorStop(0,t.g[0]);g.addColorStop(.55,t.g[1]);g.addColorStop(1,"#08080c");x.fillStyle=g;x.fillRect(0,0,W,H);
+ const rg=x.createRadialGradient(W*.5,H*.4,80,W*.5,H*.5,W);rg.addColorStop(0,"rgba(0,0,0,0)");rg.addColorStop(1,"rgba(0,0,0,.5)");x.fillStyle=rg;x.fillRect(0,0,W,H);
+ x.textBaseline="alphabetic";x.textAlign="left";
+ x.fillStyle="#f3d089";x.beginPath();rr(x,pad,108,66,66,17);x.fill();x.fillStyle="#1a1206";x.font="900 42px Georgia,serif";x.textAlign="center";x.fillText("A",pad+33,152);
+ x.textAlign="left";x.fillStyle="#fff";x.font="800 36px -apple-system,'Segoe UI',Roboto,sans-serif";x.fillText("APEX",pad+86,150);
+ x.fillStyle=t.c;x.font="800 27px -apple-system,'Segoe UI',Roboto,sans-serif";x.fillText(t.e+"   "+t.l.toUpperCase(),pad,290);
+ const isQuote=kind==="quote",txt=isQuote?"“"+title+"”":title,big=txt.length>120?54:txt.length>70?62:72,lh=big*1.24;
+ x.fillStyle="#fff";x.font=(isQuote?"italic ":"")+"600 "+big+"px Georgia,serif";
+ const lines=wrapLines(x,txt,W-pad*2);let ty=380+big;lines.forEach(l=>{x.fillText(l,pad,ty);ty+=lh});
+ if(sub){x.fillStyle="rgba(255,255,255,.82)";x.font="500 36px Georgia,serif";const sl=wrapLines(x,sub,W-pad*2);let sy=ty+34;sl.slice(0,5).forEach(l=>{x.fillText(l,pad,sy);sy+=50})}
+ x.fillStyle=t.c;x.fillRect(pad,H-140,70,6);
+ x.fillStyle="rgba(255,255,255,.7)";x.font="700 30px -apple-system,'Segoe UI',Roboto,sans-serif";x.fillText("APEX · train your mind & body",pad,H-92);
+}
+let shareCv=null;
+function openShare(topic,title,sub,kind){shareCv={topic,title,sub,kind};drawShareCard($("#shCanvas"),topic,title,sub,kind);openSheet($("#shareModal"));}
+function saveCanvas(cv,name){cv.toBlob(b=>{if(!b)return;if(window.claude&&window.claude.downloads){window.claude.downloads.save({filename:name,data:b}).then(()=>toast("✅ saved")).catch(()=>anchorBlob(b,name))}else anchorBlob(b,name);addXP(4)},"image/png")}
+function anchorBlob(b,name){try{const u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1200);toast("⬇️ downloaded")}catch(e){toast("unavailable here")}}
+function shareCanvas(cv,title){cv.toBlob(async b=>{if(!b)return;try{const file=new File([b],"apex-card.png",{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text:title+" — via APEX"});addXP(5);return}}catch(e){if(e&&e.name==="AbortError")return}anchorBlob(b,"apex-card.png")},"image/png")}
+$("#shClose").onclick=()=>closeSheets();
+$("#shDownload").onclick=()=>saveCanvas($("#shCanvas"),"apex-card.png");
+$("#shShare").onclick=()=>{if(shareCv)shareCanvas($("#shCanvas"),shareCv.title)};
+
+/* ===== FEED filter / search ===== */
+let feedFilter={topic:"all",q:""};
+function openFilter(){const keys=["all","discipline","mind","learn","money","health","fit","genius","psych","phil","science","life","story"];
+ $("#filtChips").innerHTML=`<input id="filtQ" placeholder="Search ideas…" value="${esc(feedFilter.q)}" autocomplete="off" style="width:100%;height:44px;background:var(--surface);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:0 14px;font-size:14px;outline:none;margin-bottom:6px">`+keys.map(k=>{const t=k==="all"?{e:"✨",l:"All topics"}:T[k];return`<button class="fchip ${feedFilter.topic===k?'on':''}" data-t="${k}">${t.e} ${t.l}</button>`}).join("");
+ const qi=$("#filtQ");qi.oninput=()=>{feedFilter.q=qi.value};qi.onkeydown=e=>{if(e.key==="Enter")applyFilter()};
+ $("#filtChips").querySelectorAll(".fchip").forEach(b=>b.onclick=()=>{feedFilter.topic=b.dataset.t;applyFilter()});
+ openSheet($("#filtSheet"));
+}
+function applyFilter(){closeSheets();feedBuilt=false;buildFeed();$("#feed").scrollTop=0;const on=feedFilter.topic!=="all"||!!feedFilter.q.trim();$("#filtFab").classList.toggle("filtered",on);if(on)toast("🔍 "+(feedFilter.topic==="all"?'“'+feedFilter.q+'”':T[feedFilter.topic].l))}
+
+/* ===== BACKUP / RESTORE ===== */
+function exportData(){const b=new Blob([JSON.stringify(S)],{type:"application/json"}),name="apex-backup.json";if(window.claude&&window.claude.downloads){window.claude.downloads.save({filename:name,data:b}).then(()=>toast("✅ backup saved")).catch(()=>anchorBlob(b,name))}else anchorBlob(b,name)}
+function importData(file){const rd=new FileReader();rd.onload=()=>{try{const obj=JSON.parse(rd.result);if(!obj||typeof obj!=="object")throw 0;S=Object.assign(S,obj);save();updateHUD();toast("✅ progress restored");renderYou()}catch(e){toast("couldn't read that backup")}};rd.readAsText(file)}
+
+/* ===== DAILY REMINDER (best-effort, no backend) ===== */
+function toggleNotify(){if(S.notify){S.notify=false;save();toast("🔕 reminder off");renderYou();return}
+ if(!("Notification" in window)){toast("notifications aren't supported here");return}
+ Notification.requestPermission().then(p=>{if(p==="granted"){S.notify=true;save();toast("🔔 daily idea on");maybeDailyNotify(true);renderYou()}else toast("notifications were blocked")}).catch(()=>toast("couldn't enable"))}
+function maybeDailyNotify(force){if(!S.notify||!("Notification" in window)||Notification.permission!=="granted")return;const t=today();if(!force&&S.notifyLast===t)return;S.notifyLast=t;save();
+ const f=FEED[Math.floor(Math.random()*FEED.length)],body=f[2];
+ try{if(navigator.serviceWorker&&navigator.serviceWorker.ready){navigator.serviceWorker.ready.then(reg=>{if(reg&&reg.showNotification)reg.showNotification("💡 Today's idea",{body,icon:"/icon.svg",badge:"/favicon.svg",tag:"apex-daily"});else new Notification("💡 Today's idea",{body})}).catch(()=>{try{new Notification("💡 Today's idea",{body})}catch(e){}})}else new Notification("💡 Today's idea",{body})}catch(e){}}
+
 /* ===== SHEETS / MUSIC UI / ROUTER ===== */
 function openSheet(s){$("#scrim").classList.add("show");s.classList.add("show")}
-function closeSheets(){$("#scrim").classList.remove("show");cs.classList.remove("show")}
-$("#scrim").onclick=closeSheets;document.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheets);
+function closeSheets(){$("#scrim").classList.remove("show");cs.classList.remove("show");$("#filtSheet").classList.remove("show");$("#shareModal").classList.remove("show")}
+$("#scrim").onclick=closeSheets;document.querySelectorAll("[data-close],[data-closefilt]").forEach(b=>b.onclick=closeSheets);
+$("#filtFab").onclick=openFilter;
 function syncMusicUI(){const on=Music.isPlaying();$("#musicbar").classList.toggle("playing",on);$("#mPP").innerHTML=on?'<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';$("#mSub").textContent=on?"Now playing · "+Music.current():"Tap play for atmosphere";$("#mMood").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.mood===Music.current()))}
 $("#mPP").onclick=()=>{Music.toggle();syncMusicUI()};
 $("#mMood").querySelectorAll("button").forEach(b=>b.onclick=()=>{Music.setMood(b.dataset.mood);syncMusicUI();if(Music.isPlaying())toast("🎵 "+b.dataset.mood)});
@@ -1185,6 +1351,8 @@ window.addEventListener("keydown",e=>{if(e.key==="Escape"){if(storiesEl.classLis
 
 /* boot — open straight into the scrolling feed */
 updateHUD();setTab("learn");
+if(!S.onboarded)renderOnboard();
+maybeDailyNotify(false);
 
 /* ===== PWA: offline + installable ===== */
 if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("/sw.js").catch(()=>{})})}
