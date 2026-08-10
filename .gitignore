@@ -9,6 +9,9 @@ dist-ssr/
 *.log
 npm-debug.log*
 
+# preview / test artifacts
+.preview-*.png
+
 # editor / OS
 .DS_Store
 .vscode/*

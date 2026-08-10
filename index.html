@@ -1,18 +1,1196 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#0b0b12" />
-    <meta name="description" content="Deepstash — smart-reading microlearning. Swipe bite-sized ideas, take quizzes, explore knowledge maps, read stories, and follow workout videos from YouTube & Instagram." />
-    <meta property="og:title" content="Deepstash — Level Up Your Mind" />
-    <meta property="og:description" content="Ideas, quizzes, knowledge maps, stories & workout videos. Smart reading, TikTok-style." />
-    <meta property="og:type" content="website" />
-    <title>Deepstash — Level Up Your Mind</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#08080c">
+<title>APEX — train your mind & body</title>
+<meta name="description" content="APEX — smart-reading microlearning. Swipe bite-sized ideas, take quizzes, explore knowledge maps, tap through stories, train with timers & breathing, and follow YouTube & Instagram workout creators.">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="APEX">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta property="og:title" content="APEX — train your mind & body">
+<meta property="og:description" content="Ideas, quizzes, knowledge maps, stories & workout videos. Smart reading, TikTok-style.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#08080c">
+<style>
+:root{
+  --ink:#08080c;--ink-2:#0d0d14;--surface:#15151f;--surface-2:#1d1d2a;--surface-3:#272736;
+  --line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.15);
+  --text:#f4f2f7;--muted:#a29fb2;--muted-2:#6c6980;
+  --gold:#e8b563;--gold-2:#f3d089;--ice:#7fb0ff;--ember:#ff6a3d;--green:#37d68a;
+  --grad-gold:linear-gradient(135deg,#f3d089,#e8b563 55%,#c98f3a);
+  --grad-cine:linear-gradient(135deg,var(--ember),#ff2d75 45%,var(--ice));
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --tab-h:60px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:var(--sans);color:var(--text);background:radial-gradient(120% 70% at 50% -10%,#1a1526 0,transparent 55%),radial-gradient(90% 60% at 100% 110%,#141a2a 0,transparent 55%),var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;color:inherit;cursor:pointer}
+::-webkit-scrollbar{display:none}*{scrollbar-width:none}
+.app{position:relative;height:100dvh;height:100vh;width:min(100%,472px);margin:0 auto;background:var(--ink);overflow:hidden;box-shadow:0 0 0 1px var(--line),0 40px 120px -30px rgba(0,0,0,.9);display:flex;flex-direction:column}
+@media(min-width:520px){.app{border-radius:28px;height:min(100dvh,952px);top:50%;transform:translateY(-50%)}}
+.views{flex:1;position:relative;overflow:hidden}
+.view{position:absolute;inset:0;overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .28s,transform .28s,visibility .28s;padding-bottom:14px}
+.view.active{opacity:1;visibility:visible;transform:none}
+.view.nopad{overflow:hidden;padding:0}
+
+/* music mini bar */
+.musicbar{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:9px 14px;background:rgba(13,13,20,.9);backdrop-filter:blur(16px);border-top:1px solid var(--line)}
+.musicbar .mvis{display:flex;align-items:flex-end;gap:2px;width:22px;height:20px;flex:0 0 auto}
+.musicbar .mvis i{flex:1;background:var(--gold);border-radius:2px;height:20%;transition:height .2s}
+.musicbar.playing .mvis i{animation:eq 1s ease-in-out infinite}
+.musicbar .mvis i:nth-child(2){animation-delay:.2s}.musicbar .mvis i:nth-child(3){animation-delay:.4s}.musicbar .mvis i:nth-child(4){animation-delay:.15s}
+@keyframes eq{0%,100%{height:25%}50%{height:95%}}
+.musicbar .minfo{flex:1;min-width:0}
+.musicbar .mt{font-size:12.5px;font-weight:750}
+.musicbar .ms{font-size:11px;color:var(--muted);font-weight:600}
+.musicbar .mood{display:flex;gap:5px}
+.musicbar .mood button{font-size:11px;font-weight:750;padding:5px 9px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);color:var(--muted)}
+.musicbar .mood button.on{color:var(--ink);background:var(--gold);border-color:transparent}
+.musicbar .mpp{width:36px;height:36px;border-radius:50%;flex:0 0 auto;border:none;background:var(--grad-gold);display:grid;place-items:center}
+.musicbar .mpp svg{width:17px;height:17px;fill:#1a1206}
+
+/* tabs */
+.tabbar{height:calc(var(--tab-h) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);display:flex;background:rgba(8,8,12,.92);backdrop-filter:blur(20px);border-top:1px solid var(--line);z-index:50;flex:0 0 auto}
+.tab{flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--muted-2);position:relative}
+.tab svg{width:22px;height:22px;fill:currentColor;transition:transform .2s}
+.tab span{font-size:9.5px;font-weight:700;letter-spacing:.01em}
+.tab.on{color:var(--text)}.tab.on svg{transform:translateY(-1px) scale(1.08);fill:url(#gg)}
+.tab.on::after{content:"";position:absolute;top:5px;width:4px;height:4px;border-radius:50%;background:var(--gold)}
+.tab:active svg{transform:scale(.85)}
+
+/* headers */
+.top{padding:calc(env(safe-area-inset-top) + 16px) 18px 6px}
+.top .h1{font-size:27px;font-weight:850;letter-spacing:-.03em}
+.top .sub{font-size:13px;color:var(--muted);font-weight:600;margin-top:2px}
+.brandrow{display:flex;align-items:center;gap:11px}
+.brandrow .mk{width:30px;height:30px;border-radius:9px;background:var(--grad-gold);display:grid;place-items:center;flex:0 0 auto;font-weight:900;color:#1a1206;font-size:15px}
+.pillrow{margin-left:auto;display:flex;gap:8px}
+.pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid var(--line);padding:6px 11px;border-radius:999px;font-size:13px;font-weight:800}
+.pill small{color:var(--muted);font-weight:600;font-size:11px}
+
+/* HOME */
+.cine{margin:14px 18px 0;border-radius:22px;overflow:hidden;position:relative;min-height:250px;display:flex;flex-direction:column;justify-content:flex-end;padding:22px}
+.cine canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.cine .cov{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(8,8,12,.15),rgba(8,8,12,.82))}
+.cine>*{position:relative;z-index:2}
+.cine .eb{font-size:11px;font-weight:850;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-2)}
+.cine .cq{font-family:var(--serif);font-size:26px;line-height:1.24;font-weight:600;margin-top:10px;text-wrap:balance;text-shadow:0 2px 20px rgba(0,0,0,.6)}
+.cine .cby{font-size:13px;color:var(--muted);margin-top:10px;font-weight:600}
+.cine .go{margin-top:15px;align-self:flex-start;background:var(--grad-gold);color:#1a1206;border:none;font-weight:850;font-size:14px;padding:12px 20px;border-radius:999px;display:flex;align-items:center;gap:8px}
+.cine .go svg{width:15px;height:15px;fill:currentColor}
+.sec{padding:22px 18px 0}
+.sec h3{font-size:17px;font-weight:800;letter-spacing:-.01em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sec h3 .more{margin-left:auto;font-size:12.5px;color:var(--gold-2);font-weight:750}
+.pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;padding:0 18px}
+.pil{border-radius:16px;padding:15px;position:relative;overflow:hidden;min-height:96px;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid var(--line)}
+.pil .pe{position:absolute;top:12px;left:14px;font-size:22px}
+.pil .pn{font-size:15.5px;font-weight:800}
+.pil .pd{font-size:11.5px;color:var(--muted);margin-top:2px}
+.hs{display:flex;gap:13px;overflow-x:auto;padding:0 18px 4px}
+.acard{flex:0 0 auto;width:232px;cursor:pointer}
+.acard .th{height:130px;border-radius:15px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:12px}
+.acard .th .em{position:absolute;top:10px;right:12px;font-size:19px}
+.acard .th .tp{position:relative;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;background:rgba(0,0,0,.4);padding:4px 8px;border-radius:6px;backdrop-filter:blur(4px)}
+.acard .rt{margin-top:9px;font-size:14.5px;font-weight:750;line-height:1.28}
+.acard .rd{margin-top:4px;font-size:12px;color:var(--muted);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.acard .rm{margin-top:7px;font-size:11.5px;color:var(--muted-2);font-weight:700}
+.fcardh{flex:0 0 auto;width:250px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.fcardh .ft{font-family:var(--serif);font-size:17px;line-height:1.3;font-weight:500}
+.fcardh .fm{margin-top:10px;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-2)}
+.credit{text-align:center;color:var(--muted-2);font-size:12px;padding:26px 20px 30px;line-height:1.6}
+
+/* LEARN feed */
+.feed{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory}
+.card{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding:calc(env(safe-area-inset-top) + 70px) 22px 54px;overflow:hidden;isolation:isolate}
+.card .bg{position:absolute;inset:0;z-index:-2}.card .grain{position:absolute;inset:0;z-index:-1;background:radial-gradient(80% 55% at 50% 42%,transparent 40%,rgba(0,0,0,.34) 100%),linear-gradient(180deg,rgba(0,0,0,.34),transparent 22%,transparent 60%,rgba(0,0,0,.64));pointer-events:none}
+.ktag{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:7px 12px;border-radius:999px;background:rgba(0,0,0,.28);border:1px solid var(--line-2);backdrop-filter:blur(6px);margin-bottom:20px}
+.ktag .dot{width:8px;height:8px;border-radius:50%}
+.ctype{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-2);margin-bottom:12px}
+.insight{font-family:var(--serif);font-size:clamp(24px,6.2vw,31px);line-height:1.25;font-weight:500;text-wrap:balance;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.5);max-width:22ch}
+.insight.quote{font-style:italic}
+.qauthor{margin-top:16px;font-size:14px;font-weight:750}.qauthor .role{color:var(--muted);font-weight:600;display:block;font-size:12.5px;margin-top:2px;font-style:normal}
+.kicker{margin-top:16px;font-size:15px;line-height:1.5;color:#e9e6f2;max-width:34ch;opacity:.94;display:flex;gap:9px}
+.kicker::before{content:"";flex:0 0 auto;width:3px;border-radius:3px;background:currentColor;opacity:.5}
+.meta{position:absolute;left:22px;bottom:24px;right:80px;z-index:2}
+.handle{font-size:14px;font-weight:750}.handle .at{color:var(--muted)}
+.source{font-size:12px;color:var(--muted);margin-top:4px}
+.rail-a{position:absolute;right:12px;bottom:24px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:17px}
+.act{display:flex;flex-direction:column;align-items:center;gap:5px;border:none;background:none;color:#fff}
+.act .ico{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.09);border:1px solid var(--line);backdrop-filter:blur(6px);transition:transform .18s cubic-bezier(.3,1.4,.5,1),background .2s,color .2s}
+.act .ico svg{width:22px;height:22px;fill:currentColor}
+.act .n{font-size:11.5px;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.act:active .ico{transform:scale(.85)}
+.act.on-like{color:#ff4d6d}.act.on-like .ico{background:rgba(255,77,109,.16);border-color:rgba(255,77,109,.4)}
+.act.on-save{color:var(--gold)}.act.on-save .ico{background:rgba(232,181,99,.16);border-color:rgba(232,181,99,.42)}
+.act.pop .ico{animation:pop .4s}@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.32)}100%{transform:scale(1)}}
+.hint{position:absolute;left:0;right:0;bottom:100px;z-index:5;text-align:center;color:var(--muted);font-size:13px;font-weight:600;animation:bob 1.6s ease-in-out infinite;transition:opacity .4s}
+.hint svg{display:block;margin:0 auto 4px;width:22px;height:22px;fill:currentColor;opacity:.8}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* filters / lists */
+.filters{display:flex;gap:8px;overflow-x:auto;padding:6px 18px 12px}
+.fchip{flex:0 0 auto;font-size:13px;font-weight:750;padding:7px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:#eee9f5;white-space:nowrap}
+.fchip.on{background:#fff;color:#12121a;border-color:#fff}
+.rowlist{padding:0 18px}
+.row{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center;cursor:pointer}
+.row .rth{width:80px;height:80px;border-radius:15px;flex:0 0 auto;position:relative;display:grid;place-items:center;font-size:28px}
+.row .ri{flex:1;min-width:0}
+.row .ri .rtp{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-2)}
+.row .ri .rn{font-size:16px;font-weight:800;letter-spacing:-.01em;margin-top:4px}
+.row .ri .rd{font-size:12.5px;color:var(--muted);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4}
+.row .ri .rm{font-size:11.5px;color:var(--muted-2);margin-top:7px;font-weight:700;display:flex;gap:9px;flex-wrap:wrap}
+.row .play2{width:40px;height:40px;border-radius:50%;border:none;background:var(--grad-gold);display:grid;place-items:center;flex:0 0 auto}
+.row .play2 svg{width:17px;height:17px;fill:#1a1206;margin-left:2px}
+
+/* WATCH */
+.addbar{display:flex;gap:9px;padding:8px 18px 6px}
+.addbar input{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:12px;color:var(--text);font-size:14px;padding:0 14px;height:44px;outline:none}
+.addbar input:focus{border-color:var(--gold)}
+.addbar button{flex:0 0 auto;height:44px;padding:0 16px;border:none;border-radius:12px;background:var(--grad-gold);color:#1a1206;font-weight:850;font-size:14px}
+.platseg{display:flex;gap:6px;padding:2px 18px 8px}
+.platseg button{flex:1;font-size:12.5px;font-weight:800;padding:8px;border-radius:10px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.platseg button.on{color:#fff;border-color:transparent;background:var(--surface-3)}
+.searchchips{display:flex;gap:8px;overflow-x:auto;padding:2px 18px 12px}
+.schip{flex:0 0 auto;font-size:12.5px;font-weight:750;padding:8px 13px;border-radius:999px;background:var(--surface);border:1px solid var(--line);white-space:nowrap;color:#eee9f5}
+.vfeed{padding:0 18px 10px}
+.vcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:15px}
+.vframe{position:relative;width:100%;background:#000;aspect-ratio:16/9}
+.vframe.vert{aspect-ratio:9/16;max-height:66vh;margin:0 auto}
+.vframe iframe,.vframe video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vposter{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:2;cursor:pointer}
+.vposter .pbtn{width:60px;height:60px;border-radius:50%;background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.7);display:grid;place-items:center;backdrop-filter:blur(3px)}
+.vposter .pbtn svg{width:25px;height:25px;fill:#fff;margin-left:3px}
+.vposter .plat{font-size:11.5px;font-weight:850;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.4);padding:4px 10px;border-radius:999px}
+.vposter .sm{font-size:12px;color:#fff;opacity:.85;max-width:80%;text-align:center}
+.vmeta{padding:12px 14px;display:flex;align-items:center;gap:12px}
+.vmeta .vinfo{flex:1;min-width:0}.vmeta .vttl{font-size:14.5px;font-weight:750;line-height:1.25}.vmeta .vsrc{font-size:12px;color:var(--muted);margin-top:3px;font-weight:600}
+.vmeta .vact{display:flex;gap:6px}
+.vmeta .vact button{width:38px;height:38px;border-radius:50%;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;color:var(--text)}
+.vmeta .vact button svg{width:18px;height:18px;fill:currentColor}
+.vmeta .vact button.on-save{color:var(--gold);border-color:rgba(232,181,99,.4);background:rgba(232,181,99,.12)}
+.note{margin:2px 18px 14px;background:rgba(127,176,255,.08);border:1px solid rgba(127,176,255,.25);border-radius:14px;padding:12px 14px;font-size:12.5px;color:#cfe0ff;line-height:1.5}
+
+/* YOU */
+.prof{padding:calc(env(safe-area-inset-top) + 20px) 18px 6px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.pring{position:relative;width:92px;height:92px;margin-bottom:10px}
+.pring .pa{width:72px;height:72px;border-radius:50%;position:absolute;top:10px;left:10px;background:var(--grad-gold);display:grid;place-items:center;font-size:28px;color:#1a1206;font-weight:900}
+.prof .pn{font-size:22px;font-weight:850}.prof .pl{font-size:13px;color:var(--muted);margin-top:3px;font-weight:600}
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:16px 18px 4px}
+.scell{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 5px;text-align:center}
+.scell .sv{font-size:20px;font-weight:850}.scell .sl{font-size:10px;color:var(--muted);margin-top:2px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.iconbox{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;gap:15px;align-items:center}
+.iconbox canvas{width:70px;height:70px;border-radius:17px;flex:0 0 auto;box-shadow:0 10px 26px -8px rgba(232,181,99,.5)}
+.iconbox .ibt{font-size:15px;font-weight:800}.iconbox .ibd{font-size:12px;color:var(--muted);line-height:1.4;margin-top:3px}
+.iconbox .dl{margin-top:9px;display:inline-flex;align-items:center;gap:6px;background:var(--grad-gold);border:none;color:#1a1206;font-weight:800;font-size:13px;padding:9px 14px;border-radius:10px}
+.iconbox .dl svg{width:14px;height:14px;fill:currentColor}
+.achv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ba{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 6px;text-align:center}
+.ba.locked{opacity:.36}.ba .be{font-size:26px}.ba .bn{font-size:11px;font-weight:800;margin-top:6px}.ba .bd{font-size:10px;color:var(--muted);margin-top:2px}
+.savewrap{padding:0 18px}
+.saveitem{padding:14px 0;border-bottom:1px solid var(--line);display:flex;gap:13px;align-items:center;cursor:pointer}
+.saveitem .st{width:5px;align-self:stretch;border-radius:4px;flex:0 0 auto}
+.saveitem .sx{font-family:var(--serif);font-size:15.5px;line-height:1.3}.saveitem .stopic{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-top:5px}
+.empty{text-align:center;color:var(--muted);padding:38px 24px;font-size:14px;line-height:1.7}.empty .big{font-size:34px;margin-bottom:10px}
+
+/* toasts / sheets / overlays */
+.toasts{position:absolute;top:calc(env(safe-area-inset-top) + 54px);left:0;right:0;z-index:80;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+.toast{background:rgba(20,18,28,.95);border:1px solid var(--line-2);padding:9px 15px;border-radius:999px;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px;backdrop-filter:blur(10px);animation:tin .3s,tout .3s 1.8s forwards;box-shadow:0 12px 30px -8px rgba(0,0,0,.6)}
+.toast .xp{color:var(--gold)}
+@keyframes tin{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}@keyframes tout{to{transform:translateY(-10px);opacity:0}}
+.scrim{position:absolute;inset:0;z-index:90;background:rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:.25s;backdrop-filter:blur(2px)}
+.scrim.show{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:91;max-height:80%;display:flex;flex-direction:column;background:var(--ink-2);border-top-left-radius:22px;border-top-right-radius:22px;border:1px solid var(--line);border-bottom:none;transform:translateY(102%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.sheet.show{transform:none}
+.grab{width:38px;height:4px;border-radius:3px;background:var(--line-2);margin:10px auto 4px}
+.sheet h3{padding:6px 18px 12px;font-size:15px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.sheet h3 .close{margin-left:auto;color:var(--muted);cursor:pointer;font-size:22px;line-height:1}
+.comments{overflow-y:auto;padding:10px 16px 6px;flex:1}
+.cmt{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.05);animation:fu .35s}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ava{flex:0 0 auto;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;color:#0c0c14}
+.cbody{flex:1;min-width:0}.cbody .tp{display:flex;align-items:center;gap:7px;font-size:13px}.cbody .un{font-weight:750}
+.cbody .bd{font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;background:rgba(232,181,99,.16);color:var(--gold)}
+.cbody .tm{color:var(--muted-2);font-size:12px}.cbody .tx{font-size:14.5px;line-height:1.42;margin-top:3px;color:#ece9f2;word-wrap:break-word}
+.cbody .ca{display:flex;gap:16px;margin-top:7px;color:var(--muted);font-size:12.5px;font-weight:600}
+.cbody .ca button{background:none;border:none;color:inherit;font:inherit;display:flex;align-items:center;gap:4px}.cbody .ca button.liked{color:#ff4d6d}
+.loadmore{margin:12px auto 16px;display:block;background:var(--surface-2);border:1px solid var(--line);font-weight:700;font-size:13.5px;padding:10px 18px;border-radius:999px;color:var(--text)}
+.composer{display:flex;gap:9px;padding:11px 14px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--ink-2)}
+.composer .me{width:34px;height:34px;border-radius:50%;background:var(--grad-gold);display:grid;place-items:center;font-weight:800;font-size:14px;flex:0 0 auto;color:#1a1206}
+.composer input{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:999px;color:var(--text);font-size:14px;padding:0 15px;outline:none}
+.composer input:focus{border-color:var(--gold)}
+.composer .send{width:38px;height:38px;border-radius:50%;flex:0 0 auto;border:none;background:var(--grad-gold);display:grid;place-items:center;color:#1a1206}.composer .send svg{width:18px;height:18px;fill:currentColor}
+
+/* reader */
+.reader{position:absolute;inset:0;z-index:60;background:var(--ink);overflow-y:auto;transform:translateX(100%);transition:transform .32s cubic-bezier(.32,.72,0,1)}
+.reader.show{transform:none}
+.rprog{position:fixed;top:0;left:0;height:3px;background:var(--grad-gold);z-index:70;width:0}
+.rback{position:sticky;top:0;z-index:65;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top) + 12px) 16px 12px;background:linear-gradient(180deg,var(--ink) 60%,transparent)}
+.rback button{width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center}.rback button svg{width:19px;height:19px;fill:var(--text)}
+.rback .rbt{font-size:13px;font-weight:700;color:var(--muted)}
+.rhero{margin:6px 20px 0;border-radius:18px;height:140px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:16px}.rhero .em{position:absolute;top:14px;right:16px;font-size:28px}
+.article{max-width:640px;margin:0 auto;padding:22px 24px 70px}
+.article .atopic{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-2)}
+.article h1{font-family:var(--serif);font-size:31px;line-height:1.16;font-weight:600;margin:12px 0;letter-spacing:-.015em;text-wrap:balance}
+.article .dek{font-size:17px;color:var(--muted);line-height:1.5}
+.article .byline{display:flex;align-items:center;gap:10px;margin:18px 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px}
+.article .byline .ba2{width:34px;height:34px;border-radius:50%;background:var(--grad-gold);display:grid;place-items:center;font-weight:800;color:#1a1206}
+.article .byline b{font-weight:700}.article .byline span{color:var(--muted)}
+.article .body{font-family:var(--serif);font-size:18.5px;line-height:1.68}
+.article .body p{margin:0 0 20px;color:#e9e6f2}
+.article .body p:first-of-type::first-letter{font-size:56px;float:left;line-height:.82;padding:6px 10px 0 0;font-weight:600;color:var(--gold-2)}
+.article .body h2{font-family:var(--sans);font-size:20px;font-weight:800;margin:32px 0 14px;letter-spacing:-.01em;color:#fff}
+.article .body .pull{font-family:var(--sans);font-size:21px;font-weight:600;line-height:1.35;color:#fff;border-left:3px solid var(--gold);padding:4px 0 4px 18px;margin:26px 0}
+.article .end{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);display:flex;gap:12px}
+.article .end button{flex:1;padding:13px;border-radius:14px;font-weight:800;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center;gap:8px}
+.article .end button svg{width:18px;height:18px;fill:currentColor}.article .end button.prim{background:var(--grad-gold);border:none;color:#1a1206}
+
+/* TIMER + BREATHE overlay */
+.timer{position:absolute;inset:0;z-index:100;background:var(--ink);display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.timer.show{transform:none}
+.timer.work{background:linear-gradient(180deg,#1e0d18,#08080c)}.timer.rest{background:linear-gradient(180deg,#0d1b16,#08080c)}
+.timer.breathe{background:linear-gradient(180deg,#0c1424,#08080c)}
+.tmr-top{display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top) + 14px) 18px 0}
+.tmr-top button{width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center}.tmr-top button svg{width:19px;height:19px;fill:var(--text)}
+.tmr-top .tt{font-weight:800;font-size:15px}.tmr-top .tt small{display:block;color:var(--muted);font-weight:600;font-size:12px}
+.tmr-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px}
+.tmr-phase{font-size:15px;font-weight:850;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tmr-work .tmr-phase{color:#ff4d6d}.tmr-rest .tmr-phase{color:var(--green)}
+.tmr-ring{position:relative;width:250px;height:250px;margin:18px 0}.tmr-ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.tmr-count{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:74px;font-weight:850;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.tmr-ex{font-size:25px;font-weight:850;letter-spacing:-.02em;text-wrap:balance}.tmr-cue{font-size:14.5px;color:var(--muted);margin-top:10px;max-width:30ch;line-height:1.45}
+.tmr-next{font-size:13px;color:var(--muted-2);margin-top:16px;font-weight:700}
+.tmr-ctrl{display:flex;gap:14px;justify-content:center;padding:0 24px calc(28px + env(safe-area-inset-bottom))}
+.tmr-ctrl button{border:none;border-radius:16px;font-weight:850;font-size:16px;padding:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+.tmr-ctrl .pp{flex:1;background:#fff;color:#12121a}.tmr-ctrl .pp svg{width:20px;height:20px;fill:currentColor}
+.tmr-ctrl .skip{flex:0 0 auto;width:60px;background:var(--surface-2);border:1px solid var(--line);color:var(--text)}.tmr-ctrl .skip svg{width:20px;height:20px;fill:currentColor}
+.breathe-orb{width:220px;height:220px;border-radius:50%;background:radial-gradient(circle at 50% 40%,rgba(127,176,255,.5),rgba(127,176,255,.08));display:grid;place-items:center;transition:transform 4s cubic-bezier(.4,0,.6,1);box-shadow:0 0 60px rgba(127,176,255,.25)}
+.breathe-orb .bl{font-size:22px;font-weight:800;letter-spacing:.02em}
+.tmr-done{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.tmr-done .big{font-size:56px}.tmr-done h2{font-size:28px;font-weight:850;margin:10px 0}.tmr-done p{color:var(--muted);font-size:15px;margin-bottom:22px}
+.tmr-done button{background:var(--grad-gold);border:none;color:#1a1206;font-weight:850;font-size:16px;padding:15px 30px;border-radius:14px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important}.hint{animation:none}.breathe-orb{transition:none}}
+
+/* ===== STORIES bar (home) ===== */
+.storybar{display:flex;gap:14px;overflow-x:auto;padding:14px 18px 4px}
+.storyav{flex:0 0 auto;width:64px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+.storyav .ring{width:60px;height:60px;border-radius:50%;padding:2.5px;background:conic-gradient(from 210deg,#f3d089,#ff6a3d,#ff2d75,#7fb0ff,#f3d089);display:grid;place-items:center}
+.storyav.seen .ring{background:var(--line-2)}
+.storyav .inr{width:100%;height:100%;border-radius:50%;display:grid;place-items:center;font-size:26px;background:var(--surface-2);border:2px solid var(--ink)}
+.storyav .sl{font-size:10.5px;font-weight:700;color:var(--muted);text-align:center;line-height:1.15;max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ===== STORIES viewer ===== */
+.stories{position:absolute;inset:0;z-index:105;background:#000;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.stories.show{opacity:1;visibility:visible}
+.sbg{position:absolute;inset:0;z-index:0}
+.sgrain{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.5),transparent 22%,transparent 55%,rgba(0,0,0,.75))}
+.sbars{position:relative;z-index:4;display:flex;gap:5px;padding:calc(env(safe-area-inset-top) + 12px) 14px 8px}
+.sbar{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.28);overflow:hidden}
+.sbar i{display:block;height:100%;width:0;background:#fff;border-radius:3px}
+.sbar.done i{width:100%}
+.sbar.active i{animation:sfill linear forwards}
+@keyframes sfill{from{width:0}to{width:100%}}
+.stop{position:relative;z-index:4;display:flex;align-items:center;gap:10px;padding:2px 16px 0}
+.stop .semoji{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.12);display:grid;place-items:center;font-size:18px}
+.stop .stt{flex:1;min-width:0}.stop .stt b{font-size:14px;font-weight:800}.stop .stt small{display:block;color:rgba(255,255,255,.7);font-size:11.5px;font-weight:600}
+.stop .sx{color:#fff;font-size:26px;line-height:1;background:none;border:none;padding:4px 6px}
+.sbody{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 26px 40px;text-align:left;pointer-events:none}
+.sbody .se{font-size:52px;margin-bottom:16px}
+.sbody .sh{font-family:var(--serif);font-size:29px;line-height:1.22;font-weight:600;text-wrap:balance;text-shadow:0 2px 20px rgba(0,0,0,.5)}
+.sbody .sp{font-size:16.5px;line-height:1.55;color:#ece9f2;margin-top:14px;max-width:32ch}
+.snav{position:absolute;inset:0;z-index:3;display:flex}
+.snav .sz{flex:1}
+.sfoot{position:relative;z-index:4;display:flex;gap:10px;padding:0 20px calc(20px + env(safe-area-inset-bottom))}
+.sfoot button{flex:1;border:1px solid var(--line-2);background:rgba(255,255,255,.1);backdrop-filter:blur(6px);color:#fff;font-weight:800;font-size:14px;padding:12px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px}
+.sfoot button svg{width:17px;height:17px;fill:currentColor}
+.sfoot button.on-save{color:var(--gold);border-color:rgba(232,181,99,.5);background:rgba(232,181,99,.14)}
+
+/* ===== QUIZ overlay ===== */
+.quiz{position:absolute;inset:0;z-index:106;background:var(--ink);overflow-y:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.quiz.show{transform:none}
+.qtop{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top) + 12px) 16px 12px;background:linear-gradient(180deg,var(--ink) 65%,transparent)}
+.qtop button{width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center}.qtop button svg{width:19px;height:19px;fill:var(--text)}
+.qtop .qbar{flex:1;height:7px;border-radius:5px;background:var(--surface-2);overflow:hidden}.qtop .qbar i{display:block;height:100%;background:var(--grad-gold);border-radius:5px;transition:width .3s}
+.qtop .qn{font-size:13px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.qwrap{padding:14px 20px 40px;max-width:640px;margin:0 auto}
+.qcat{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-2)}
+.qq{font-family:var(--serif);font-size:25px;line-height:1.28;font-weight:600;margin:12px 0 22px;text-wrap:balance}
+.qopts{display:flex;flex-direction:column;gap:11px}
+.qopt{display:flex;align-items:center;gap:13px;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:15px;padding:16px 16px;font-size:15.5px;font-weight:650;color:var(--text);transition:transform .12s,border-color .2s,background .2s}
+.qopt .qk{width:28px;height:28px;flex:0 0 auto;border-radius:8px;background:var(--surface-3);display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--muted)}
+.qopt:active{transform:scale(.98)}
+.qopt.correct{border-color:var(--green);background:rgba(55,214,138,.13)}.qopt.correct .qk{background:var(--green);color:#04120b}
+.qopt.wrong{border-color:#ff4d6d;background:rgba(255,77,109,.12)}.qopt.wrong .qk{background:#ff4d6d;color:#fff}
+.qopt.dim{opacity:.5}
+.qexp{margin-top:18px;background:rgba(127,176,255,.08);border:1px solid rgba(127,176,255,.25);border-radius:14px;padding:14px 15px;font-size:14px;line-height:1.5;color:#cfe0ff;opacity:0;max-height:0;overflow:hidden;transition:opacity .3s,max-height .3s,margin .3s}
+.qexp.show{opacity:1;max-height:240px}
+.qexp b{color:#eaf1ff}
+.qnext{margin-top:20px;width:100%;border:none;border-radius:14px;background:var(--grad-gold);color:#1a1206;font-weight:850;font-size:16px;padding:15px;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none}
+.qnext.show{opacity:1;transform:none;pointer-events:auto}
+.qresult{text-align:center;padding:40px 26px}
+.qresult .qring{position:relative;width:150px;height:150px;margin:6px auto 18px}
+.qresult .qring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.qresult .qpct{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.qresult .qpct b{font-size:42px;font-weight:850;line-height:1}.qresult .qpct small{color:var(--muted);font-size:12px;font-weight:700;margin-top:2px}
+.qresult h2{font-size:26px;font-weight:850;margin:4px 0 6px}.qresult p{color:var(--muted);font-size:15px;line-height:1.5;margin-bottom:24px}
+.qresult .qbtns{display:flex;gap:11px}.qresult .qbtns button{flex:1;border-radius:14px;font-weight:800;font-size:15px;padding:14px;border:1px solid var(--line);background:var(--surface);color:var(--text)}
+.qresult .qbtns button.prim{background:var(--grad-gold);border:none;color:#1a1206}
+
+/* ===== MAP overlay ===== */
+.mapview{position:absolute;inset:0;z-index:106;background:var(--ink);overflow-y:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.mapview.show{transform:none}
+.mapwrap{padding:8px 18px 46px;max-width:680px;margin:0 auto}
+.maproot{margin:8px auto 6px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
+.maproot .mrbadge{width:74px;height:74px;border-radius:20px;display:grid;place-items:center;font-size:34px;box-shadow:0 14px 34px -12px rgba(0,0,0,.7)}
+.maproot .mrt{font-family:var(--serif);font-size:26px;font-weight:600}
+.maproot .mrs{font-size:13px;color:var(--muted);font-weight:600}
+.mstem{width:2px;height:22px;margin:0 auto;background:linear-gradient(var(--line-2),transparent)}
+.mbranch{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:15px 16px;margin-bottom:13px;position:relative;overflow:hidden;opacity:0;transform:translateY(10px);animation:mbin .45s forwards}
+@keyframes mbin{to{opacity:1;transform:none}}
+.mbranch::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+.mbhead{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+.mbhead .mbe{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:20px;flex:0 0 auto}
+.mbhead .mbl{font-size:16.5px;font-weight:800}
+.mbpts{display:flex;flex-direction:column;gap:8px}
+.mbpt{display:flex;align-items:flex-start;gap:9px;font-size:14px;line-height:1.4;color:#e4e1ee}
+.mbpt .mdot{flex:0 0 auto;width:7px;height:7px;border-radius:50%;margin-top:6px}
+.mapfoot{display:flex;gap:11px;margin-top:8px}
+.mapfoot button{flex:1;border-radius:14px;font-weight:800;font-size:14.5px;padding:13px;border:1px solid var(--line);background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center;gap:8px}
+.mapfoot button svg{width:17px;height:17px;fill:currentColor}
+.mapfoot button.prim{background:var(--grad-gold);border:none;color:#1a1206}
+
+/* shared: home quiz/map cards reuse .acard/.th; small quiz card */
+.qcardh{flex:0 0 auto;width:210px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px;cursor:pointer;position:relative;overflow:hidden}
+.qcardh .qe{font-size:24px}.qcardh .qtt{font-size:15px;font-weight:800;margin-top:8px;line-height:1.25}
+.qcardh .qmeta{font-size:11.5px;color:var(--muted-2);font-weight:700;margin-top:8px;display:flex;gap:8px;align-items:center}
+.qcardh .qbest{color:var(--gold);font-weight:800}
+@media(prefers-reduced-motion:reduce){.mbranch{animation:none;opacity:1;transform:none}.sbar.active i{animation:none;width:100%}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3d089"/><stop offset="1" stop-color="#c98f3a"/></linearGradient></defs></svg>
+
+<div class="app" id="app">
+  <div class="views" id="views">
+    <section class="view active" id="v-home"></section>
+    <section class="view nopad" id="v-learn"><div class="feed" id="feed"></div></section>
+    <section class="view" id="v-train"></section>
+    <section class="view" id="v-watch"></section>
+    <section class="view" id="v-you"></section>
+    <div class="reader" id="reader"></div>
+  </div>
+
+  <div class="musicbar" id="musicbar">
+    <div class="mvis"><i></i><i></i><i></i><i></i></div>
+    <div class="minfo"><div class="mt" id="mTitle">Cinematic score</div><div class="ms" id="mSub">Tap play for atmosphere</div></div>
+    <div class="mood" id="mMood"><button data-mood="calm">Calm</button><button data-mood="focus" class="on">Focus</button><button data-mood="epic">Epic</button></div>
+    <button class="mpp" id="mPP" aria-label="Play music"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+  </div>
+
+  <nav class="tabbar">
+    <button class="tab on" data-tab="home"><svg viewBox="0 0 24 24"><path d="M12 3l9 8h-2v9h-5v-6h-4v6H5v-9H3z"/></svg><span>Home</span></button>
+    <button class="tab" data-tab="learn"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg><span>Learn</span></button>
+    <button class="tab" data-tab="train"><svg viewBox="0 0 24 24"><path d="M20.5 9.5h-1V7a1 1 0 0 0-2 0v2.5h-11V7a1 1 0 0 0-2 0v2.5h-1a1 1 0 0 0 0 2h1V14a1 1 0 0 0 2 0v-2.5h11V14a1 1 0 0 0 2 0v-2.5h1a1 1 0 0 0 0-2z"/></svg><span>Train</span></button>
+    <button class="tab" data-tab="watch"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm6 4v8l6-4z"/></svg><span>Watch</span></button>
+    <button class="tab" data-tab="you"><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-5 0-9 2.5-9 6v2h18v-2c0-3.5-4-6-9-6z"/></svg><span>You</span></button>
+  </nav>
+
+  <div class="toasts" id="toasts"></div>
+  <div class="scrim" id="scrim"></div>
+  <div class="sheet" id="cmtSheet"><div class="grab"></div><h3><span id="cmtCount">0 comments</span><span class="close" data-close>✕</span></h3><div class="comments" id="commentsList"></div><div class="composer"><div class="me">Y</div><input id="cmtInput" placeholder="Add your reflection…" maxlength="220" autocomplete="off"><button class="send" id="cmtSend" aria-label="Post"><svg viewBox="0 0 24 24"><path d="M3 20.5v-6l9-2.5-9-2.5v-6l19 8.5z"/></svg></button></div></div>
+  <div class="timer" id="timer"></div>
+  <div class="stories" id="stories"></div>
+  <div class="quiz" id="quiz"></div>
+  <div class="mapview" id="mapview"></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const esc=s=>(""+s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ===== TOPICS ===== */
+const T={
+ discipline:{l:"Discipline",e:"🎖️",c:"#e8b563",g:["#2a2210","#453612"]},
+ mind:{l:"Mindfulness",e:"🧘",c:"#7fb0ff",g:["#0f1b34","#152a4f"]},
+ learn:{l:"Learning",e:"📚",c:"#37d68a",g:["#0f2a20","#12402f"]},
+ life:{l:"Life",e:"✨",c:"#f3d089",g:["#2a2413","#443a17"]},
+ genius:{l:"Genius",e:"💡",c:"#ffc65a",g:["#2b2408","#453913"]},
+ psych:{l:"Psychology",e:"🧠",c:"#a78bff",g:["#221a3d","#372152"]},
+ money:{l:"Money",e:"💸",c:"#41d18b",g:["#0f2a22","#123f30"]},
+ phil:{l:"Philosophy",e:"🏛️",c:"#c9a0ff",g:["#241a33","#372152"]},
+ science:{l:"Science",e:"🔭",c:"#4aa8ff",g:["#0e1b34","#152a52"]},
+ story:{l:"Stories",e:"✍️",c:"#7ad1c2",g:["#0d2a2a","#123f3a"]},
+ health:{l:"Health",e:"🫀",c:"#ff5e7a",g:["#2a1119","#451a28"]},
+ fit:{l:"Fitness",e:"💪",c:"#ff8a3c",g:["#2a1a0e","#45280f"]},
+};
+function grad(t){const x=T[t]||T.life;return`background:linear-gradient(150deg,${x.g[0]},${x.g[1]})`}
+
+/* ===== FEED ===== */
+const FEED=[
+ ["discipline","idea","The 40% Rule.","When your mind says you're done, you're only at 40% of your true capacity. The SEALs teach it because it's true — the wall is rarely the end."],
+ ["discipline","quote","Discipline equals freedom.","Jocko Willink","Navy SEAL commander"],
+ ["discipline","idea","Motivation is a fair-weather friend. Discipline shows up in the rain.","Feelings are unreliable narrators. Build systems that run whether you feel like it or not — that's where consistency is born."],
+ ["discipline","idea","Do the hardest thing first.","Navy SEALs call it 'eating the frog.' Win the morning by attacking what you fear most, and the rest of the day bends to you."],
+ ["discipline","quote","Under pressure you don't rise to the occasion — you sink to your training.","Archilochus","Greek soldier-poet"],
+ ["mind","idea","You are not your thoughts. You're the one noticing them.","This single shift — from being lost in the storm to watching it — is the entire foundation of mindfulness. The watcher was never in danger."],
+ ["mind","idea","Box breathing calms you in 60 seconds.","In 4, hold 4, out 4, hold 4. Navy SEALs use it before combat; it tells your nervous system the threat has passed. Your body believes your breath."],
+ ["mind","quote","You have power over your mind — not outside events. Realize this, and you will find strength.","Marcus Aurelius","Roman emperor"],
+ ["mind","idea","The goal of meditation isn't to stop thinking.","It's to stop being dragged by every thought. You'll never empty the sky of clouds — you just stop chasing each one."],
+ ["learn","idea","To learn something, try to teach it.","The Feynman Technique: explain it to a 12-year-old. The moment you stumble is the exact spot you didn't actually understand."],
+ ["learn","idea","Testing yourself beats re-reading — by a mile.","Every time you struggle to recall something, you strengthen the memory. Re-reading feels productive and mostly isn't. Difficulty is the point."],
+ ["learn","idea","Spacing beats cramming, permanently.","The same hours spread over weeks build memory that lasts years. Cramming builds memory that lasts until roughly Tuesday."],
+ ["learn","quote","I have no special talent. I am only passionately curious.","Albert Einstein","letter, 1952"],
+ ["life","idea","Comparison is the thief of joy.","You're comparing your behind-the-scenes to everyone else's highlight reel. It's a rigged game — the only fair race is against who you were yesterday."],
+ ["life","idea","No is a complete sentence.","Every yes to something unimportant is a no to something that matters. Protecting your time isn't rude — it's the whole job."],
+ ["life","idea","Someday is not a day of the week.","'I'll start when things calm down' is how decades disappear. Things never calm down. The conditions will never be perfect — begin anyway."],
+ ["genius","idea","Invert, always invert.","Don't ask how to succeed — ask what guarantees failure, then avoid it. Charlie Munger built a fortune thinking backwards."],
+ ["genius","idea","Feynman couldn't understand it, so he rebuilt it from scratch.","His secret wasn't raw genius — it was refusing to accept an idea he couldn't derive himself. Understand from first principles, not from memory."],
+ ["genius","idea","Chesterton's Fence.","Don't tear down a fence until you know why it was built. If you can't see a rule's purpose, you're the least qualified person to remove it."],
+ ["psych","fact","You can't tickle yourself.","Your brain predicts your own movements and cancels the sensation — surprise is the whole point of a tickle."],
+ ["psych","idea","The spotlight effect: nobody's watching as closely as you fear.","You replay your stumble on loop; everyone else forgot by lunch. They're too busy starring in their own movie."],
+ ["psych","fact","Rejection lights up the same brain regions as physical pain.","Heartbreak isn't a metaphor — your brain literally processes it like an injury."],
+ ["money","finance","A penny doubled daily becomes over $5M in a month.","Compounding starts insultingly slow, then goes vertical. The whole fortune hides in the final few days."],
+ ["money","idea","The sunk-cost fallacy is why you finish a bad movie.","The ticket money is already gone. The only thing still yours to spend is the next two hours — spend it well."],
+ ["money","finance","Wealth is what you don't see.","The car not bought, the upgrade skipped. Real wealth is the income you converted into freedom instead of stuff."],
+ ["phil","idea","The Ship of Theseus.","Replace every plank and it's a new ship — yet your body already did that with its cells. So… are you the same you?"],
+ ["phil","quote","We suffer more in imagination than in reality.","Seneca","Stoic philosopher"],
+ ["phil","quote","He who has a why to live can bear almost any how.","Friedrich Nietzsche","Twilight of the Idols"],
+ ["science","fact","There are more ways to shuffle a deck than atoms on Earth.","52! is so vast any well-shuffled deck has almost certainly never existed before in history."],
+ ["science","fact","A teaspoon of a neutron star weighs about a billion tons.","When a giant star collapses, matter itself gives up on personal space."],
+ ["science","fact","Your body replaces ~330 billion cells every day.","You are, quite literally, not the same matter you were a year ago. You're a pattern, not a substance."],
+ ["science","fact","Sharks are older than trees.","Sharks: ~400 million years. Trees: ~350 million. The ocean had apex predators before land had forests."],
+ ["story","story","A monk asked his master: 'What is the way?'","'The everyday mind is the way,' he replied. 'When hungry, eat. When tired, sleep.' Enlightenment was never somewhere else."],
+ ["discipline","idea","Make your bed.","Admiral McRaven told a graduating class: if you want to change the world, start by making your bed. One small win, done well, becomes the spine of a disciplined day."],
+ ["mind","idea","Gratitude physically rewires your brain.","Naming three things you're grateful for trains your mind to scan for good instead of threat. Repeated daily, it changes your baseline mood."],
+ ["life","quote","Whether you think you can or you can't — you're right.","Henry Ford","industrialist"],
+ ["discipline","idea","Callus your mind.","Goggins says toughness builds like a callus — through repeated friction. Seek the hard thing daily and your tolerance grows a layer at a time."],
+ ["discipline","idea","Slow is smooth, smooth is fast.","A SEAL mantra. Rushing breeds mistakes that cost you time. Deliberate, controlled action is what actually wins the race."],
+ ["discipline","idea","Embrace the suck.","When conditions are miserable and unchangeable, resisting only adds suffering. Accept the difficulty and get to work — the mission doesn't care how you feel."],
+ ["discipline","idea","Get 1% better every day.","1.01 to the 365th power is 37. Small daily reps of discipline make you almost unrecognizable in a year."],
+ ["discipline","idea","Nobody cares. Work harder.","Cameron Hanes' motto. Waiting for applause is a trap. Do the work in the dark, for no audience, and let the results talk."],
+ ["discipline","idea","Cold showers are reps for your willpower.","It's not about the cold — it's about doing something your body begs you to avoid. A daily, deliberate practice of overriding the flinch."],
+ ["discipline","idea","The standard you walk past is the standard you accept.","Every time you tolerate a slip in yourself, you reset your baseline lower. Hold the line on the small things."],
+ ["discipline","idea","Two-a-days build people who don't quit.","It was never about the workout. Doing what you don't want to do, twice, teaches your brain that discomfort is not an emergency."],
+ ["discipline","quote","The more you sweat in training, the less you bleed in war.","Military proverb","—"],
+ ["discipline","quote","Discipline is choosing between what you want now and what you want most.","Abraham Lincoln (attrib.)","—"],
+ ["mind","idea","Name it to tame it.","Labeling an emotion — 'this is anxiety' — shifts activity from the brain's alarm center to its reasoning center. Naming a feeling literally shrinks it."],
+ ["mind","idea","The breath is the only part of your nervous system you can drive by hand.","Slow your exhale and your heart rate drops within seconds. It's the one lever your conscious mind has over your unconscious body."],
+ ["mind","idea","You don't have to believe every thought you think.","Thoughts are events in the mind, not commands. You can watch one arrive and simply decline to follow it."],
+ ["mind","idea","Feel your feet.","When your mind spirals, drop your attention to the soles of your feet. You can't panic about the future and be fully in your body at once."],
+ ["mind","idea","Boredom is your brain defragmenting.","Constant stimulation blocks the mind-wandering that consolidates memory and sparks insight. Let yourself be bored — that's where ideas hide."],
+ ["mind","idea","Single-tasking is a superpower now.","In a world engineered to fracture your attention, doing one thing fully is rare, valuable, and quietly radical."],
+ ["mind","quote","The present moment is the only place where life is real.","Thich Nhat Hanh","Zen teacher"],
+ ["learn","idea","Struggle first, then look.","Trying to solve a problem before you're taught the answer makes the lesson stick far deeper. The failed attempt prepares the mind."],
+ ["learn","idea","Sleep is when you actually learn it.","Your brain replays and files the day's practice while you sleep. Skip the sleep and you erase much of the gain."],
+ ["learn","idea","Teach it within 24 hours or lose most of it.","The forgetting curve is steep. One act of recall or explanation soon after learning flattens it dramatically."],
+ ["learn","idea","Learn it in the place you'll use it.","Memory is state-dependent. Practice a skill close to the real conditions and it'll actually show up when you need it."],
+ ["learn","idea","Curiosity is a memory hack.","When you genuinely want to know something, your brain primes itself to remember — even unrelated things learned in that moment stick better."],
+ ["learn","quote","Learn as if you were to live forever.","Mahatma Gandhi","—"],
+ ["life","idea","You're the average of the five people you spend the most time with.","Jim Rohn. Your environment out-votes your willpower. Choose your circle and your inputs deliberately."],
+ ["life","idea","How you do anything is how you do everything.","The care you bring to small, unseen tasks is the care that shows up in the big ones. Excellence is a habit, not an event."],
+ ["life","idea","Motion beats meditation when you're stuck.","You don't think your way out of a rut — you act your way out. A tiny step generates the clarity you were waiting to feel."],
+ ["life","idea","Reply to the email. Send the text. Book the thing.","Most of what you avoid takes two minutes and lives rent-free in your head for days. Do it now and reclaim the space."],
+ ["life","idea","Assume the best about people.","Most slights aren't personal — they're someone's bad day. Charitable assumptions cost nothing and save you constant misery."],
+ ["life","idea","Your future self is watching.","Every choice is a vote for who you're becoming. Ask what the version of you in five years would thank you for."],
+ ["life","idea","Protect your mornings like they're sacred.","The first hour programs the day. Guard it from the phone, the news, and everyone else's agenda."],
+ ["life","quote","It is not death a man should fear, but never beginning to live.","Marcus Aurelius","Meditations"],
+ ["genius","idea","Steel-man before you argue.","Restate your opponent's view better than they can. If you can't, you don't understand it well enough to disagree yet."],
+ ["genius","idea","Confusion is the feeling of learning.","The moment before you get it feels like fog. Don't flee it — that discomfort is your mental model rebuilding itself."],
+ ["genius","idea","Ask 'why' five times.","Toyota's trick for root causes. The first answer is a symptom; the fifth is usually the real problem hiding underneath."],
+ ["genius","idea","Write to think, not to record.","You don't have clear thoughts and then write them — writing is how the thinking happens. Vague ideas can't survive a full sentence."],
+ ["genius","idea","Strong opinions, loosely held.","Commit hard enough to act, but update the instant evidence says otherwise. Certainty is comfortable and often wrong."],
+ ["genius","quote","You must not fool yourself — and you are the easiest person to fool.","Richard Feynman","Caltech, 1974"],
+ ["health","idea","Walk for 10 minutes after meals.","Even a short walk pulls blood sugar into muscle instead of storage. Easiest health win there is — and it doubles as a mind reset."],
+ ["health","idea","Muscle is the organ of longevity.","Leg strength and grip predict how long and how well you'll live better than almost any simple measure. Lift things."],
+ ["health","idea","Morning sunlight sets your whole day's clock.","Ten minutes of light in your eyes early anchors your circadian rhythm — better mood by day, better sleep by night."],
+ ["health","idea","You can't out-train a bad night's sleep.","Sleep is when muscle rebuilds, hormones reset, and the brain clears waste. It's not lazy — it's the workout finishing."],
+ ["health","idea","Zone 2 is the base of everything.","Training easy enough to hold a conversation builds the aerobic engine that powers every harder effort. Most people skip it and stall."],
+ ["health","idea","Protein at every meal keeps muscle as you age.","After 30 you lose muscle by default. Enough protein plus resistance training is the closest thing to an anti-aging drug."],
+ ["health","idea","Hydrate before you caffeinate.","You wake up dehydrated. A glass of water first blunts the afternoon crash better than the second coffee ever will."],
+ ["health","idea","Movement all day beats one workout.","The calories you burn standing, pacing and taking the stairs can outweigh the gym. The day itself can be the training."],
+ ["health","quote","Take care of your body. It's the only place you have to live.","Jim Rohn","—"],
+ ["money","idea","Pay yourself first.","Automate savings the day you're paid, before you can spend it. Willpower fails; a standing transfer doesn't."],
+ ["money","idea","Your savings rate matters more than your return.","Early on, how much you set aside dwarfs what the market does — and you actually control the savings rate."],
+ ["money","idea","Time in the market beats timing the market.","Missing the ten best days over decades can halve your returns — and those days often come right after the scary ones. Stay in."],
+ ["money","idea","Buy assets, not liabilities dressed as status.","An asset puts money in your pocket. A liability takes it out — no matter how shiny the logo on it is."],
+ ["money","quote","Spend what is left after saving — not save what is left after spending.","Warren Buffett","—"],
+ ["phil","idea","Memento mori — remember you will die.","Not morbid — clarifying. Picturing the end burns away trivial worries and makes the present vivid. Finitude is what gives time value."],
+ ["phil","idea","Amor fati — love your fate.","Don't just accept what happens; use it as fuel. The obstacle isn't in the way of the path — it is the path."],
+ ["phil","idea","Compare down, not up, for perspective.","Gratitude comes from remembering how easily you could have less. Envy comes from only ever looking at those with more."],
+ ["phil","quote","Man is condemned to be free.","Jean-Paul Sartre","Existentialism"],
+ ["science","fact","Octopuses have three hearts and blue blood.","Two hearts stop when they swim, which tires them — so they'd usually rather crawl."],
+ ["science","fact","A day on Venus is longer than its year.","It spins so slowly it laps its own orbit around the Sun before finishing one rotation."],
+ ["science","fact","Honey never spoils.","Archaeologists found 3,000-year-old honey in Egyptian tombs, still edible. Its chemistry is naturally hostile to bacteria."],
+ ["science","fact","There are more trees on Earth than stars in the Milky Way.","~3 trillion trees vs. a few hundred billion stars. Look up, then look around — the ground wins."],
+ ["science","fact","We are all made of exploded stars.","The calcium in your bones and iron in your blood were forged inside dying stars. You are, quite literally, stardust."],
+ ["science","fact","Lightning is five times hotter than the surface of the Sun.","~30,000°C for a fraction of a second, punched through the sky right above your head."],
+ ["story","story","A student asked the master how long enlightenment takes.","'Ten years,' he said. 'And if I work twice as hard?' 'Twenty years.' The harder you grasp for it, the further it retreats."],
+ ["story","story","Two wolves live inside you, the elder told the boy.","One is anger, the other peace. 'Which wins?' asked the boy. The elder smiled: 'The one you feed.'"],
+ ["story","story","The farmer's horse ran away. 'Bad luck,' said the neighbors. 'Maybe,' he said.","It returned with wild horses. 'Good luck!' 'Maybe.' His son broke a leg taming one — then war came, and the injured son stayed home. Maybe."],
+ ["discipline","idea","Don't miss twice.","Missing once is an accident; missing twice is the start of a new habit. The comeback matters more than the slip. Never let one bad day become two."],
+ ["discipline","idea","Discipline is choosing what you want most over what you want now.","Every hard choice is a trade between the you of this minute and the you of this year. Keep voting for the future one."],
+ ["discipline","quote","We are what we repeatedly do. Excellence, then, is not an act but a habit.","Will Durant","on Aristotle"],
+ ["discipline","idea","Make it 1% harder to quit than to continue.","Lay the clothes out. Pre-log the workout. Delete the app. Design the moment so the path of least resistance is the right one."],
+ ["mind","idea","Feelings are visitors. Let them come and go.","You don't have to act on every emotion that knocks. Notice it, let it pass through, and return to what matters."],
+ ["mind","idea","The breath is the only anchor you always carry.","Anxious about the future, stuck in the past — the breath is the one door back to now. It's free, silent, and always open."],
+ ["mind","idea","Single-task like it's a superpower — because it is.","Attention is the rarest currency left. Give one thing your whole mind and you'll outwork ten distracted people."],
+ ["mind","quote","The mind is everything. What you think you become.","Buddha","—"],
+ ["learn","idea","Sleep is the save button for memory.","What you learn is filed into long-term storage overnight. Pull an all-nighter and you're deleting the day's work to cram more you'll forget."],
+ ["learn","idea","If you can't explain it simply, you don't understand it.","Jargon is where confusion hides. Force yourself into plain words and every gap in your knowledge lights up."],
+ ["learn","idea","Difficulty is the price of durability.","Learning that feels smooth rarely sticks. The friction of struggling to recall is exactly what builds a memory that lasts."],
+ ["genius","idea","First principles: boil it down, build it back up.","Strip a problem to what you know is true, then reason up from there. Copying others gives you their ceiling; deriving gives you your own."],
+ ["genius","idea","Keep a 'stupid questions' list.","The questions you're embarrassed to ask are usually the ones everyone's too proud to. Asking them is how you leap ahead."],
+ ["psych","idea","The Zeigarnik effect: unfinished tasks haunt you.","Your brain nags about what's incomplete. Write it down or start it small — capturing it quiets the loop and frees your focus."],
+ ["psych","fact","Smiling can actually make you happier.","The facial-feedback loop runs both ways: the muscles of a smile nudge your brain toward the mood. Fake it and you partly make it."],
+ ["psych","idea","You remember peaks and endings, not averages.","How an experience felt at its most intense moment and how it finished shape the whole memory. End things well — it rewrites the story."],
+ ["money","idea","An emergency fund is bought peace of mind.","Three to six months of expenses turns a crisis into an inconvenience. It's not exciting — it's the floor everything else stands on."],
+ ["money","idea","Beware the latte you finance for 30 years.","Small recurring costs, invested instead, compound into fortunes. It's never about one coffee — it's about the system behind it."],
+ ["health","idea","Strength training is a retirement plan for your body.","The muscle you build now is what keeps you independent at 80. Lifting isn't vanity — it's insurance you can feel."],
+ ["health","idea","Two minutes of movement resets a foggy brain.","Stuck on a problem? Stand up, walk, breathe. Motion pumps blood to the brain and shakes ideas loose better than staring harder."],
+ ["fit","idea","Warm up like you mean it.","Cold muscles tear; primed ones fire. Five minutes of easy movement makes every rep safer and stronger. Skipping it is borrowing against your joints."],
+ ["fit","idea","Form first, weight second, ego last.","A clean rep at light load beats a sloppy heavy one every time. Master the movement and the numbers follow safely."],
+ ["fit","quote","Take care of your body. It's the only place you have to live.","Jim Rohn","—"],
+ ["phil","idea","The obstacle is the way.","What blocks the path becomes the path. Every difficulty carries the exact lesson or strength you were missing."],
+ ["science","fact","Bananas are radioactive — and harmless.","They're rich in potassium, a fraction of which is naturally radioactive. You'd need millions in one sitting to matter. Eat up."],
+];
+
+/* ===== ARTICLES ===== */
+const ARTICLES=[
+ {id:"d1",topic:"discipline",emoji:"🎖️",minutes:5,author:"APEX",title:"The 40% Rule: What the SEALs Know About Your Limits",dek:"When your body begs you to quit, it's lying to you — and there's science behind why.",body:[
+  ["p","There's an idea that spreads through Navy SEAL training like folklore, except it keeps proving true: when your mind is screaming that you're finished, you've actually only spent about 40% of what you have. The other 60% is guarded by a nervous system that would rather you never find out it exists."],
+  ["p","Your brain is a protective pessimist. Long before your muscles truly fail, it floods you with fatigue, doubt, and the overwhelming urge to stop. This isn't weakness — it's an ancient safety margin, evolved to keep you from running yourself to death chasing an antelope. The problem is that the margin is enormous, and most people mistake its first warning for the final limit."],
+  ["h","Meeting the wall"],
+  ["p","David Goggins, the SEAL who turned suffering into a discipline, calls this moment 'the wall' — and his entire philosophy is built on what happens after you hit it. The wall feels like the end. It is actually the doorway. On the far side is capacity you've never touched, because you always turned back at the first knock of discomfort."],
+  ["pull","The wall is not a stop sign. It's the point where the real workout — and the real person — begins."],
+  ["h","Why this matters off the battlefield"],
+  ["p","You don't need to be carrying a boat over your head to use this. The 40% Rule applies to the last three reps, the final hour of study, the hard conversation you keep avoiding, the business you're too tired to build. In each case, the quitting voice arrives early and loud, disguised as a verdict when it's really just a suggestion."],
+  ["p","The skill is not silencing that voice — you can't. The skill is learning to hear it, nod, and take one more step anyway. Each time you do, you recalibrate. The wall moves. What felt impossible becomes your new warm-up."],
+  ["h","How to train it"],
+  ["p","Start absurdly small and stay honest. When you want to stop, do 10% more — one more rep, five more minutes, one more attempt. You're not trying to break yourself; you're teaching your nervous system that discomfort is survivable and that you, not your fatigue, decide when you're done. Do this for weeks and something quiet but permanent shifts: you stop believing the first flinch. And a person who no longer believes their own excuses is very hard to stop."],
+ ]},
+ {id:"l1",topic:"learn",emoji:"📚",minutes:5,author:"APEX",title:"How to Learn Anything Twice as Fast",dek:"Almost everything you were taught about studying is quietly wrong.",body:[
+  ["p","Most people study by re-reading and highlighting. It feels productive, it's comfortable, and it barely works. Decades of research into how memory actually forms point to a handful of techniques that feel worse in the moment and work dramatically better over time. The discomfort, it turns out, is the mechanism."],
+  ["h","Recall, don't review"],
+  ["p","The single highest-leverage change is to stop re-reading and start testing yourself. Close the book and try to reconstruct what you just learned from memory. This is called active recall, and every act of struggling to remember physically strengthens the pathway to that memory. Re-reading lets the information stay a stranger you keep waving at; recall forces an introduction."],
+  ["pull","If it feels easy, you're probably not learning. Productive study feels like effort."],
+  ["h","Space it out"],
+  ["p","Cramming works — until Tuesday. The same total hours, spread across days and weeks, build memory that lasts for years. The trick is to review material right as you're about to forget it; each well-timed reminder resets the forgetting clock and makes the memory more durable. Apps like spaced-repetition flashcards automate this, but even a rough schedule beats a single panicked all-nighter."],
+  ["h","Explain it like they're twelve"],
+  ["p","Richard Feynman's method was disarmingly simple: take the thing you want to understand and explain it, in plain words, as if to a curious child. The instant you reach for jargon or your explanation gets fuzzy, you've found the exact edge of your understanding. Go back, fill that gap, and try again. Teaching is the fastest way to expose what you only pretended to know."],
+  ["h","Interleave and connect"],
+  ["p","Finally, don't study one topic to death before moving on. Mixing related subjects — interleaving — feels messier but trains your brain to choose the right tool, not just apply the last one. And whenever you meet a new idea, tie it to something you already know. Memory isn't a warehouse of isolated facts; it's a web. The more threads you attach an idea to, the harder it is to lose."],
+ ]},
+ {id:"m1",topic:"mind",emoji:"🧘",minutes:4,author:"APEX",title:"The 5-Minute Habit That Rewires Your Brain",dek:"Meditation isn't mysticism. It's measurable training for the mind's most important muscle.",body:[
+  ["p","Strip away the incense and the mysticism and meditation is something almost boringly practical: repetitions for your attention. And like any training, it changes the tissue it works on. Brain scans of regular meditators show real, physical differences — a thicker prefrontal cortex, a calmer, smaller fear center. You are, quite literally, remodeling the organ you think with."],
+  ["h","The rep is the point"],
+  ["p","Beginners almost always misunderstand the exercise. They think the goal is a blank, thoughtless mind, and when thoughts keep coming they conclude they're 'bad at it.' But noticing that your mind has wandered and gently bringing it back — that noticing and returning is the entire rep. A wandering mind isn't failure. It's the weight you're lifting."],
+  ["pull","You'll never empty the sky of clouds. You just stop chasing each one."],
+  ["h","Why it bleeds into everything"],
+  ["p","Here's the quiet magic: the muscle you build sitting still is the same one you use everywhere else. The pause between a rude email and your reply. The half-second where you choose the salad or the fries. The ability to stay with a hard task instead of reaching for your phone. Meditation trains the gap between stimulus and response — and in that gap lives every good decision you'll ever make."],
+  ["h","How to start tonight"],
+  ["p","Sit comfortably. Set a timer for five minutes. Breathe normally and put your attention on the sensation of the breath. When you notice you've drifted into planning or worrying — and you will, constantly — simply note it and come back to the breath. That's it. No app, no lotus position, no emptying required. Five minutes a day, and within weeks you'll catch yourself pausing where you used to react. That pause is where your freedom lives."],
+ ]},
+ {id:"p1",topic:"phil",emoji:"🏛️",minutes:5,author:"APEX",title:"The Stoic Morning: How to Own Your Day Before It Owns You",dek:"Two thousand years ago, an emperor and a former slave built the same operating manual for a hard life.",body:[
+  ["p","Stoicism gets caricatured as gritting your teeth and feeling nothing. The real thing is almost the opposite: a practical toolkit for staying calm, useful, and free in a world that mostly refuses to cooperate. Its two most famous teachers were an emperor, Marcus Aurelius, and a man born into slavery, Epictetus — and they arrived at the same core move from opposite ends of fortune."],
+  ["h","The one idea everything hangs on"],
+  ["p","Divide the world into two piles: what you control and what you don't. You don't control the weather, the traffic, other people's opinions, the past, or the outcome of most things you want. You do control your own judgments, your effort, your response. Almost all suffering, the Stoics argued, comes from demanding authority over the first pile. Peace comes from pouring your energy into the second."],
+  ["pull","You have power over your mind — not outside events. Realize this, and you find strength."],
+  ["h","The morning rehearsal"],
+  ["p","Marcus began his days by honestly expecting friction: 'Today I will meet people who are ungrateful, arrogant, dishonest.' It sounds bleak; it's actually armor. When you've already rehearsed the difficulty, it can't ambush you. You meet the rude driver and the broken plan with a nod instead of a spiral, because you never expected a frictionless day in the first place."],
+  ["h","Negative visualization"],
+  ["p","The Stoics also practiced briefly imagining loss — the job gone, the loved one absent — not to wallow, but to wake up. We adapt to our blessings until they turn invisible; picturing their absence makes them vivid again. You walk back into your ordinary life and suddenly see how much of it you'd been taking for granted."],
+  ["h","Put it to work"],
+  ["p","Tomorrow, before the noise starts, take sixty seconds. Name one thing you'll face that you can't control, and release it. Name one thing you can control, and commit to it. Picture one thing you'd hate to lose, and let it make you grateful. That's the whole practice. Do it daily and you become strangely hard to rattle — not because nothing goes wrong, but because you've stopped outsourcing your peace to things that were never yours to command."],
+ ]},
+ {id:"g1",topic:"genius",emoji:"💡",minutes:4,author:"APEX",title:"Think Backwards: The Quiet Power of Inversion",dek:"The sharpest minds don't chase success. They engineer the absence of failure.",body:[
+  ["p","The mathematician Carl Jacobi had a maxim for cracking hard problems: invert, always invert. When a question wouldn't yield head-on, he flipped it and attacked from behind. Two centuries later, the investor Charlie Munger turned that habit into a philosophy — and a fortune."],
+  ["p","Inversion is simple. Instead of asking 'how do I achieve this?', ask 'what would guarantee I fail?' — then refuse to do any of it. You don't chase the win; you subtract the losses, and the win arrives by elimination."],
+  ["pull","It's easier to avoid stupidity than to achieve brilliance — and the results look identical."],
+  ["h","Why it beats optimism"],
+  ["p","Forward thinking asks you to find the one narrow path to a good outcome. Inversion asks you to map the many wide roads to a bad one — and there are almost always more ways to fail than to succeed, which makes them easier to spot and cheaper to dodge. Want a good marriage? List what reliably destroys them — contempt, dishonesty, never listening — and simply don't. You've done most of the work without a vision board."],
+  ["h","The pre-mortem"],
+  ["p","Engineers formalize this as a 'pre-mortem': before a project launches, imagine it has already failed spectacularly, then work backwards to list every cause. Naming the disasters in advance is how you disarm them. Try it on anything you're stuck on — reverse the goal, stare at the failure modes, and remove them one by one. Inversion won't make you a genius. It'll do something more useful: keep you from being a fool, which over a long life is the same thing as winning."],
+ ]},
+ {id:"a1",topic:"phil",emoji:"🌊",minutes:5,author:"APEX",title:"You Are a River, Not a Rock",dek:"Every cell that made you a child is gone. So what, exactly, has survived?",body:[
+  ["p","Around 2,500 years ago, Heraclitus said something that still won't leave people alone: you cannot step in the same river twice. The water you touched a moment ago is already downstream. The river keeps its name and shape, but its substance never stops leaving. He wasn't only talking about rivers — he was talking about you."],
+  ["h","The ship that isn't there"],
+  ["p","Philosophers sharpened it into a puzzle. Replace every plank of a ship, one by one, until none of the original remains. Is it the same ship? Here's what makes it personal: your body replaces roughly 330 billion cells a day. The atoms that spelled out 'you' as a seven-year-old have almost entirely dispersed. Physically, you are the ship with every plank swapped — and you did it without noticing."],
+  ["pull","You are not a substance. You are a pattern — not the water, but the shape of the flow."],
+  ["p","A whirlpool is a real thing you can point to and name, yet it's made of different water every instant. It exists as a process, not a possession. So do you. That reframes the guilt you carry from years ago — it belongs to a body built of atoms you no longer own. And the self you fear you're stuck being isn't a rock but a current, and currents can be redirected."],
+  ["h","The freedom in it"],
+  ["p","If you're a pattern rather than a thing, change isn't a betrayal of some 'true self' — it's the only way a self exists at all. The river that stopped moving wouldn't be purer. It would be a puddle. 'No man steps in the same river twice,' Heraclitus said, 'for it's not the same river, and he's not the same man.' Both of you have moved on. That's not loss. That's what being alive is."],
+ ]},
+ {id:"a3",topic:"money",emoji:"📈",minutes:6,author:"APEX",title:"How Money Grows While You Sleep",dek:"The most powerful force in finance isn't picking winners. It's patience, doing math.",body:[
+  ["p","Ask most people how the wealthy got there and they'll describe a great trade or a lucky bet. But the quiet engine behind almost every durable fortune is far less dramatic and far more available to you: compound growth. It's arithmetic that behaves like magic, and its only real requirement is time."],
+  ["h","The penny that beats the million"],
+  ["p","Would you rather have a million dollars today, or a penny that doubles every day for thirty days? Almost everyone grabs the million. They're wrong. The doubling penny crosses five million by day thirty — but on day twenty it's worth about five thousand dollars, and you'd feel like a fool for waiting. The entire fortune materializes in the last five days. Compounding looks like nothing is happening right up until everything happens at once."],
+  ["pull","Compounding rewards the patient and punishes the impatient with the exact same math."],
+  ["h","Why boring wins"],
+  ["p","This is why serious financial advice sounds almost insultingly dull: spend less than you earn, invest the difference in something broad and cheap, and leave it alone for decades. The magic isn't in the choosing — it's in the not-touching. An investor who starts at 25 and stops at 35 often beats one who invests three times as long starting at 35, purely on compounding's head start."],
+  ["h","The real enemy"],
+  ["p","If it's this simple, why isn't everyone rich? Because compounding demands a temperament, not an intellect. Every crash whispers the same lie — sell now, get back in later — and those who obey lock in losses and miss the recovery. The ones who do nothing, who let the penny keep doubling through the ugly years, win. The secret to money growing while you sleep is almost literal: you have to actually go to sleep, and let time do the one thing you cannot rush."],
+ ]},
+ {id:"a6",topic:"psych",emoji:"⏱️",minutes:5,author:"APEX",title:"You Live 80 Milliseconds in the Past",dek:"By the time you experience 'now,' it's already over. Your brain hides the delay.",body:[
+  ["p","Right now feels immediate — you look up, you see the room, and it all seems to arrive the instant it happens. That seamless 'now' is one of the most convincing illusions your brain produces, because the present you're experiencing is already, unavoidably, in the past."],
+  ["h","The lag you never notice"],
+  ["p","Light and sound take time to arrive; your organs take time to convert them; the signals crawl up slow, wet biology. Add it up and the world you consciously perceive is roughly 80 milliseconds behind the real one. You are always watching a slightly delayed broadcast and calling it live."],
+  ["pull","Consciousness isn't a live feed. It's a heavily edited replay that arrives just late enough to feel instant."],
+  ["h","The stitching"],
+  ["p","Different signals take different times to process — a touch on your toe travels farther than one on your nose — yet tapped together, you feel them at once. Your brain waits for the slowest signal, synchronizes everything, and presents a tidy unified moment, like an editor cutting scattered footage into one smooth scene. The 'now' you live in was assembled backstage."],
+  ["h","A feature, not a bug"],
+  ["p","You might expect evolution to fix this. It's the opposite. A perfectly instantaneous but unsynchronized stream of raw sensation would be useless — you'd flinch at echoes and trip over your reflexes. By buffering reality for a fraction of a second, your brain buys time to sort, align, and predict, handing your conscious mind a clean, stable world instead of chaos. So when a moment feels perfectly present, savor the craftsmanship. Someone worked hard, in the dark, a few dozen milliseconds ago, to make sure you'd never notice you were late. That someone was you."],
+ ]},
+];
+
+/* ===== WORKOUTS + SESSIONS ===== */
+const CATW={HIIT:"#ff4d6d",Core:"#ff6a3d",Strength:"#a78bff",Mobility:"#37d68a",Mind:"#7fb0ff"};
+const WORKOUTS=[
+ {id:"w1",cat:"HIIT",title:"Express Fat-Burn HIIT",level:"All levels",rounds:3,ex:[["Jumping jacks",40,"Light on your feet, full arm range."],["Rest",20,""],["High knees",40,"Drive knees to hip height."],["Rest",20,""],["Squat to jump",40,"Sit back, explode up, land soft."],["Rest",20,""],["Mountain climbers",40,"Hips low, knees fast, core braced."],["Rest",30,""]]},
+ {id:"w2",cat:"Core",title:"6-Minute Ab Finisher",level:"Beginner+",rounds:2,ex:[["Crunches",40,"Ribs toward hips, slow."],["Rest",15,""],["Bicycle kicks",40,"Opposite elbow to knee."],["Rest",15,""],["Plank hold",45,"Straight line, squeeze glutes."],["Rest",15,""],["Leg raises",40,"Press low back down."],["Rest",20,""]]},
+ {id:"w3",cat:"Strength",title:"Full-Body Strength",level:"Intermediate",rounds:3,ex:[["Push-ups",40,"Elbows ~45°, full depth."],["Rest",20,""],["Reverse lunges",45,"Front knee over ankle."],["Rest",20,""],["Pike push-ups",35,"Hips high, crown to floor."],["Rest",20,""],["Glute bridge",40,"Drive heels, pause at top."],["Rest",30,""]]},
+ {id:"w4",cat:"Mobility",title:"Daily Mobility Flow",level:"All levels",rounds:1,ex:[["Neck rolls",30,"Slow circles both ways."],["Shoulder circles",30,"Big backward, then forward."],["Cat–cow",45,"Flow with the breath."],["Hip openers",45,"Breathe into the hip."],["Thoracic twists",40,"Rotate from mid-back."],["World's greatest stretch",50,"Lunge, elbow down, reach up."]]},
+];
+const SESSIONS=[
+ {id:"s1",cat:"Mind",title:"Box Breathing",level:"2 min · calm",kind:"breathe",pattern:[4,4,4,4],cycles:8,desc:"The SEAL reset. In 4, hold 4, out 4, hold 4."},
+ {id:"s2",cat:"Mind",title:"Calm Breath (4-7-8)",level:"~3 min · sleep",kind:"breathe",pattern:[4,7,8,0],cycles:6,desc:"Inhale 4, hold 7, exhale 8. Slows a racing mind."},
+ {id:"s3",cat:"Mind",title:"5-Minute Meditation",level:"5 min · focus",kind:"meditate",secs:300,desc:"Sit. Follow the breath. When you drift, return. That's the rep."},
+];
+
+/* ===== QUIZZES ===== */
+const QUIZZES=[
+ {id:"qz1",topic:"discipline",title:"Discipline & Mindset",emoji:"🎖️",qs:[
+   {q:"According to the SEAL '40% Rule', when your mind says you're done, you've used about…",o:["40% of your capacity","75% of your capacity","95% of your capacity","100% — you're done"],a:0,e:"The wall you hit is a protective early-warning signal, not your true limit. Most of your capacity is still in reserve."},
+   {q:"What's the reliable engine behind consistency?",o:["Waiting to feel motivated","Systems and cues you design","Raw willpower alone","Punishing yourself"],a:1,e:"Motivation is weather; systems are climate. Design your environment so the right action is the easy one."},
+   {q:"'Don't miss twice' means…",o:["Never take a rest day","One slip is fine — just don't let it become two","Do everything twice","Only train on even days"],a:1,e:"A single miss is an accident. Two in a row is the start of a new (worse) habit. The comeback beats the slip."},
+   {q:"'Eat the frog' is advice to…",o:["Reward yourself first","Do the hardest task first","Skip breakfast","Multitask everything"],a:1,e:"Tackle the thing you dread earliest. Win the morning and the day tends to follow."},
+ ]},
+ {id:"qz2",topic:"money",title:"Money Basics",emoji:"💸",qs:[
+   {q:"'Pay yourself first' means…",o:["Buy what you want first","Automate saving before you spend","Pay debts last","Tip yourself"],a:1,e:"Move money to savings/investing the day you're paid, before it can leak into spending."},
+   {q:"Real wealth is best described as…",o:["Visible luxury goods","A high salary","Assets and freedom you didn't spend","Your credit limit"],a:2,e:"Wealth is largely invisible — the money kept and invested, not converted into stuff."},
+   {q:"The bigger long-term driver of returns is usually…",o:["Timing the market","Time in the market","Picking hot stocks","Day trading"],a:1,e:"Missing the best days often halves returns — and they cluster near the scary ones. Staying in wins."},
+   {q:"An emergency fund typically covers…",o:["One day of fun","3–6 months of expenses","Your entire salary forever","Nothing useful"],a:1,e:"3–6 months of expenses turns a crisis into an inconvenience. It's the floor everything else stands on."},
+ ]},
+ {id:"qz3",topic:"health",title:"Body & Brain",emoji:"🧠",qs:[
+   {q:"The 4-7-8 breath calms you mainly by…",o:["Raising heart rate","Lengthening the exhale","Holding forever","Hyperventilating"],a:1,e:"A long exhale activates the parasympathetic 'rest and digest' branch of your nervous system."},
+   {q:"'Zone 2' cardio is a pace where you can…",o:["Barely breathe","Still hold a conversation","Only sprint","Only sleep"],a:1,e:"Conversational pace builds your aerobic base and mitochondria — the engine under every harder effort."},
+   {q:"For lasting memory, which beats cramming?",o:["Spaced repetition","All-nighters","Highlighting once","Rereading twice"],a:0,e:"Spacing study across days, with sleep between, files knowledge into durable long-term memory."},
+   {q:"Muscle is called 'the organ of longevity' because…",o:["It looks good","Strength predicts how long & well you live","It burns no energy","It never changes"],a:1,e:"Leg strength and grip predict lifespan and healthspan better than almost any simple measure. Lift things."},
+ ]},
+ {id:"qz4",topic:"mind",title:"Focus & Calm",emoji:"🧘",qs:[
+   {q:"The goal of meditation is to…",o:["Stop all thoughts","Notice when you drift and gently return","Fall asleep","Empty your bank account"],a:1,e:"Noticing the wander and returning IS the rep. A busy mind isn't failure — it's the weight you're lifting."},
+   {q:"Multitasking mostly means…",o:["Doing two things well","Fast, costly task-switching","Superhuman focus","Nothing"],a:1,e:"Each switch taxes attention. Deep single-tasking is where quality and speed actually live."},
+   {q:"Naming an emotion ('I feel anxious')…",o:["Makes it worse","Reduces its grip","Does nothing","Is impossible"],a:1,e:"Labeling a feeling engages the rational brain and calms the alarm center. Name it to tame it."},
+   {q:"The one anchor you always carry into 'now' is…",o:["Your phone","Your breath","Your to-do list","Coffee"],a:1,e:"The breath is free, silent, always available — the quickest door back from past or future spirals."},
+ ]},
+ {id:"qz5",topic:"learn",title:"Learn Anything Faster",emoji:"📚",qs:[
+   {q:"The highest-leverage study switch is…",o:["Re-reading more","Testing yourself (active recall)","Highlighting in color","Studying longer"],a:1,e:"Struggling to retrieve strengthens memory. Rereading feels productive but barely works."},
+   {q:"The Feynman Technique asks you to…",o:["Memorize jargon","Explain it simply, as if to a child","Read faster","Study in silence"],a:1,e:"The instant your plain-words explanation gets fuzzy, you've found the exact edge of your understanding."},
+   {q:"'Interleaving' means…",o:["Studying one topic to death","Mixing related topics in practice","Never taking breaks","Only cramming"],a:1,e:"Mixing feels harder now and sticks far better later — it trains you to pick the right tool, not the last one."},
+   {q:"Sleep matters for learning because…",o:["It wastes time","It files the day's learning into long-term memory","It deletes memories","It has no effect"],a:1,e:"Memory consolidation happens overnight. All-nighters trade tomorrow's recall for tonight's cramming."},
+ ]},
+ {id:"qz6",topic:"genius",title:"Think Like a Genius",emoji:"💡",qs:[
+   {q:"Inversion means solving a problem by…",o:["Working harder","Asking what would guarantee failure, then avoiding it","Copying others","Giving up"],a:1,e:"There are usually more ways to fail than succeed — mapping and dodging them is easier and cheaper."},
+   {q:"First-principles thinking is…",o:["Reasoning up from what's truly known","Following tradition","Trusting authority","Guessing"],a:0,e:"Strip a problem to bedrock truths and rebuild. Copying gives their ceiling; deriving gives your own."},
+   {q:"Chesterton's Fence warns you not to…",o:["Build fences","Remove a rule before you know why it exists","Ask questions","Change your mind"],a:1,e:"If you can't see a rule's purpose, you're the least qualified person to remove it — understand first."},
+   {q:"The '5 Whys' technique finds…",o:["Five excuses","The root cause under the symptom","Who to blame","The fastest shortcut"],a:1,e:"The first answer is a symptom; keep asking 'why' and the real problem surfaces by about the fifth."},
+ ]},
+];
+
+/* ===== KNOWLEDGE MAPS ===== */
+const MAPS=[
+ {id:"mp1",topic:"discipline",root:"The Habit Loop",emoji:"🔁",sub:"How every habit is built — and rebuilt",branches:[
+   {l:"Cue",e:"🔔",pts:["The trigger that starts it","Make it obvious","Design your environment"]},
+   {l:"Craving",e:"🧲",pts:["The wanting / motivation","Make it attractive","Bundle it with something fun"]},
+   {l:"Response",e:"⚡",pts:["The action itself","Make it easy","Two-minute rule · reduce friction"]},
+   {l:"Reward",e:"🏆",pts:["Closes the loop","Make it satisfying","Track it · celebrate the rep"]},
+ ]},
+ {id:"mp2",topic:"money",root:"Personal Finance",emoji:"💰",sub:"The four moves that build wealth",branches:[
+   {l:"Earn",e:"💼",pts:["Grow skills → grow income","Build multiple streams","Negotiate your worth"]},
+   {l:"Save",e:"🏦",pts:["Pay yourself first","Emergency fund (3–6 months)","Automate every transfer"]},
+   {l:"Invest",e:"📈",pts:["Broad, low-cost index funds","Time in the market","Let compounding cook"]},
+   {l:"Protect",e:"🛡️",pts:["Insure the big risks","Avoid bad (consumer) debt","Diversify · don't panic-sell"]},
+ ]},
+ {id:"mp3",topic:"fit",root:"Fitness Foundations",emoji:"💪",sub:"Get strong and stay consistent",branches:[
+   {l:"Train",e:"🏋️",pts:["Squat · hinge · push","Pull · carry","Progressive overload weekly"]},
+   {l:"Fuel",e:"🍳",pts:["Protein ~0.7g per lb","Mostly whole foods","Hydrate before caffeine"]},
+   {l:"Recover",e:"😴",pts:["7–9 hours of sleep","Rest & deload weeks","Manage stress"]},
+   {l:"Consistency",e:"🔁",pts:["Don't miss twice","Show up ugly at 70%","Track progress"]},
+ ]},
+ {id:"mp4",topic:"mind",root:"The Calm Toolkit",emoji:"🧘",sub:"Reset your nervous system, fast",branches:[
+   {l:"Breath",e:"🌬️",pts:["Box breathing 4-4-4-4","Long exhales (4-7-8)","Slow it to slow the mind"]},
+   {l:"Body",e:"🖐️",pts:["5-4-3-2-1 senses","Relax the shoulders & jaw","Walk it off"]},
+   {l:"Mind",e:"💭",pts:["Name the emotion","Watch it, don't fight it","This will pass"]},
+   {l:"Habit",e:"🙏",pts:["Daily gratitude","Protect your mornings","Screen curfew at night"]},
+ ]},
+ {id:"mp5",topic:"learn",root:"Learn Anything",emoji:"📚",sub:"The science of durable learning",branches:[
+   {l:"Recall",e:"🔍",pts:["Test, don't reread","Struggle strengthens memory","Flashcards / self-quiz"]},
+   {l:"Space",e:"📅",pts:["Review across days","Right before you forget","Sleep between sessions"]},
+   {l:"Teach",e:"🧑‍🏫",pts:["Explain it simply","Jargon hides gaps","The Feynman technique"]},
+   {l:"Connect",e:"🕸️",pts:["Interleave topics","Tie new to known","Memory is a web"]},
+ ]},
+ {id:"mp6",topic:"phil",root:"Stoic Operating System",emoji:"🏛️",sub:"Stay calm, useful, and free",branches:[
+   {l:"Control",e:"🎯",pts:["Sort: yours vs not-yours","Pour energy into the first","Release the rest"]},
+   {l:"Prepare",e:"🌅",pts:["Rehearse friction at dawn","Negative visualization","Nothing can ambush you"]},
+   {l:"Act",e:"⚙️",pts:["Virtue is the only good","Do the right thing now","The obstacle is the way"]},
+   {l:"Reflect",e:"📓",pts:["Journal each night","What went well / poorly","Memento mori"]},
+ ]},
+];
+
+/* ===== STORIES (tap-through) ===== */
+const STORIES=[
+ {id:"st1",topic:"discipline",title:"Beat Procrastination",emoji:"🚀",slides:[
+   {e:"🧩",h:"It's not laziness.",p:"Procrastination is emotional avoidance. You're dodging a feeling — boredom, fear, confusion — not the task itself."},
+   {e:"⏱️",h:"Shrink the start.",p:"Commit to just 5 minutes. Starting is the hardest atom of work. Motion creates motivation, not the other way around."},
+   {e:"🎯",h:"Make it obvious.",p:"Put the cue in your path: shoes by the door, book on the pillow. Design your world so the right move is the easy one."},
+   {e:"🏆",h:"Reward the rep.",p:"Celebrate finishing, however small. Your brain repeats what it's rewarded for. Momentum is a snowball you build push by push."},
+ ]},
+ {id:"st2",topic:"money",title:"Money Mindset",emoji:"💸",slides:[
+   {e:"🌱",h:"Wealth is invisible.",p:"It's the car not bought, the trip skipped. Real wealth is the money you kept and grew — not the stuff you converted it into."},
+   {e:"🤖",h:"Automate it.",p:"Willpower fails; systems don't. Auto-transfer to savings the day you're paid, before you can spend it."},
+   {e:"📉",h:"Beware lifestyle creep.",p:"Every raise tempts a matching upgrade. Bank the raise, keep the life, and buy your freedom instead."},
+   {e:"⏳",h:"Time in the market.",p:"Not timing it. Boring, consistent investing beats clever trading over a lifetime. Let compounding do the work."},
+ ]},
+ {id:"st3",topic:"mind",title:"Calm in 60 Seconds",emoji:"🧘",slides:[
+   {e:"🌬️",h:"Breathe long.",p:"Make the exhale longer than the inhale. A slow out-breath is a direct line to your body's calm switch."},
+   {e:"🖐️",h:"5-4-3-2-1.",p:"Name 5 things you see, 4 you feel, 3 you hear, 2 you smell, 1 you taste. Your senses pull you out of the spiral."},
+   {e:"💭",h:"Watch the thought.",p:"You are the sky; thoughts are weather. Notice the storm without becoming it. It always passes."},
+   {e:"🙏",h:"One gratitude.",p:"Name one good thing right now. Gratitude and anxiety struggle to share the same moment."},
+ ]},
+ {id:"st4",topic:"fit",title:"Build a Body",emoji:"💪",slides:[
+   {e:"🧱",h:"Master the basics.",p:"Squat, hinge, push, pull, carry. Five patterns cover almost everything. Get strong here before chasing fancy variations."},
+   {e:"📈",h:"Add a little.",p:"Progressive overload: one more rep or a touch more weight each week. Small, steady demand is what forces growth."},
+   {e:"🍳",h:"Protein & sleep.",p:"Muscle is built in the kitchen and the bedroom. Aim ~0.7g protein per lb of bodyweight, and guard your sleep."},
+   {e:"🔁",h:"Show up ugly.",p:"The best workout is the one you repeat. Consistency at 70% beats perfection you quit. Just don't miss twice."},
+ ]},
+ {id:"st5",topic:"learn",title:"Learn Anything Fast",emoji:"📚",slides:[
+   {e:"🔍",h:"Recall, don't reread.",p:"Close the book and explain it. Struggling to retrieve is what carves memory — rereading only feels productive."},
+   {e:"📅",h:"Space it out.",p:"Review at growing intervals: day 1, 3, 7, 21. Each well-timed reminder resets the forgetting curve."},
+   {e:"🧑‍🏫",h:"Teach it.",p:"If you can't explain it simply, you don't get it yet. Teaching exposes every gap you were hiding from yourself."},
+   {e:"🔀",h:"Mix it up.",p:"Interleave topics instead of blocking them. Jumbled practice is harder now and far stickier later."},
+ ]},
+ {id:"st6",topic:"phil",title:"The Stoic Morning",emoji:"🏛️",slides:[
+   {e:"⚖️",h:"Two piles.",p:"Sort the day into what you control and what you don't. Peace comes from pouring your energy into the first pile only."},
+   {e:"🌅",h:"Rehearse friction.",p:"Expect the rude driver and the broken plan. Pre-lived difficulty can't ambush you — you meet it with a nod, not a spiral."},
+   {e:"🕯️",h:"Picture the loss.",p:"Briefly imagine what you'd hate to lose. It re-colours the ordinary and makes gratitude vivid again."},
+   {e:"🏹",h:"Commit to one thing.",p:"Name one action within your control and do it well. That's the whole practice. Repeat daily; become hard to rattle."},
+ ]},
+];
+
+/* ===== WATCH (curated safe searches — creators open on the real platform) ===== */
+const WATCH_TOPICS=["Home workout","HIIT no equipment","Ab workout","Full body dumbbell","Yoga & mobility","Stretching routine","Beginner workout","Glute workout","Push day","Meditation guided","Deep focus music","Motivation"];
+/* Curated workout & movement creators. YouTube plays inline; TikTok/Instagram open on-platform.
+   Swap these links for your own favourites any time — the app parses any pasted URL. */
+const SEED_VIDEOS=[
+ {id:"seedyt1",url:"https://www.youtube.com/watch?v=ml6cT4AZdqI",title:"10 Min Full Body No-Equipment Workout",topic:"fit",seed:true},
+ {id:"seedyt2",url:"https://www.youtube.com/watch?v=UBMk30rjy0o",title:"Beginner HIIT — No Jumping, No Equipment",topic:"fit",seed:true},
+ {id:"seedyt3",url:"https://www.youtube.com/watch?v=2pLT-olgUJs",title:"15 Min Ab Workout — Follow Along",topic:"fit",seed:true},
+ {id:"seedyt4",url:"https://www.youtube.com/watch?v=oAPCPjnU1wA",title:"20 Min Full Body — No Repeat Sweat",topic:"fit",seed:true},
+ {id:"seedyt5",url:"https://www.youtube.com/watch?v=v7AYKMP6rOE","title":"Yoga For Complete Beginners — 20 Min",topic:"mind",seed:true},
+ {id:"seedyt6",url:"https://www.youtube.com/watch?v=4pKly2JojMw",title:"10 Min Morning Mobility & Stretch Flow",topic:"health",seed:true},
+ {id:"seedig1",url:"https://www.instagram.com/reel/C2xN0m1oQ4s/",title:"Reel · 3 moves for stronger glutes",topic:"fit",seed:true},
+ {id:"seedig2",url:"https://www.instagram.com/reel/C9pQ2rUsi1a/",title:"Reel · perfect push-up form fix",topic:"fit",seed:true},
+ {id:"seedig3",url:"https://www.instagram.com/reel/Cx7rL0kIabc/",title:"Reel · 60-second desk posture reset",topic:"health",seed:true},
+];
+function searchURL(plat,q){const e=encodeURIComponent(q);if(plat==="YouTube")return`https://www.youtube.com/results?search_query=${e}`;if(plat==="TikTok")return`https://www.tiktok.com/search?q=${e}`;return`https://www.instagram.com/explore/tags/${q.toLowerCase().replace(/[^a-z0-9]/g,"")}/`}
+function parseVideo(raw){let url=(raw||"").trim();if(!url)return null;if(!/^https?:\/\//i.test(url))url="https://"+url;let u;try{u=new URL(url)}catch(e){return null}const h=u.hostname.replace(/^www\./,"");let m;
+ if(h==="youtu.be"){const id=u.pathname.slice(1);if(id)return{platform:"YouTube",kind:"iframe",vert:false,embed:`https://www.youtube-nocookie.com/embed/${id}?playsinline=1&rel=0`,open:url}}
+ if(/youtube\.com$/.test(h)){if(u.pathname.startsWith("/shorts/")){const id=u.pathname.split("/")[2];return{platform:"YouTube",kind:"iframe",vert:true,embed:`https://www.youtube-nocookie.com/embed/${id}?playsinline=1&rel=0`,open:url}}const id=u.searchParams.get("v")||(u.pathname.startsWith("/embed/")?u.pathname.split("/")[2]:"");if(id)return{platform:"YouTube",kind:"iframe",vert:false,embed:`https://www.youtube-nocookie.com/embed/${id}?playsinline=1&rel=0`,open:url}}
+ if(/tiktok\.com$/.test(h)){m=u.pathname.match(/\/video\/(\d+)/);if(m)return{platform:"TikTok",kind:"iframe",vert:true,embed:`https://www.tiktok.com/embed/v2/${m[1]}`,open:url};return{platform:"TikTok",kind:"link",vert:true,open:url}}
+ if(/instagram\.com$/.test(h)){m=u.pathname.match(/\/(reel|p|tv)\/([^/]+)/);if(m)return{platform:"Instagram",kind:"iframe",vert:true,embed:`https://www.instagram.com/${m[1]}/${m[2]}/embed`,open:url};return{platform:"Instagram",kind:"link",vert:true,open:url}}
+ if(/vimeo\.com$/.test(h)){m=u.pathname.match(/(\d+)/);if(m)return{platform:"Vimeo",kind:"iframe",vert:false,embed:`https://player.vimeo.com/video/${m[1]}`,open:url}}
+ if(/\.(mp4|webm|ogg|mov)$/i.test(u.pathname))return{platform:"Video",kind:"video",vert:false,embed:url,open:url};
+ return{platform:"Link",kind:"link",vert:false,open:url}}
+const PLAT_COLOR={YouTube:"#ff0033",TikTok:"#00f2ea",Instagram:"#e1306c",Vimeo:"#19b7ea",Video:"#e8b563",Link:"#e8b563"};
+
+/* ===== STATE ===== */
+const KEY="apex_v1",today=()=>new Date().toISOString().slice(0,10);
+let S={xp:0,streak:0,lastActive:null,reads:0,workouts:0,minutes:0,sessions:0,quizzes:0,
+ likes:{},saves:{},ownComments:{},readProgress:{},done:{},videos:[],seeded:false,mood:"focus",
+ quizBest:{},storiesSeen:{},mapsSeen:{}};
+try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+if(!S.seeded){S.videos=SEED_VIDEOS.slice();S.seeded=true}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function levelFor(x){return Math.floor(Math.sqrt(x/60))+1}
+function xpIn(x){const l=levelFor(x),b=(l-1)*(l-1)*60,n=l*l*60;return{cur:x-b,need:n-b}}
+function bump(){const t=today();if(S.lastActive===t)return;const y=new Date(Date.now()-864e5).toISOString().slice(0,10);S.streak=(S.lastActive===y)?S.streak+1:1;S.lastActive=t}
+function addXP(n,m){const b=levelFor(S.xp);S.xp+=n;const a=levelFor(S.xp);save();updateHUD();if(a>b)setTimeout(()=>toast(`⚡ Level ${a}!`),260);if(m)toast(m)}
+function savedIds(){return Object.keys(S.saves).filter(k=>S.saves[k])}
+function toast(h){const e=document.createElement("div");e.className="toast";e.innerHTML=h;$("#toasts").appendChild(e);setTimeout(()=>e.remove(),2200)}
+function updateHUD(){document.querySelectorAll("[data-streak]").forEach(e=>e.textContent=S.streak);document.querySelectorAll("[data-lvl]").forEach(e=>e.textContent=levelFor(S.xp))}
+function itemText(k){if(k[0]==='f'){const it=FEED[+k.slice(1)];return it?{t:it[0],x:it[2]}:null}const a=ARTICLES.find(x=>x.id===k);if(a)return{t:a.topic,x:a.title};const v=S.videos.find(x=>x.id===k);if(v)return{t:v.topic||'life',x:v.title};const st=STORIES.find(x=>x.id===k);if(st)return{t:st.topic,x:st.title+" · story"};const mp=MAPS.find(x=>x.id===k);if(mp)return{t:mp.topic,x:mp.root+" · map"};return null}
+
+/* ===== MUSIC ENGINE (generative, royalty-free) ===== */
+const Music=(function(){
+ let ctx,master,playing=false,nodes=[],timer=null,mood="focus";
+ const SC={calm:{root:196,scale:[0,3,5,7,10],bpm:0,pad:.09,type:"sine",cut:700},
+           focus:{root:220,scale:[0,2,4,7,9],bpm:0,pad:.07,type:"triangle",cut:900},
+           epic:{root:110,scale:[0,3,7,10,12],bpm:0,pad:.11,type:"sawtooth",cut:1200}};
+ function ensure(){if(!ctx){ctx=new (window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=.0;const comp=ctx.createDynamicsCompressor();master.connect(comp);comp.connect(ctx.destination);
+   // simple ambient delay for space
+   const dl=ctx.createDelay();dl.delayTime.value=.38;const fb=ctx.createGain();fb.gain.value=.32;const wet=ctx.createGain();wet.gain.value=.3;master.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(wet);wet.connect(comp);}}
+ function note(f,dur,when,gain,type,cut){const o=ctx.createOscillator(),g=ctx.createGain(),lp=ctx.createBiquadFilter();o.type=type;o.frequency.value=f;lp.type="lowpass";lp.frequency.value=cut;g.gain.value=0;o.connect(lp);lp.connect(g);g.connect(master);
+   g.gain.setValueAtTime(0,when);g.gain.linearRampToValueAtTime(gain,when+dur*.35);g.gain.linearRampToValueAtTime(0,when+dur);o.start(when);o.stop(when+dur+.05);}
+ function chord(){if(!playing)return;const cfg=SC[mood];const t=ctx.currentTime;const deg=cfg.scale;const base=cfg.root*Math.pow(2,Math.floor(Math.random()*2)-1);
+   // pad chord (root, third-ish, fifth-ish)
+   const picks=[deg[0],deg[2%deg.length],deg[4%deg.length]];
+   picks.forEach((d,i)=>{const f=base*Math.pow(2,d/12);note(f,6,t,cfg.pad,cfg.type,cfg.cut);if(mood==="epic")note(f/2,6,t,cfg.pad*.7,"sine",600);});
+   // occasional bell/arp
+   if(mood!=="calm"&&Math.random()<.7){for(let i=0;i<3;i++){const d=deg[Math.floor(Math.random()*deg.length)]+12;note(base*Math.pow(2,d/12),1.4,t+.6+i*.5,.05,"sine",2200);}}
+   timer=setTimeout(chord,mood==="epic"?5200:6200);}
+ return{
+  toggle(){ensure();if(ctx.state==="suspended")ctx.resume();playing=!playing;if(playing){master.gain.cancelScheduledValues(ctx.currentTime);master.gain.linearRampToValueAtTime(.5,ctx.currentTime+1.5);chord();}else{master.gain.linearRampToValueAtTime(0,ctx.currentTime+.8);clearTimeout(timer);}return playing},
+  setMood(m){mood=m;S.mood=m;save();},
+  isPlaying(){return playing},
+  current(){return mood}
+ };
+})();
+Music.setMood(S.mood||"focus");
+
+/* ===== COMMENTS ===== */
+const NAMES=["quietriot","stillmind_sam","the_grind_never","occams_razorblade","chronically_curious","zen_and_reps","midnight_scholar","disciplined_dan","phdropout","mildly_enlightened","forged_in_fire","calm_chaos_kate","big_brain_energy","reluctant_monk","after_action_amy","first_principles","room_temp_genius","the_why_guy","borrowed_wisdom","present_tense_pete"];
+const RE=["screenshotting this to reread at 3am","genuinely needed to hear this today","adding this to my morning notes","this reframed my whole week","reading this instead of doomscrolling, worth it","okay this hit different","saving — this is the reminder I keep forgetting","tattoo this on my forehead please","the 40% rule broke me in the best way","came for tips, left with a new operating system","my nervous system felt this","why did no one teach me this in school","one more rep energy fr","this is the good kind of uncomfortable","stealing this framework immediately","goosebumps, honestly","exactly what discipline over motivation means","gonna sit with this one"];
+const FL={discipline:["stay hard 🫡","comfort is the enemy","chose the harder path today because of this"],mind:["breathing right now ngl","needed this calm","the watcher, not the storm 🙏"],learn:["active recall gang","teaching it to my cat as we speak","spacing > cramming, learned the hard way"],money:["compounding is a cheat code","paying myself first from today","boring wealth > flashy broke"],phil:["marcus was him","controlling what I can, releasing the rest","stoicism just makes sense"],genius:["invert invert invert","first principles changed my life","munger mode activated"]};
+const TIMES=["just now","3m","11m","24m","1h","2h","4h","8h","1d","2d"];
+function hs(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}return function(){h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return((h^=h>>>16)>>>0)}}
+function mul(s){let a=s>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function sd(id){return mul(hs("ax"+id)())}
+function pick(r,a){return a[Math.floor(r()*a.length)]}
+function fmt(n){return n>=1000?(n/1000).toFixed(n>=10000?0:1).replace(/\.0$/,'')+'k':''+n}
+function avaC(n){return`hsl(${hs(n)()%360} 65% 62%)`}
+function ini(n){const c=n.replace(/[^a-z]/gi,'');return(c[0]||'?').toUpperCase()}
+function gen(id,topic,n,off){const r=sd(id+"|"+off),o=[];for(let i=0;i<n;i++){const nm=pick(r,NAMES),fl=r()<.32&&FL[topic];o.push({name:nm,txt:fl?pick(r,FL[topic]):pick(r,RE),likes:Math.floor(r()*r()*720),time:pick(r,TIMES),liked:false})}if(off===0)o.sort((a,b)=>b.likes-a.likes);return o}
+function baseC(k){return 12+Math.floor(sd(k+"c")()*900)}
+
+/* ===== HOME ===== */
+function renderHome(){
+ const r=sd("day"+new Date().toDateString());
+ const quotes=[["The wall you hit at 40% is a door, not a stop sign.","On the SEAL 40% Rule"],["You have power over your mind — not outside events.","Marcus Aurelius"],["Discipline equals freedom.","Jocko Willink"],["Comparison is the thief of joy.","Theodore Roosevelt"],["He who has a why can bear almost any how.","Nietzsche"]];
+ const q=quotes[Math.floor(r()*quotes.length)];
+ const hero=ARTICLES[Math.floor(r()*ARTICLES.length)],ht=T[hero.topic];
+ const hr=new Date().getHours(),g=hr<5?"Still up?":hr<12?"Good morning":hr<18?"Good afternoon":"Good evening";
+ const cont=Object.keys(S.readProgress).filter(k=>S.readProgress[k]>3&&S.readProgress[k]<96).map(k=>ARTICLES.find(a=>a.id===k)).filter(Boolean);
+ const pills=[["learn","Learn","🧠","Ideas that stick","learn"],["train","Train","🎖️","Body & mind","train"],["watch","Watch","🎬","Real creators","watch"],["mind","Breathe","🧘","Reset in 2 min","train"]];
+ $("#v-home").innerHTML=`
+  <div class="top"><div class="brandrow"><span class="mk">A</span><div><div class="h1">APEX</div><div class="sub">${g} — become your highest self.</div></div>
+   <div class="pillrow"><div class="pill">🔥 <span data-streak>${S.streak}</span><small>streak</small></div><div class="pill"><small>Lv</small> <span data-lvl>${levelFor(S.xp)}</span></div></div></div></div>
+  <div class="storybar">${STORIES.map(s=>`<div class="storyav ${S.storiesSeen[s.id]?'seen':''}" data-open-story="${s.id}"><div class="ring"><div class="inr">${s.emoji}</div></div><div class="sl">${esc(s.title)}</div></div>`).join("")}</div>
+  <div class="cine" id="cineHero"><canvas></canvas><div class="cov"></div>
+    <div class="eb">✦ Today's word</div>
+    <div class="cq">${esc(q[0])}</div><div class="cby">— ${esc(q[1])}</div>
+    <button class="go" data-open-art="${hero.id}"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Read today's piece</button></div>
+  <div class="sec"><h3>Four pillars</h3></div>
+  <div class="pillars">${pills.map(p=>`<div class="pil" style="${grad(p[0])}" data-goto="${p[4]}"><span class="pe">${p[2]}</span><div class="pn">${p[1]}</div><div class="pd">${p[3]}</div></div>`).join("")}</div>
+  ${cont.length?`<div class="sec"><h3>⏳ Jump back in</h3></div><div class="hs">${cont.map(a=>`<div class="acard" data-open-art="${a.id}"><div class="th" style="${grad(a.topic)}"><span class="em">${a.emoji}</span><span class="tp">${Math.round(S.readProgress[a.id])}% read</span></div><div class="rt">${esc(a.title)}</div><div class="rm">${a.minutes} min</div></div>`).join("")}</div>`:""}
+  <div class="sec"><h3>📖 Long reads<span class="more" data-goto="learn">Feed</span></h3></div>
+  <div class="hs">${ARTICLES.slice(0,7).map(a=>`<div class="acard" data-open-art="${a.id}"><div class="th" style="${grad(a.topic)}"><span class="em">${a.emoji}</span><span class="tp">${T[a.topic].l}</span></div><div class="rt">${esc(a.title)}</div><div class="rd">${esc(a.dek)}</div><div class="rm">${a.minutes} min read</div></div>`).join("")}</div>
+  <div class="sec"><h3>💡 Ideas that stick<span class="more" data-goto="learn">Enter feed</span></h3></div>
+  <div class="hs">${FEED.map((f,i)=>[f,i]).filter(([f])=>["idea","quote","finance"].includes(f[1])).slice(0,12).map(([f,i])=>`<div class="fcardh" data-open-feed="${i}"><div class="ft">${esc(f[1]==='quote'?'"'+f[2]+'"':f[2])}</div><div class="fm">${T[f[0]].e} ${f[1]==='quote'?esc(f[3]):T[f[0]].l}</div></div>`).join("")}</div>
+  <div class="sec"><h3>🧩 Test yourself<span class="more">${S.quizzes} taken</span></h3></div>
+  <div class="hs">${QUIZZES.map(q=>{const best=S.quizBest[q.id];return`<div class="qcardh" data-open-quiz="${q.id}"><div class="qe">${q.emoji}</div><div class="qtt">${esc(q.title)}</div><div class="qmeta"><span>${q.qs.length} questions</span>${best!=null?`<span class="qbest">★ ${best}%</span>`:'<span>tap to start</span>'}</div></div>`}).join("")}</div>
+  <div class="sec"><h3>🗺️ Knowledge maps<span class="more">${MAPS.length}</span></h3></div>
+  <div class="hs">${MAPS.map(m=>{const t=T[m.topic]||T.life;return`<div class="acard" data-open-map="${m.id}"><div class="th" style="${grad(m.topic)}"><span class="em">${m.emoji}</span><span class="tp">${t.l}</span></div><div class="rt">${esc(m.root)}</div><div class="rd">${esc(m.sub)}</div><div class="rm">${m.branches.length} branches · ${S.mapsSeen[m.id]?'explored':'new'}</div></div>`}).join("")}</div>
+  <div class="sec"><h3>🎬 Workout videos<span class="more" data-goto="watch">Watch</span></h3></div>
+  <div class="hs">${SEED_VIDEOS.slice(0,6).map(v=>{const t=T[v.topic]||T.life;return`<div class="acard" data-goto="watch"><div class="th" style="${grad(v.topic||'fit')}"><span class="em">${/instagram/.test(v.url)?'📸':'▶️'}</span><span class="tp">${/instagram/.test(v.url)?'Instagram':'YouTube'}</span></div><div class="rt">${esc(v.title)}</div><div class="rm">${t.l}</div></div>`}).join("")}</div>
+  <div class="credit">APEX · train your mind & body<br>A living library — it keeps growing.</div>`;
+ wire($("#v-home"));
+ startCine($("#cineHero").querySelector("canvas"));
+}
+/* cinematic canvas: drifting particles/embers */
+let cineRaf=null;
+function startCine(cv){if(!cv)return;const x=cv.getContext("2d");let W,H,dpr,ps=[];function rs(){dpr=Math.min(2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0)}rs();ps=[...Array(40)].map(()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.8+.4,s:Math.random()*.4+.1,o:Math.random()}));let t=0;
+ function fr(){if(!document.body.contains(cv)){cancelAnimationFrame(cineRaf);return}t++;x.clearRect(0,0,W,H);const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,"#3a2a12");g.addColorStop(.5,"#241a2e");g.addColorStop(1,"#101526");x.fillStyle=g;x.fillRect(0,0,W,H);
+  ps.forEach(p=>{p.y-=p.s;p.x+=Math.sin((t+p.o*100)*.01)*.2;if(p.y<-4){p.y=H+4;p.x=Math.random()*W}x.beginPath();x.arc(p.x,p.y,p.r,0,6.28);x.fillStyle=`rgba(243,208,137,${.15+p.o*.35})`;x.fill()});
+  cineRaf=requestAnimationFrame(fr)}cancelAnimationFrame(cineRaf);fr()}
+
+/* ===== LEARN (feed) ===== */
+let feedBuilt=false,feedMeta=[],feedIO=null;const counted=new Set();let feedLast=-1;
+function baseL(k){return 300+Math.floor(sd(k+"L")()*38000)}
+function fkey(i){return"f"+i}
+function feedHTML(i,inst){const f=FEED[i],[tp,ty,tx,ex,ex2]=f,t=T[tp],k=fkey(i);const liked=!!S.likes[k],saved=!!S.saves[k],own=(S.ownComments[k]||[]).length;const r=sd(k+"h"),h=pick(r,NAMES);
+ const tl={fact:"Did you know",idea:"Principle",quote:"Words to keep",finance:"Money",story:"A small story"}[ty]||"";
+ let mid=ty==="quote"?`<div class="ctype">${tl}</div><h2 class="insight quote">"${esc(tx)}"</h2><div class="qauthor">${esc(ex)}<span class="role">${esc(ex2||"")}</span></div>`:`<div class="ctype">${tl}</div><h2 class="insight">${esc(tx)}</h2><p class="kicker">${esc(ex)}</p>`;
+ return`<section class="card" data-key="${k}" data-i="${i}" data-inst="${inst}" data-topic="${tp}"><div class="bg" style="${grad(tp)}"></div><div class="grain"></div>
+  <span class="ktag"><span class="dot" style="background:${t.c}"></span>${t.e} ${t.l}</span>${mid}
+  <div class="meta"><div class="handle">@<span class="at">${h}</span></div><div class="source">APEX · daily</div></div>
+  <div class="rail-a">
+   <button class="act like ${liked?'on-like':''}" data-a="like"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.9-10.3-9.6C.2 8 2 4.7 5.2 4.7c2 0 3.3 1.1 4 2.2.7-1.1 2-2.2 4-2.2 3.2 0 5 3.3 3.5 6.7C20 16.1 12 21 12 21z"/></svg></span><span class="n" data-n="like">${fmt(baseL(k)+(liked?1:0))}</span></button>
+   <button class="act" data-a="comment"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg></span><span class="n" data-n="comment">${fmt(baseC(k)+own)}</span></button>
+   <button class="act save ${saved?'on-save':''}" data-a="save"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></span><span class="n">Save</span></button>
+   <button class="act" data-a="share"><span class="ico"><svg viewBox="0 0 24 24"><path d="M14 9V5l7 7-7 7v-4.1C9 12 6 13 3 17c1-6 5-8 11-8z"/></svg></span><span class="n">Share</span></button>
+  </div>${inst===0?'<div class="hint" id="hint"><svg viewBox="0 0 24 24"><path d="M12 4l6 7h-4v9h-4v-9H6z"/></svg>swipe up for more</div>':''}</section>`}
+function fseq(){let p=FEED.map((_,i)=>i);const r=mul((hs("f")()^Date.now())>>>0);for(let i=p.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[p[i],p[j]]=[p[j],p[i]]}return p}
+function fappend(){const s=feedMeta.length,seq=fseq();let h="";seq.forEach((idx,k)=>{feedMeta.push(idx);h+=feedHTML(idx,s+k)});$("#feed").insertAdjacentHTML("beforeend",h);fobserve()}
+function buildFeed(){if(feedBuilt)return;feedBuilt=true;$("#feed").innerHTML="";feedMeta=[];fappend()}
+function fobserve(){if(!feedIO)feedIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.65)factive(e.target)}),{root:$("#feed"),threshold:[.66]});$("#feed").querySelectorAll(".card:not([data-obs])").forEach(c=>{c.setAttribute("data-obs","1");feedIO.observe(c)})}
+function factive(card){const inst=+card.dataset.inst;if(inst>=feedMeta.length-3)fappend();if(!counted.has(inst)){counted.add(inst);if(feedLast>=0)S.streak+=0;bump();S.reads++;feedLast=inst;const ms={5:"🔥 5 in a row",15:"🧠 15 read — big brain",30:"🏆 30! deep in it"}[S.reads];addXP(8,ms||`<span class="xp">+8 XP</span>`)}}
+function scrollFeedTo(i){buildFeed();let c=[...$("#feed").querySelectorAll(".card")].find(x=>+x.dataset.i===i);if(!c){fappend();c=[...$("#feed").querySelectorAll(".card")].reverse().find(x=>+x.dataset.i===i)}if(c)requestAnimationFrame(()=>c.scrollIntoView())}
+$("#feed").addEventListener("click",e=>{const b=e.target.closest(".act");if(!b)return;const card=b.closest(".card"),k=card.dataset.key,tp=card.dataset.topic,a=b.dataset.a;
+ if(a==="like")like(k,b);else if(a==="save")sv(k,b);else if(a==="comment")openC(k,tp);else if(a==="share"){const f=FEED[+card.dataset.i];shareT(f[2],f[3])}});
+let lastTap=0;$("#feed").addEventListener("click",e=>{if(e.target.closest(".act"))return;const n=Date.now();if(n-lastTap<300){const c=e.target.closest(".card");if(c){const lb=c.querySelector(".like");if(!S.likes[c.dataset.key])lb.click();else{lb.classList.add("pop");setTimeout(()=>lb.classList.remove("pop"),400)}}}lastTap=n});
+$("#feed").addEventListener("scroll",()=>{const h=$("#hint");if(h&&$("#feed").scrollTop>40){h.style.opacity=0;setTimeout(()=>h.remove(),400)}},{passive:true});
+function like(k,b){const on=!S.likes[k];S.likes[k]=on;if(b){b.classList.toggle("on-like",on);b.classList.add("pop");setTimeout(()=>b.classList.remove("pop"),400);const n=b.querySelector('[data-n="like"]');if(n)n.textContent=fmt(baseL(k)+(on?1:0))}save()}
+function sv(k,b){const on=!S.saves[k];S.saves[k]=on;if(b){b.classList.toggle("on-save",on);b.classList.add("pop");setTimeout(()=>b.classList.remove("pop"),400)}toast(on?"🔖 saved":"removed");save()}
+function shareT(t,s){const text=`${t}${s?"\n\n"+s:""}\n\n— via APEX`;if(navigator.share)navigator.share({text}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>toast("📋 copied")).catch(()=>toast("copied"));else toast("share unavailable")}
+
+/* ===== COMMENTS SHEET ===== */
+const cs=$("#cmtSheet"),cl=$("#commentsList"),cc=$("#cmtCount");let cK=null,cT=null,cB=0,cArr=[];
+function rc(c){const d=document.createElement("div");d.className="cmt";d.innerHTML=`<div class="ava" style="background:${c.own?'var(--grad-gold)':avaC(c.name)}">${c.own?'Y':ini(c.name)}</div><div class="cbody"><div class="tp"><span class="un">@${c.own?'you':esc(c.name)}</span>${c.own?'<span class="bd">you</span>':''}<span class="tm">· ${c.time}</span></div><div class="tx"></div><div class="ca"><button data-like><svg style="width:14px;height:14px;vertical-align:-2px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 21s-8-4.9-10.3-9.6C.2 8 2 4.7 5.2 4.7c2 0 3.3 1.1 4 2.2.7-1.1 2-2.2 4-2.2 3.2 0 5 3.3 3.5 6.7C20 16.1 12 21 12 21z"/></svg> <span>${fmt(c.likes)}</span></button><button>Reply</button></div></div>`;d.querySelector(".tx").textContent=c.txt;const lb=d.querySelector("[data-like]");lb.onclick=()=>{c.liked=!c.liked;c.likes+=c.liked?1:-1;lb.classList.toggle("liked",c.liked);lb.querySelector("span").textContent=fmt(c.likes)};return d}
+function drawC(){cl.innerHTML="";const own=(S.ownComments[cK]||[]).map(txt=>({own:true,txt,time:"now",likes:0}));[...own,...cArr].forEach(c=>cl.appendChild(rc(c)));const m=document.createElement("button");m.className="loadmore";m.textContent="load more";m.onclick=()=>{cB++;cArr=cArr.concat(gen(cK,cT,6,cB));drawC();cl.scrollTop=cl.scrollHeight-240};cl.appendChild(m);cc.textContent=fmt(baseC(cK)+own.length)+" comments"}
+function openC(k,tp){cK=k;cT=tp;cB=0;cArr=gen(k,tp,8,0);drawC();openSheet(cs)}
+$("#cmtSend").onclick=postC;$("#cmtInput").addEventListener("keydown",e=>{if(e.key==="Enter")postC()});
+function postC(){const i=$("#cmtInput"),v=i.value.trim();if(!v||!cK)return;if(!S.ownComments[cK])S.ownComments[cK]=[];S.ownComments[cK].unshift(v);i.value="";save();drawC();cl.scrollTop=0;toast("💬 posted");addXP(3);const card=$("#feed").querySelector(`.card[data-key="${cK}"]`);if(card){const n=card.querySelector('[data-n="comment"]');if(n)n.textContent=fmt(baseC(cK)+S.ownComments[cK].length)}}
+
+/* ===== TRAIN ===== */
+let trainFilter="All";
+function wMin(w){let s=0;w.ex.forEach(e=>{if(!/rest/i.test(e[0]))s+=e[1]});return Math.round(s*w.rounds/60)}
+function renderTrain(){
+ const items=[...WORKOUTS.map(w=>({...w,type:"workout"})),...SESSIONS.map(s=>({...s,type:"session"}))];
+ const cats=["All","Mind","HIIT","Core","Strength","Mobility"];
+ const list=items.filter(w=>trainFilter==="All"||w.cat===trainFilter);
+ $("#v-train").innerHTML=`
+  <div class="top"><div class="h1">Train</div><div class="sub">Body & mind · no equipment · works offline</div></div>
+  <div class="filters">${cats.map(c=>`<div class="fchip ${c===trainFilter?'on':''}" data-f="${c}">${c}</div>`).join("")}</div>
+  <div class="rowlist">${list.map(w=>{const col=CATW[w.cat]||"#e8b563";const meta=w.type==="workout"?`⏱ ${wMin(w)} min · 🔁 ${w.rounds} rounds · ${w.level}`:`${w.level}`;const sub=w.type==="workout"?w.ex.filter(e=>!/rest/i.test(e[0])).slice(0,4).map(e=>e[0]).join(" · "):w.desc;
+   return`<div class="row" data-start="${w.id}" data-type="${w.type}"><div class="rth" style="background:linear-gradient(150deg,${col},#1d1d2a 130%)">${w.type==="session"?"🧘":(w.cat==="HIIT"?"🔥":w.cat==="Core"?"🎯":w.cat==="Strength"?"💪":"🧩")}</div>
+    <div class="ri"><div class="rtp">${w.type==="session"?"Mindfulness":w.cat}</div><div class="rn">${esc(w.title)}</div><div class="rd">${esc(sub)}</div><div class="rm"><span>${meta}</span></div></div>
+    <button class="play2" aria-label="Start"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>`}).join("")}</div>
+  <div class="credit">Every timer & breathing session runs fully offline.</div>`;
+ wire($("#v-train"));
+ $("#v-train").querySelectorAll(".fchip").forEach(c=>c.onclick=()=>{trainFilter=c.dataset.f;renderTrain()});
+ $("#v-train").querySelectorAll(".row").forEach(row=>row.onclick=()=>{const id=row.dataset.start;if(row.dataset.type==="session")startSession(id);else startWorkout(id)});
+}
+
+/* ===== WATCH ===== */
+let watchPlat="YouTube";
+function renderWatch(){
+ const vids=S.videos;
+ $("#v-watch").innerHTML=`
+  <div class="top"><div class="h1">Watch</div><div class="sub">Real creators — YouTube, TikTok, Instagram</div></div>
+  <div class="addbar"><input id="watchUrl" placeholder="Paste any video link…" autocomplete="off"><button id="watchAdd">Add</button></div>
+  <div class="platseg">${["YouTube","TikTok","Instagram"].map(p=>`<button class="${p===watchPlat?'on':''}" data-plat="${p}">${p}</button>`).join("")}</div>
+  <div class="searchchips">${WATCH_TOPICS.map(c=>`<a class="schip" data-search="${esc(c)}">🔎 ${esc(c)}</a>`).join("")}</div>
+  <div class="note">💡 YouTube clips play right here in-app — tap to watch. Instagram &amp; TikTok open on their app (they don't allow embedding). Paste any link to add it to your feed.</div>
+  <div class="vfeed" id="vfeed">${vids.length?vids.map(vHTML).join(""):`<div class="empty"><div class="big">🎬</div>Your feed is empty.<br>Tap a topic above to find creators, then paste a link.</div>`}</div>
+  <div class="credit">Tip: on the platform, Share → Copy link → paste here.</div>`;
+ wire($("#v-watch"));
+ $("#v-watch").querySelectorAll("[data-plat]").forEach(b=>b.onclick=()=>{watchPlat=b.dataset.plat;renderWatch()});
+ $("#v-watch").querySelectorAll("[data-search]").forEach(a=>a.onclick=()=>window.open(searchURL(watchPlat,a.dataset.search),"_blank","noopener"));
+ $("#watchAdd").onclick=()=>{const v=$("#watchUrl").value,p=parseVideo(v);if(!p){toast("that link didn't parse");return}S.videos.unshift({id:"v"+Date.now(),url:v,title:"",topic:"life"});save();$("#watchUrl").value="";renderWatch();toast("✅ added")};
+ $("#watchUrl").addEventListener("keydown",e=>{if(e.key==="Enter")$("#watchAdd").click()});
+ $("#vfeed").querySelectorAll(".vcard").forEach(bindV);
+}
+function vHTML(v){const p=parseVideo(v.url)||{platform:"Link",kind:"link"},saved=!!S.saves[v.id],vert=p.vert?" vert":"";
+ const inline=p.kind==="iframe"&&(p.platform==="YouTube"||p.platform==="Vimeo"||p.kind==="video");
+ return`<div class="vcard" data-id="${v.id}" data-embed="${esc(p.embed||"")}" data-kind="${p.kind}" data-plat="${p.platform}" data-inline="${inline?1:0}" data-open="${esc(p.open||v.url)}"><div class="vframe${vert}"><div class="vposter" style="${grad(v.topic||'fit')}">
+  <span class="plat" style="color:${PLAT_COLOR[p.platform]||'#fff'}">${p.platform}</span><button class="pbtn" aria-label="Play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button><span class="sm">${inline?"Tap to play":"Opens on "+p.platform+" ↗"}</span></div></div>
+  <div class="vmeta"><div class="vinfo"><div class="vttl">${esc(v.title||"Untitled clip")}</div><div class="vsrc">${p.platform}${v.seed?" · curated":""}</div></div>
+   <div class="vact"><button data-a="save" class="${saved?'on-save':''}" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></button><button data-a="remove" aria-label="Remove"><svg viewBox="0 0 24 24"><path d="M6 7h12l-1 13a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1zM9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></div></div>`}
+function bindV(card){card.querySelector(".vposter").onclick=()=>{const embed=card.dataset.embed,open=card.dataset.open,inline=card.dataset.inline==="1";
+  if(inline&&embed){const src=embed+(embed.includes("?")?"&":"?")+"autoplay=1";const frame=card.querySelector(".vframe");
+   frame.innerHTML=`<iframe src="${esc(src)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>`;}
+  else{window.open(open,"_blank","noopener")}
+  addXP(4);bump();save()};
+ card.querySelectorAll("[data-a]").forEach(b=>b.onclick=e=>{e.stopPropagation();const id=card.dataset.id,a=b.dataset.a;if(a==="save"){S.saves[id]=!S.saves[id];b.classList.toggle("on-save",S.saves[id]);save();toast(S.saves[id]?"🔖 saved":"removed")}else{S.videos=S.videos.filter(v=>v.id!==id);save();renderWatch();toast("removed")}})}
+
+/* ===== READER ===== */
+const reader=$("#reader");
+function openReader(id){const a=ARTICLES.find(x=>x.id===id);if(!a)return;const t=T[a.topic],k=a.id,liked=!!S.likes[k],saved=!!S.saves[k];
+ reader.innerHTML=`<div class="rprog" id="rprog"></div><div class="rback"><button data-rback aria-label="Back"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="rbt">${a.minutes} min · ${t.e} ${t.l}</span></div>
+  <div class="rhero" style="${grad(a.topic)}"><span class="em">${a.emoji}</span></div>
+  <article class="article"><div class="atopic">${t.e} ${t.l}</div><h1>${esc(a.title)}</h1><p class="dek">${esc(a.dek)}</p>
+   <div class="byline"><div class="ba2">A</div><div><b>${esc(a.author)}</b><br><span>APEX Originals</span></div></div>
+   <div class="body">${a.body.map(b=>b[0]==="h"?`<h2>${esc(b[1])}</h2>`:b[0]==="pull"?`<div class="pull">${esc(b[1])}</div>`:`<p>${esc(b[1])}</p>`).join("")}</div>
+   <div class="end"><button class="prim" data-rlike><svg viewBox="0 0 24 24"><path d="M12 21s-8-4.9-10.3-9.6C.2 8 2 4.7 5.2 4.7c2 0 3.3 1.1 4 2.2.7-1.1 2-2.2 4-2.2 3.2 0 5 3.3 3.5 6.7C20 16.1 12 21 12 21z"/></svg>${liked?'Liked':'Like'}</button><button data-rsave><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>${saved?'Saved':'Save'}</button><button data-rcmt><svg viewBox="0 0 24 24"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4V5a1 1 0 0 1 1-1z"/></svg>Reflect</button></div></article>`;
+ reader.classList.add("show");reader.scrollTop=0;const prog=reader.querySelector("#rprog");let aw=!!S.done["r"+k];
+ reader.onscroll=()=>{const mx=reader.scrollHeight-reader.clientHeight,pct=mx>0?reader.scrollTop/mx*100:0;prog.style.width=pct+"%";S.readProgress[k]=Math.max(S.readProgress[k]||0,pct);if(pct>85&&!aw){aw=true;S.done["r"+k]=true;S.reads++;bump();addXP(25,"📖 finished — <span class=xp>+25 XP</span>")}if(pct>2)save()};
+ reader.querySelector("[data-rback]").onclick=closeReader;
+ reader.querySelector("[data-rlike]").onclick=e=>{S.likes[k]=!S.likes[k];save();e.currentTarget.lastChild.textContent=S.likes[k]?'Liked':'Like'};
+ reader.querySelector("[data-rsave]").onclick=e=>{S.saves[k]=!S.saves[k];save();e.currentTarget.lastChild.textContent=S.saves[k]?'Saved':'Save';toast(S.saves[k]?"🔖 saved":"removed")};
+ reader.querySelector("[data-rcmt]").onclick=()=>openC(k,a.topic);
+}
+function closeReader(){reader.classList.remove("show");reader.onscroll=null;save();if(cur==="home")renderHome()}
+
+/* ===== TIMER + BREATHE ===== */
+const timerEl=$("#timer");let TT=null,ac=null;
+function beep(f,d,v){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=f;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(v||.2,ac.currentTime);o.start();g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+(d||.15));o.stop(ac.currentTime+(d||.15))}catch(e){}}
+function steps(w){const s=[];for(let r=0;r<w.rounds;r++)w.ex.forEach(e=>s.push({name:/rest/i.test(e[0])?"Rest":e[0],dur:e[1],cue:e[2]||"",rest:/rest/i.test(e[0]),round:r+1}));return s}
+function startWorkout(id){const w=WORKOUTS.find(x=>x.id===id);if(!w)return;TT={w,st:steps(w),i:0,rem:0,paused:false,raf:null,last:0,rounds:w.rounds,kind:"workout"};TT.rem=TT.st[0].dur;timerEl.classList.add("show");drawTimer();tick();beep(660,.12)}
+function drawTimer(){if(!TT)return;const st=TT.st[TT.i],nx=TT.st[TT.i+1],w=TT.w,pct=st.dur?TT.rem/st.dur:0,c=2*Math.PI*112;
+ timerEl.className="timer show "+(st.rest?"tmr-rest rest":"tmr-work work");
+ timerEl.innerHTML=`<div class="tmr-top"><button id="tc" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></button><div class="tt">${esc(w.title)}<small>Round ${st.round}/${TT.rounds} · ${TT.i+1}/${TT.st.length}</small></div></div>
+  <div class="tmr-mid"><div class="tmr-phase">${st.rest?"Rest":"Work"}</div><div class="tmr-ring"><svg viewBox="0 0 250 250"><circle cx="125" cy="125" r="112" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="10"/><circle id="arc" cx="125" cy="125" r="112" fill="none" stroke="${st.rest?'#37d68a':'#ff4d6d'}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}" transform="rotate(-90 125 125)"/></svg><div class="tmr-count" id="cnt">${Math.ceil(TT.rem)}</div></div>
+   <div class="tmr-ex">${esc(st.name)}</div>${st.cue?`<div class="tmr-cue">${esc(st.cue)}</div>`:""}<div class="tmr-next">${nx?"Next · "+esc(nx.name):"Last one — finish strong!"}</div></div>
+  <div class="tmr-ctrl"><button class="skip" id="tp"><svg viewBox="0 0 24 24"><path d="M7 6v12M20 6l-9 6 9 6z"/></svg></button><button class="pp" id="tpp"><svg viewBox="0 0 24 24"><path d="${TT.paused?'M8 5v14l11-7z':'M7 5h4v14H7zM13 5h4v14h-4z'}"/></svg>${TT.paused?"Resume":"Pause"}</button><button class="skip" id="tn"><svg viewBox="0 0 24 24"><path d="M17 6v12M4 6l9 6-9 6z"/></svg></button></div>`;
+ $("#tc").onclick=stopTimer;$("#tpp").onclick=()=>{TT.paused=!TT.paused;TT.last=performance.now();drawTimer()};$("#tn").onclick=()=>adv(1);$("#tp").onclick=()=>adv(-1)}
+function tick(){if(!TT||TT.kind!=="workout")return;TT.raf=requestAnimationFrame(tick);const now=performance.now();if(!TT.last)TT.last=now;const dt=(now-TT.last)/1000;TT.last=now;if(TT.paused)return;const prev=TT.rem;TT.rem-=dt;if(Math.ceil(prev)!==Math.ceil(TT.rem)&&TT.rem>0&&TT.rem<=3.05)beep(880,.08,.25);const st=TT.st[TT.i],cnt=$("#cnt"),arc=$("#arc");if(cnt)cnt.textContent=Math.max(0,Math.ceil(TT.rem));if(arc&&st.dur){const c=2*Math.PI*112;arc.setAttribute("stroke-dashoffset",c*(1-Math.max(0,TT.rem)/st.dur))}if(TT.rem<=0){beep(st.rest?660:520,.18,.3);adv(1)}}
+function adv(d){if(!TT)return;TT.i+=d;if(TT.i>=TT.st.length)return finishW();if(TT.i<0)TT.i=0;TT.rem=TT.st[TT.i].dur;TT.last=performance.now();TT.paused=false;drawTimer()}
+function finishW(){const w=TT.w;cancelAnimationFrame(TT.raf);const m=wMin(w);S.workouts++;S.minutes+=m;bump();addXP(30);beep(784,.15);setTimeout(()=>beep(1046,.2),160);save();timerEl.className="timer show";timerEl.innerHTML=`<div class="tmr-done"><div class="big">🎉</div><h2>Workout complete</h2><p>${esc(w.title)} · ${m} active min · +30 XP</p><button id="td">Done</button></div>`;$("#td").onclick=()=>{stopTimer()};TT=null}
+function stopTimer(){if(TT){cancelAnimationFrame(TT.raf);if(TT.btimer)clearTimeout(TT.btimer);TT=null}timerEl.classList.remove("show");setTimeout(()=>timerEl.innerHTML="",300);if(cur==="train")renderTrain();if(cur==="home")renderHome()}
+/* breathing / meditation */
+function startSession(id){const s=SESSIONS.find(x=>x.id===id);if(!s)return;timerEl.classList.add("show");
+ if(s.kind==="breathe")runBreathe(s);else runMeditate(s)}
+function runBreathe(s){const labels=["Inhale","Hold","Exhale","Hold"];let cycle=0,phase=0;TT={kind:"breathe"};
+ timerEl.className="timer show breathe";
+ timerEl.innerHTML=`<div class="tmr-top"><button id="tc"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></button><div class="tt">${esc(s.title)}<small>Follow the orb · <span id="cyc">${s.cycles}</span> cycles left</small></div></div>
+  <div class="tmr-mid"><div class="breathe-orb" id="orb"><span class="bl" id="bl">Ready</span></div><div class="tmr-cue" style="margin-top:26px">${esc(s.desc)}</div></div>
+  <div class="tmr-ctrl"><button class="pp" id="tpp">Breathe with it</button></div>`;
+ $("#tc").onclick=stopTimer;
+ const orb=$("#orb"),bl=$("#bl");let running=false;
+ function next(){if(!TT){return}const dur=s.pattern[phase];if(dur===0){phase=(phase+1)%4;return next()}bl.textContent=labels[phase];
+  orb.style.transitionDuration=dur+"s";orb.style.transform=(phase===0)?"scale(1.35)":(phase===2)?"scale(.75)":orb.style.transform;
+  if(phase===0)beep(330,.12,.12);if(phase===2)beep(247,.16,.12);
+  TT.btimer=setTimeout(()=>{phase++;if(phase>3){phase=0;cycle++;const left=s.cycles-cycle;$("#cyc").textContent=Math.max(0,left);if(cycle>=s.cycles)return finishSession(s)}next()},dur*1000)}
+ $("#tpp").onclick=()=>{if(running)return;running=true;$("#tpp").textContent="Breathing…";phase=0;cycle=0;next()};
+}
+function runMeditate(s){let rem=s.secs;TT={kind:"meditate"};timerEl.className="timer show breathe";
+ const c=2*Math.PI*112;
+ timerEl.innerHTML=`<div class="tmr-top"><button id="tc"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></button><div class="tt">${esc(s.title)}<small>Just follow the breath</small></div></div>
+  <div class="tmr-mid"><div class="tmr-ring"><svg viewBox="0 0 250 250"><circle cx="125" cy="125" r="112" fill="none" stroke="rgba(255,255,255,.09)" stroke-width="10"/><circle id="arc" cx="125" cy="125" r="112" fill="none" stroke="#7fb0ff" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="0" transform="rotate(-90 125 125)"/></svg><div class="tmr-count" id="cnt" style="font-size:56px">${mmss(rem)}</div></div><div class="tmr-cue">${esc(s.desc)}</div></div>
+  <div class="tmr-ctrl"><button class="pp" id="tpp"><svg viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>Pause</button></div>`;
+ $("#tc").onclick=stopTimer;let paused=false,last=performance.now();$("#tpp").onclick=()=>{paused=!paused;last=performance.now()};
+ if(!Music.isPlaying()){Music.toggle();syncMusicUI()}
+ function loop(){if(!TT||TT.kind!=="meditate")return;requestAnimationFrame(loop);const now=performance.now();const dt=(now-last)/1000;last=now;if(paused)return;rem-=dt;const cnt=$("#cnt"),arc=$("#arc");if(cnt)cnt.textContent=mmss(Math.max(0,rem));if(arc)arc.setAttribute("stroke-dashoffset",c*(1-rem/s.secs));if(rem<=0)finishSession(s)}
+ requestAnimationFrame(loop)}
+function mmss(s){s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function finishSession(s){if(TT&&TT.btimer)clearTimeout(TT.btimer);TT=null;S.sessions++;bump();addXP(20);beep(660,.14);setTimeout(()=>beep(880,.18),160);save();timerEl.className="timer show";timerEl.innerHTML=`<div class="tmr-done"><div class="big">🧘</div><h2>Session complete</h2><p>${esc(s.title)} · +20 XP<br>Carry the calm with you.</p><button id="td">Done</button></div>`;$("#td").onclick=stopTimer}
+
+/* ===== YOU ===== */
+function renderYou(){const lvl=levelFor(S.xp),p=xpIn(S.xp),pct=Math.round(p.cur/p.need*100),c=2*Math.PI*33,saved=savedIds();
+ const quizzesDone=Object.keys(S.quizBest).length,storiesDone=Object.keys(S.storiesSeen).length,mapsDone=Object.keys(S.mapsSeen).length,aces=Object.values(S.quizBest).filter(p=>p===100).length;
+ const ach=[{e:"🌱",n:"Day one",d:"First read",g:S.reads>=1},{e:"🔥",n:"Streak x3",d:"3-day streak",g:S.streak>=3},{e:"📖",n:"Scholar",d:"Finish an article",g:Object.keys(S.done).some(k=>k[0]==="r")},{e:"🎖️",n:"Forged",d:"3 workouts",g:S.workouts>=3},{e:"🧘",n:"Still mind",d:"3 sessions",g:S.sessions>=3},{e:"🧩",n:"Quizzed",d:"Take a quiz",g:quizzesDone>=1},{e:"💯",n:"Perfect",d:"Ace a quiz",g:aces>=1},{e:"✨",n:"Storyteller",d:"Read 3 stories",g:storiesDone>=3},{e:"🗺️",n:"Cartographer",d:"Explore 3 maps",g:mapsDone>=3},{e:"💬",n:"Voice",d:"Post a reflection",g:Object.values(S.ownComments).some(a=>a.length)},{e:"🔖",n:"Curator",d:"Save 5",g:saved.length>=5},{e:"🚀",n:"Ascend",d:"Reach Lv 6",g:lvl>=6}];
+ $("#v-you").innerHTML=`<div class="prof"><div class="pring"><svg viewBox="0 0 92 92"><circle cx="46" cy="46" r="33" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="6"/><circle cx="46" cy="46" r="33" fill="none" stroke="url(#gg)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct/100)}" transform="rotate(-90 46 46)"/></svg><div class="pa">A</div></div><div class="pn">You</div><div class="pl">Level ${lvl} · ${p.cur}/${p.need} XP to Level ${lvl+1}</div></div>
+  <div class="statgrid"><div class="scell"><div class="sv">${S.streak}</div><div class="sl">Streak</div></div><div class="scell"><div class="sv">${S.reads}</div><div class="sl">Read</div></div><div class="scell"><div class="sv">${S.workouts+S.sessions}</div><div class="sl">Trained</div></div><div class="scell"><div class="sv">${saved.length}</div><div class="sl">Saved</div></div></div>
+  <div class="sec"><h3>📱 Make it an app</h3></div>
+  <div style="padding:0 18px"><div class="iconbox"><canvas id="appIcon" width="70" height="70"></canvas><div><div class="ibt">Add APEX to your Home Screen</div><div class="ibd">Download the icon, then use a Home-Screen shortcut. For a true installable, offline app with in-app video playback, ask for the hosted PWA version.</div><button class="dl" id="dlIcon"><svg viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg>Download icon</button></div></div></div>
+  <div class="sec"><h3>🏅 Achievements</h3><div class="achv">${ach.map(a=>`<div class="ba ${a.g?'':'locked'}"><div class="be">${a.e}</div><div class="bn">${a.n}</div><div class="bd">${a.d}</div></div>`).join("")}</div></div>
+  <div class="sec"><h3>🔖 Your stash ${saved.length?`· ${saved.length}`:''}</h3></div>
+  <div class="savewrap">${saved.length?saved.slice().reverse().map(k=>{const it=itemText(k);if(!it)return"";const t=T[it.t]||T.life;return`<div class="saveitem" data-open-saved="${k}"><div class="st" style="background:${t.c}"></div><div><div class="sx">${esc(it.x)}</div><div class="stopic">${t.e} ${t.l}</div></div></div>`}).join(""):`<div class="empty"><div class="big">🔖</div>Nothing saved yet.<br>Tap Save on anything that moves you.</div>`}</div>
+  <div class="credit">APEX · train your mind & body<br>Free · your data stays on your device</div>`;
+ wire($("#v-you"));drawAppIcon($("#appIcon"),70);$("#dlIcon").onclick=downloadIcon;
+ $("#v-you").querySelectorAll("[data-open-saved]").forEach(e=>e.onclick=()=>{const k=e.dataset.openSaved;if(k[0]==="f"){setTab("learn");scrollFeedTo(+k.slice(1))}else if(STORIES.some(s=>s.id===k)){openStories(k)}else if(MAPS.some(m=>m.id===k)){openMap(k)}else if(S.videos.some(v=>v.id===k)){setTab("watch")}else openReader(k)});
+}
+/* app icon */
+function drawAppIcon(cv,size){if(!cv)return;const dpr=Math.min(3,devicePixelRatio||1);cv.width=size*dpr;cv.height=size*dpr;const x=cv.getContext("2d");x.scale(dpr,dpr);const r=size*.225;x.beginPath();rr(x,0,0,size,size,r);x.clip();const g=x.createLinearGradient(0,0,size,size);g.addColorStop(0,"#f3d089");g.addColorStop(.55,"#e8b563");g.addColorStop(1,"#c98f3a");x.fillStyle=g;x.fillRect(0,0,size,size);const rg=x.createRadialGradient(size*.3,size*.28,0,size*.3,size*.28,size*.8);rg.addColorStop(0,"rgba(255,255,255,.4)");rg.addColorStop(1,"rgba(255,255,255,0)");x.fillStyle=rg;x.fillRect(0,0,size,size);
+ // mountain 'A' peak
+ x.fillStyle="#1a1206";x.beginPath();x.moveTo(size*.5,size*.24);x.lineTo(size*.78,size*.76);x.lineTo(size*.60,size*.76);x.lineTo(size*.5,size*.55);x.lineTo(size*.40,size*.76);x.lineTo(size*.22,size*.76);x.closePath();x.fill();
+ x.fillStyle="#fff";x.beginPath();x.moveTo(size*.5,size*.24);x.lineTo(size*.585,size*.40);x.lineTo(size*.5,size*.36);x.lineTo(size*.415,size*.40);x.closePath();x.fill()}
+function rr(x,X,Y,W,H,r){x.moveTo(X+r,Y);x.arcTo(X+W,Y,X+W,Y+H,r);x.arcTo(X+W,Y+H,X,Y+H,r);x.arcTo(X,Y+H,X,Y,r);x.arcTo(X,Y,X+W,Y,r);x.closePath()}
+function downloadIcon(){const c=document.createElement("canvas");drawAppIcon(c,1024);c.toBlob(async b=>{if(!b)return;if(window.claude&&window.claude.downloads){try{await window.claude.downloads.save({filename:"apex-icon.png",data:b});toast("✅ icon saved")}catch(e){if(e&&e.code==="declined")toast("cancelled");else fb(b)}}else fb(b)},"image/png");function fb(b){try{const u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="apex-icon.png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);toast("⬇️ downloaded")}catch(e){toast("unavailable here")}}}
+
+/* ===== STORIES viewer ===== */
+const storiesEl=$("#stories");let ST={idx:0,slide:0,order:[],timer:null,paused:false};
+function openStories(startId){ST.order=STORIES.map(s=>s.id);const at=ST.order.indexOf(startId);ST.idx=at<0?0:at;ST.slide=0;storiesEl.classList.add("show");drawStory()}
+function drawStory(){const s=STORIES.find(x=>x.id===ST.order[ST.idx]);if(!s){return closeStories()}const t=T[s.topic]||T.life,sl=s.slides[ST.slide],saved=!!S.saves[s.id];
+ storiesEl.innerHTML=`<div class="sbg" style="${grad(s.topic)}"></div><div class="sgrain"></div>
+  <div class="sbars">${s.slides.map((_,i)=>`<div class="sbar ${i<ST.slide?'done':''} ${i===ST.slide?'active':''}"><i style="animation-duration:6s"></i></div>`).join("")}</div>
+  <div class="stop"><div class="semoji">${s.emoji}</div><div class="stt"><b>${esc(s.title)}</b><small>${t.e} ${t.l} · APEX Stories</small></div><button class="sx" id="stX" aria-label="Close">✕</button></div>
+  <div class="snav"><div class="sz" id="szPrev"></div><div class="sz" id="szNext"></div></div>
+  <div class="sbody"><div class="se">${sl.e}</div><div class="sh">${esc(sl.h)}</div><div class="sp">${esc(sl.p)}</div></div>
+  <div class="sfoot"><button id="stSave" class="${saved?'on-save':''}"><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>${saved?'Saved':'Save'}</button><button id="stShare"><svg viewBox="0 0 24 24"><path d="M14 9V5l7 7-7 7v-4.1C9 12 6 13 3 17c1-6 5-8 11-8z"/></svg>Share</button></div>`;
+ $("#stX").onclick=closeStories;
+ $("#szPrev").onclick=()=>stepStory(-1);$("#szNext").onclick=()=>stepStory(1);
+ $("#stSave").onclick=e=>{e.stopPropagation();S.saves[s.id]=!S.saves[s.id];save();toast(S.saves[s.id]?"🔖 story saved":"removed");drawStory()};
+ $("#stShare").onclick=e=>{e.stopPropagation();shareT(sl.h,sl.p)};
+ const bar=storiesEl.querySelector(".sbar.active i");if(bar){bar.addEventListener("animationend",()=>stepStory(1),{once:true})}
+ if(!S.storiesSeen[s.id]){S.storiesSeen[s.id]=true;bump();addXP(6,"✨ story · <span class=xp>+6 XP</span>");save()}
+}
+function stepStory(d){const s=STORIES.find(x=>x.id===ST.order[ST.idx]);if(!s)return closeStories();let n=ST.slide+d;
+ if(n>=s.slides.length){if(ST.idx>=ST.order.length-1)return closeStories();ST.idx++;ST.slide=0;return drawStory()}
+ if(n<0){if(ST.idx<=0){ST.slide=0;return drawStory()}ST.idx--;const p=STORIES.find(x=>x.id===ST.order[ST.idx]);ST.slide=p.slides.length-1;return drawStory()}
+ ST.slide=n;drawStory()}
+function closeStories(){storiesEl.classList.remove("show");setTimeout(()=>{storiesEl.innerHTML=""},260);if(cur==="home")renderHome()}
+
+/* ===== QUIZ engine ===== */
+const quizEl=$("#quiz");let QZ=null;
+function openQuiz(id){const q=QUIZZES.find(x=>x.id===id);if(!q)return;QZ={q,i:0,score:0,answered:false};quizEl.classList.add("show");drawQuiz()}
+function drawQuiz(){const q=QZ.q,n=QZ.i,item=q.qs[n],t=T[q.topic]||T.life,total=q.qs.length,pct=Math.round((n)/total*100);
+ quizEl.innerHTML=`<div class="qtop"><button id="qX" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></button><div class="qbar"><i style="width:${pct}%"></i></div><span class="qn">${n+1}/${total}</span></div>
+  <div class="qwrap"><div class="qcat">${t.e} ${esc(q.title)}</div><div class="qq">${esc(item.q)}</div>
+   <div class="qopts" id="qopts">${item.o.map((o,i)=>`<button class="qopt" data-i="${i}"><span class="qk">${String.fromCharCode(65+i)}</span><span>${esc(o)}</span></button>`).join("")}</div>
+   <div class="qexp" id="qexp"><b>Why:</b> ${esc(item.e)}</div>
+   <button class="qnext" id="qnext">${n===total-1?'See results':'Next question'}</button></div>`;
+ $("#qX").onclick=closeQuiz;QZ.answered=false;
+ quizEl.querySelectorAll(".qopt").forEach(b=>b.onclick=()=>answerQuiz(+b.dataset.i));
+ $("#qnext").onclick=()=>{if(QZ.i>=total-1)return quizResult();QZ.i++;drawQuiz()};
+}
+function answerQuiz(choice){if(QZ.answered)return;QZ.answered=true;const item=QZ.q.qs[QZ.i],ok=choice===item.a;if(ok)QZ.score++;
+ quizEl.querySelectorAll(".qopt").forEach(b=>{const i=+b.dataset.i;b.disabled=true;if(i===item.a)b.classList.add("correct");else if(i===choice)b.classList.add("wrong");else b.classList.add("dim")});
+ $("#qexp").classList.add("show");$("#qnext").classList.add("show");
+ beep(ok?740:300,.12,.18);if(ok)addXP(5);
+}
+function quizResult(){const q=QZ.q,total=q.qs.length,pct=Math.round(QZ.score/total*100),c=2*Math.PI*66,prevBest=S.quizBest[q.id]||0,best=Math.max(prevBest,pct);
+ S.quizBest[q.id]=best;S.quizzes++;bump();addXP(12);save();
+ const msg=pct===100?"Flawless. You've got this cold.":pct>=75?"Strong — a couple to revisit.":pct>=50?"Decent start. Run it again to lock it in.":"Worth another pass — that's how it sticks.";
+ const col=pct>=75?"var(--green)":pct>=50?"var(--gold)":"#ff6a3d";
+ quizEl.innerHTML=`<div class="qtop"><button id="qX" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></button><div class="qbar"><i style="width:100%"></i></div><span class="qn">done</span></div>
+  <div class="qresult"><div class="qring"><svg viewBox="0 0 150 150"><circle cx="75" cy="75" r="66" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="11"/><circle cx="75" cy="75" r="66" fill="none" stroke="${col}" stroke-width="11" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct/100)}" transform="rotate(-90 75 75)"/></svg><div class="qpct"><b>${pct}%</b><small>${QZ.score}/${total}</small></div></div>
+   <h2>${pct>=75?'🎉 Nailed it':pct>=50?'👏 Nice work':'💪 Keep going'}</h2><p>${esc(msg)}<br>+${12+QZ.score*5} XP earned${best>prevBest?" · new best!":""}</p>
+   <div class="qbtns"><button id="qRetry">Try again</button><button class="prim" id="qDone">Done</button></div></div>`;
+ $("#qX").onclick=closeQuiz;$("#qDone").onclick=closeQuiz;$("#qRetry").onclick=()=>openQuiz(q.id);
+ beep(660,.14);setTimeout(()=>beep(880,.18),150);
+}
+function closeQuiz(){quizEl.classList.remove("show");QZ=null;setTimeout(()=>{quizEl.innerHTML=""},300);if(cur==="home")renderHome();if(cur==="you")renderYou()}
+
+/* ===== MAP viewer ===== */
+const mapEl=$("#mapview");
+function openMap(id){const m=MAPS.find(x=>x.id===id);if(!m)return;const t=T[m.topic]||T.life,saved=!!S.saves[m.id];
+ mapEl.innerHTML=`<div class="qtop"><button id="mX" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="qbar"><i style="width:100%;background:${t.c}"></i></div><span class="qn">${t.e} map</span></div>
+  <div class="mapwrap"><div class="maproot"><div class="mrbadge" style="${grad(m.topic)}">${m.emoji}</div><div class="mrt">${esc(m.root)}</div><div class="mrs">${esc(m.sub)}</div></div><div class="mstem"></div>
+   ${m.branches.map((b,i)=>`<div class="mbranch" style="animation-delay:${i*.09}s"><span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:${t.c}"></span>
+     <div class="mbhead"><div class="mbe" style="background:${grad(m.topic).replace('background:','')}">${b.e}</div><div class="mbl">${esc(b.l)}</div></div>
+     <div class="mbpts">${b.pts.map(p=>`<div class="mbpt"><span class="mdot" style="background:${t.c}"></span>${esc(p)}</div>`).join("")}</div></div>`).join("")}
+   <div class="mapfoot"><button id="mSave" class="${saved?'prim':''}"><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>${saved?'Saved':'Save map'}</button><button class="prim" id="mDone">Done</button></div></div>`;
+ mapEl.classList.add("show");mapEl.scrollTop=0;
+ $("#mX").onclick=closeMap;$("#mDone").onclick=closeMap;
+ $("#mSave").onclick=()=>{S.saves[m.id]=!S.saves[m.id];save();toast(S.saves[m.id]?"🔖 map saved":"removed");openMap(m.id)};
+ if(!S.mapsSeen[m.id]){S.mapsSeen[m.id]=true;bump();addXP(8,"🗺️ map explored · <span class=xp>+8 XP</span>");save()}
+}
+function closeMap(){mapEl.classList.remove("show");setTimeout(()=>{mapEl.innerHTML=""},300);if(cur==="home")renderHome();if(cur==="you")renderYou()}
+
+/* ===== SHEETS / MUSIC UI / ROUTER ===== */
+function openSheet(s){$("#scrim").classList.add("show");s.classList.add("show")}
+function closeSheets(){$("#scrim").classList.remove("show");cs.classList.remove("show")}
+$("#scrim").onclick=closeSheets;document.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheets);
+function syncMusicUI(){const on=Music.isPlaying();$("#musicbar").classList.toggle("playing",on);$("#mPP").innerHTML=on?'<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';$("#mSub").textContent=on?"Now playing · "+Music.current():"Tap play for atmosphere";$("#mMood").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.mood===Music.current()))}
+$("#mPP").onclick=()=>{Music.toggle();syncMusicUI()};
+$("#mMood").querySelectorAll("button").forEach(b=>b.onclick=()=>{Music.setMood(b.dataset.mood);syncMusicUI();if(Music.isPlaying())toast("🎵 "+b.dataset.mood)});
+syncMusicUI();
+
+function wire(root){
+ root.querySelectorAll("[data-open-art]").forEach(e=>e.onclick=()=>openReader(e.dataset.openArt));
+ root.querySelectorAll("[data-open-feed]").forEach(e=>e.onclick=()=>{setTab("learn");scrollFeedTo(+e.dataset.openFeed)});
+ root.querySelectorAll("[data-goto]").forEach(e=>e.onclick=()=>setTab(e.dataset.goto));
+ root.querySelectorAll("[data-open-story]").forEach(e=>e.onclick=()=>openStories(e.dataset.openStory));
+ root.querySelectorAll("[data-open-quiz]").forEach(e=>e.onclick=()=>openQuiz(e.dataset.openQuiz));
+ root.querySelectorAll("[data-open-map]").forEach(e=>e.onclick=()=>openMap(e.dataset.openMap));
+ root.querySelectorAll("[data-start]").forEach(e=>{if(!e.classList.contains("row"))e.onclick=()=>startWorkout(e.dataset.start)});
+}
+let cur="home";
+function setTab(name){cur=name;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.tab===name));document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$("#v-"+name).classList.add("active");
+ if(name==="home")renderHome();else if(name==="learn")buildFeed();else if(name==="train")renderTrain();else if(name==="watch")renderWatch();else if(name==="you")renderYou();
+ $("#v-"+name).scrollTop=name==="learn"?$("#v-"+name).scrollTop:0}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>setTab(t.dataset.tab));
+window.addEventListener("keydown",e=>{if(e.key==="Escape"){if(storiesEl.classList.contains("show"))closeStories();else if(quizEl.classList.contains("show"))closeQuiz();else if(mapEl.classList.contains("show"))closeMap();else if(reader.classList.contains("show"))closeReader();else if(TT)stopTimer();else closeSheets()}
+ if(storiesEl.classList.contains("show")){if(e.key==="ArrowRight")stepStory(1);if(e.key==="ArrowLeft")stepStory(-1)}
+ if(cur==="learn"){const f=$("#feed"),h=f.clientHeight,c=Math.round(f.scrollTop/h);if(e.key==="ArrowDown"){e.preventDefault();f.scrollTo({top:(c+1)*h,behavior:"smooth"})}if(e.key==="ArrowUp"){e.preventDefault();f.scrollTo({top:Math.max(0,(c-1)*h),behavior:"smooth"})}}});
+
+/* boot — open straight into the scrolling feed */
+updateHUD();setTab("learn");
+
+/* ===== PWA: offline + installable ===== */
+if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("/sw.js").catch(()=>{})})}
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;window.__apexInstall=()=>{if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null}}});
+})();
+</script>
+</body>
 </html>
