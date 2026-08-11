@@ -1,12 +1,22 @@
 {
-  // Static-assets deploy for the APEX web app (Cloudflare Workers Static Assets).
-  // `npx wrangler deploy` serves everything in this folder as a static site.
+  // Unified deploy: one Worker serves the static APEX app AND the tiny same-origin API
+  // (/ai for Gemini, plus optional /comments and /leaderboard). `npx wrangler deploy`.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "deepstash",
+  "main": "worker-site.js",
   "compatibility_date": "2024-11-01",
   "assets": {
     "directory": ".",
+    // Bind the static assets so the Worker can fall through to them for non-API paths.
+    "binding": "ASSETS",
     // Single-page app: serve index.html for any unknown path (replaces _redirects).
     "not_found_handling": "single-page-application"
   }
+
+  // To enable AI (one-time):
+  //   npx wrangler secret put GEMINI_KEY   → paste a free key from aistudio.google.com/apikey
+  //   npx wrangler deploy
+  //
+  // To enable shared comments + leaderboard, create a KV namespace and uncomment:
+  // "kv_namespaces": [{ "binding": "APEX_KV", "id": "<your-kv-namespace-id>" }]
 }

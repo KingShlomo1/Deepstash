@@ -120,16 +120,16 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 /* LEARN feed */
 .feed{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory}
 .card{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding:calc(env(safe-area-inset-top) + 70px) 22px 54px;overflow:hidden;isolation:isolate}
-.card .bg{position:absolute;inset:0;z-index:-2}.card .grain{position:absolute;inset:0;z-index:-1;background:radial-gradient(80% 55% at 50% 42%,transparent 40%,rgba(0,0,0,.34) 100%),linear-gradient(180deg,rgba(0,0,0,.34),transparent 22%,transparent 60%,rgba(0,0,0,.64));pointer-events:none}
-.ktag{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:7px 12px;border-radius:999px;background:rgba(0,0,0,.28);border:1px solid var(--line-2);backdrop-filter:blur(6px);margin-bottom:20px}
+.card .bg{position:absolute;inset:0;z-index:-2}.card .grain{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.58),rgba(0,0,0,.12) 26%,rgba(0,0,0,.22) 50%,rgba(0,0,0,.72) 100%),radial-gradient(96% 62% at 50% 47%,rgba(0,0,0,.34) 0%,transparent 66%);pointer-events:none}
+.ktag{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:7px 12px;border-radius:999px;background:rgba(0,0,0,.42);border:1px solid var(--line-2);backdrop-filter:blur(6px);margin-bottom:20px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
 .ktag .dot{width:8px;height:8px;border-radius:50%}
-.ctype{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-2);margin-bottom:12px}
-.insight{font-family:var(--serif);font-size:clamp(24px,6.2vw,31px);line-height:1.25;font-weight:500;text-wrap:balance;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.5);max-width:22ch}
+.ctype{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-2);margin-bottom:12px;text-shadow:0 1px 10px rgba(0,0,0,.75)}
+.insight{font-family:var(--serif);font-size:clamp(24px,6.2vw,31px);line-height:1.25;font-weight:600;text-wrap:balance;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7),0 2px 26px rgba(0,0,0,.62);max-width:22ch}
 .insight.quote{font-style:italic}
-.qauthor{margin-top:16px;font-size:14px;font-weight:750}.qauthor .role{color:var(--muted);font-weight:600;display:block;font-size:12.5px;margin-top:2px;font-style:normal}
-.kicker{margin-top:16px;font-size:15px;line-height:1.5;color:#e9e6f2;max-width:34ch;opacity:.94;display:flex;gap:9px}
+.qauthor{margin-top:16px;font-size:14px;font-weight:750;text-shadow:0 1px 8px rgba(0,0,0,.7)}.qauthor .role{color:#d7d4e2;font-weight:600;display:block;font-size:12.5px;margin-top:2px;font-style:normal}
+.kicker{margin-top:16px;font-size:15px;line-height:1.5;color:#f2f0f8;max-width:34ch;opacity:.97;display:flex;gap:9px;text-shadow:0 1px 10px rgba(0,0,0,.72)}
 .kicker::before{content:"";flex:0 0 auto;width:3px;border-radius:3px;background:currentColor;opacity:.5}
-.meta{position:absolute;left:22px;bottom:24px;right:80px;z-index:2}
+.meta{position:absolute;left:22px;bottom:24px;right:80px;z-index:2;text-shadow:0 1px 8px rgba(0,0,0,.7)}
 .handle{font-size:14px;font-weight:750}.handle .at{color:var(--muted)}
 .source{font-size:12px;color:var(--muted);margin-top:4px}
 .rail-a{position:absolute;right:12px;bottom:24px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:17px}
@@ -432,7 +432,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .imgload.failed{opacity:0!important}
 @keyframes shimmer{0%{background-position:-460px 0}100%{background-position:460px 0}}
 .skel{background:linear-gradient(100deg,rgba(255,255,255,.04) 30%,rgba(255,255,255,.10) 50%,rgba(255,255,255,.04) 70%);background-size:460px 100%;animation:shimmer 1.4s infinite linear}
-.cardimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.cardimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:brightness(.8) contrast(1.02)}
 .card .bg.hasimg{filter:saturate(1.05)}
 .th{position:relative}
 .th .thimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit;z-index:0}
@@ -599,10 +599,55 @@ const T={
  econ:{l:"Economy",e:"📊",c:"#5ad1c2",g:["#0d2a2a","#123f3a"]},
  astro:{l:"Astronomy",e:"🔭",c:"#9a8bff",g:["#161232","#241a4f"]},
  animal:{l:"Animals",e:"🦁",c:"#ffbe4d",g:["#2a2210","#453816"]},
+ anatomy:{l:"Anatomy",e:"🫀",c:"#ff6f91",g:["#2a1119","#451a28"]},
+ war:{l:"Strategy",e:"⚔️",c:"#c9ad63",g:["#232012","#3c3319"]},
+ maps:{l:"Maps",e:"🗺️",c:"#4bbf9a",g:["#0d2622","#123a33"]},
 };
 function grad(t){const x=T[t]||T.life;return`background:linear-gradient(150deg,${x.g[0]},${x.g[1]})`}
 /* real photos (deterministic by seed) with graceful gradient fallback + offline caching via SW */
 function imgURL(seed,w,h){return`https://picsum.photos/seed/apex-${encodeURIComponent(seed)}/${w}/${h}`}
+/* Curated, topic-relevant photos from Wikimedia Commons (Special:FilePath needs only the file
+   name and redirects to upload.wikimedia.org). If any file 404s, we fall back to a UNIQUE picsum
+   photo, then to the topic gradient — so a card is never broken and never duplicated. */
+function CMG(name,w){return`https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(name)}?width=${w||900}`}
+const IMGDB={
+ astro:["Solar_sys8.jpg","The_Earth_seen_from_Apollo_17.jpg","Hubble_ultra_deep_field.jpg","Saturn_during_Equinox.jpg","Pillars_of_creation_2014_HST_WFC3-UVIS_full-res_denoised.jpg","Andromeda_Galaxy_(with_h-alpha).jpg","NGC_4414_(NASA-med).jpg","Jupiter_and_its_shrunken_Great_Red_Spot.jpg","Milky_Way_Arch.jpg","Full_Moon_Luc_Viatour.jpg"],
+ science:["DNA_orbit_animated_static_thumb.png","CERN_LHC_Tunnel1.jpg","Solvay_conference_1927.jpg","Lightning_over_Oradea_Romania_cropped.jpg","Chembox_new.svg","Ammonite_Asteroceras.jpg"],
+ physics:["Albert_Einstein_Head.jpg","Newtons_cradle_animation_book_2.gif","CERN_LHC_Tunnel1.jpg","Lightning_over_Oradea_Romania_cropped.jpg","Solar_eclipse_1999_4_NR.jpg"],
+ math:["Mandel_zoom_00_mandelbrot_set.jpg","Julia_set_(indigo).png","Fibonacci_spiral_34.svg","Pythagorean_theorem_abc.svg","Sunflower_as_reflected_by_a_prism.jpg","Nautilus_Cutaway_with_Logarithmic_Spiral.jpg"],
+ history:["Colosseum_in_Rome,_Italy_-_April_2007.jpg","All_Gizah_Pyramids.jpg","Napoleon4.jpg","Berlin_Wall_1961-11-20.jpg","Great_Wall_of_China_at_Jinshanling-edit.jpg","Machu_Picchu,_Peru_(2018).jpg","Roman_Forum_from_Palatine_Hill.jpg"],
+ bio:["DNA_orbit_animated_static_thumb.png","Neuron.svg","T-cell.jpg","E._coli_Bacteria_(16578744517).jpg","Chloroplast.svg"],
+ anatomy:["Heart_diagram-en.svg","Skeleton_diagram.svg","Human_brain_NIH.jpg","1801_The_Lungs_and_Pulmonary_System.jpg","Gray1197.png","De_humani_corporis_fabrica_(page_163).jpg"],
+ geo:["Equirectangular_projection_SW.jpg","World_map_-_low_resolution.svg","Blue_Marble_2002.png","Physical_world.jpg","Africa_(orthographic_projection).svg","Continental_models-Australia.svg"],
+ maps:["Equirectangular_projection_SW.jpg","World_map_-_low_resolution.svg","Mercator_projection_SW.jpg","BlankMap-World.svg","Cassini_Map_of_France.jpg","OldMapOfTheWorld.jpg"],
+ war:["Sun_Tzu.jpg","Napoleon4.jpg","Battle_of_Waterloo_1815.PNG","Israel_Defense_Forces_-_Merkava_Mark_IV_(2).jpg","Hannibal_route_of_invasion-en.svg","The_Art_of_War_-_Sun_Tzu.jpg"],
+ discipline:["US_Navy_SEALs_training.jpg","Marines_conduct_a_physical_training_session.jpg","Rock_climbing_in_the_Alps.jpg"],
+ econ:["Bull_and_bear.jpg","New_york_times_square-terabass.jpg","Wall_Street_-_New_York_Stock_Exchange.jpg"],
+ money:["United_States_one_dollar_bill,_obverse.jpg","Gold_bars.jpg","Coins_of_the_pound_sterling.jpg"],
+ phil:["Sanzio_01_Plato_Aristotle.jpg","Bust_of_Socrates_(1).jpg","The_School_of_Athens_by_Raffaello_Sanzio_da_Urbino.jpg"],
+ animal:["Lion_waiting_in_Namibia.jpg","African_Bush_Elephant.jpg","Wolf_(2).jpg","Great_white_shark_south_africa.jpg","Octopus_vulgaris_2.jpg"],
+ geniusX:[]
+};
+/* topic-relevant keyword overrides so specific ideas get an on-point photo */
+const IMGKEY=[
+ [/solar system|planet|sun\b/i,"Solar_sys8.jpg"],[/galaxy|milky way|andromeda/i,"Milky_Way_Arch.jpg"],[/moon|apollo|lunar/i,"The_Earth_seen_from_Apollo_17.jpg"],[/saturn/i,"Saturn_during_Equinox.jpg"],[/black hole|star\b|neutron|nebula/i,"Pillars_of_creation_2014_HST_WFC3-UVIS_full-res_denoised.jpg"],
+ [/heart\b|pulse|cardiac/i,"Heart_diagram-en.svg"],[/brain|neuron|nervous/i,"Human_brain_NIH.jpg"],[/lungs?|breath/i,"1801_The_Lungs_and_Pulmonary_System.jpg"],[/bone|skeleton|spine/i,"Skeleton_diagram.svg"],[/\bdna\b|gene|cell\b/i,"DNA_orbit_animated_static_thumb.png"],
+ [/seal|navy|soldier|combat|iraq|war\b|army|infantry|tank|armou?r/i,"Israel_Defense_Forces_-_Merkava_Mark_IV_(2).jpg"],[/sun tzu|strategy|maneuver|flank/i,"Sun_Tzu.jpg"],[/napoleon|waterloo/i,"Napoleon4.jpg"],[/hannibal|carthage/i,"Hannibal_route_of_invasion-en.svg"],
+ [/\bmap\b|mercator|projection|world map/i,"Equirectangular_projection_SW.jpg"],[/rome|roman|caesar/i,"Colosseum_in_Rome,_Italy_-_April_2007.jpg"],[/egypt|pyramid|pharaoh/i,"All_Gizah_Pyramids.jpg"],[/berlin wall/i,"Berlin_Wall_1961-11-20.jpg"],
+ [/mandelbrot|fractal/i,"Mandel_zoom_00_mandelbrot_set.jpg"],[/fibonacci|golden ratio|spiral/i,"Fibonacci_spiral_34.svg"],[/einstein|relativity/i,"Albert_Einstein_Head.jpg"],
+ [/compound|invest|market|wealth|money|penny/i,"Bull_and_bear.jpg"],[/stoic|marcus|seneca|socrates|plato/i,"The_School_of_Athens_by_Raffaello_Sanzio_da_Urbino.jpg"],
+];
+/* deterministic, unique-per-item image URL */
+function imgFor(i){const f=FEED[i];if(!f)return imgURL("x"+i,900,1400);
+ const explicit=f[5];if(explicit)return /^https?:/.test(explicit)?explicit:CMG(explicit);
+ const text=(f[2]||"")+" "+(f[3]||"");
+ for(const[re,name]of IMGKEY){if(re.test(text))return CMG(name)}
+ const lib=IMGDB[f[0]];const h=hs("img"+i+"|"+(f[2]||""))();
+ if(lib&&lib.length){const slot=h%(lib.length+3);if(slot<lib.length)return CMG(lib[slot])}
+ return imgURL(f[0]+"-"+i+"-"+(h%9999),900,1400);/* unique fallback */
+}
+function imgTagURL(url,cls,fbSeed){return`<img class="imgload ${cls||''}" loading="lazy" decoding="async" src="${esc(url)}" alt="" data-fb="0" data-seed="${esc(fbSeed||("s"+Math.random().toString(36).slice(2,8)))}" onload="this.classList.add('ready')" onerror="window.__imgErr(this)">`}
+window.__imgErr=function(img){const s=+(img.dataset.fb||0);if(s===0){img.dataset.fb="1";img.src="https://picsum.photos/seed/apex-"+encodeURIComponent(img.dataset.seed||"x")+"/900/1400"}else{img.classList.add("failed")}};
 function imgTag(seed,w,h,cls){return`<img class="imgload ${cls||''}" loading="lazy" decoding="async" src="${imgURL(seed,w,h)}" alt="" onload="this.classList.add('ready')" onerror="this.classList.add('failed')">`}
 /* history log */
 function logHist(kind,id,topic,title){if(!S.history)S.history=[];S.history=S.history.filter(h=>!(h.kind===kind&&h.id===id));S.history.unshift({kind,id,topic,title,t:Date.now()});if(S.history.length>60)S.history.length=60;save()}
@@ -610,7 +655,7 @@ function logHist(kind,id,topic,title){if(!S.history)S.history=[];S.history=S.his
 const ACCENTS={gold:["#f3d089","#e8b563","#c98f3a"],violet:["#b79bff","#8a5cff","#5a34d9"],ice:["#9fd0ff","#5aa2ff","#2f6fe0"],rose:["#ffa3c2","#ff5c8a","#d93a6b"],green:["#7ef0b8","#37d68a","#1fae6a"]};
 function applyTheme(){const a=ACCENTS[S.accent]||ACCENTS.gold,r=document.documentElement.style;r.setProperty("--gold",a[1]);r.setProperty("--gold-2",a[0]);r.setProperty("--grad-gold",`linear-gradient(135deg,${a[0]},${a[1]} 55%,${a[2]})`);const app=document.getElementById("app");if(app)app.setAttribute("data-theme",S.theme||"dark");const tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.setAttribute("content",S.theme==="light"?"#faf9f7":"#08080c")}
 /* difficulty + engagement affinity */
-const DIFF={life:"quick",discipline:"quick",mind:"quick",money:"quick",fit:"quick",health:"core",learn:"core",psych:"core",econ:"core",genius:"core",animal:"core",geo:"core",science:"core",history:"deep",physics:"deep",math:"deep",bio:"deep",astro:"deep",phil:"deep"};
+const DIFF={life:"quick",discipline:"quick",mind:"quick",money:"quick",fit:"quick",health:"core",learn:"core",psych:"core",econ:"core",genius:"core",animal:"core",geo:"core",science:"core",maps:"core",war:"core",history:"deep",physics:"deep",math:"deep",bio:"deep",astro:"deep",phil:"deep",anatomy:"deep"};
 function diffOf(t){return DIFF[t]||"core"}
 function bumpAff(topic,n){if(!S.affinity)S.affinity={};S.affinity[topic]=Math.max(-8,Math.min(20,(S.affinity[topic]||0)+n))}
 /* word / challenge / on-this-day */
@@ -877,6 +922,112 @@ const FEED=[
  ["fit","idea","Rest is when you actually get stronger.","Training breaks muscle down; recovery builds it back bigger. Skip rest and you're just accumulating fatigue, not fitness."],
  ["fit","idea","Consistency beats intensity every time.","Three easy workouts a week for a year crush one brutal session you quit after. The best plan is the one you'll actually repeat."],
  ["fit","idea","Walking is the most underrated exercise.","Low-impact, joint-friendly, mood-boosting, and sustainable for life. You don't have to suffer to get healthier — just move, often."],
+
+ /* ===== ASTRONOMY ===== */
+ ["astro","fact","The Sun holds 99.8% of the entire Solar System.","Every planet, moon, asteroid and comet combined is a rounding error. When you picture the Solar System, you're mostly picturing the Sun.","","Solar_sys8.jpg"],
+ ["astro","fact","It takes sunlight 8 minutes and 20 seconds to reach you.","The sunrise you see already happened. If the Sun vanished, you'd enjoy eight more minutes of a star that was already gone."],
+ ["astro","fact","There are more stars than grains of sand on Earth.","Hundreds of billions of stars per galaxy, hundreds of billions of galaxies. The sky isn't big — it's beyond big.","","Milky_Way_Arch.jpg"],
+ ["astro","fact","A day on Venus is longer than its year.","Venus spins so slowly that it laps the Sun before it finishes a single rotation. And it spins backwards."],
+ ["astro","fact","Saturn would float in water.","It's a giant ball of gas less dense than water. Find a bathtub big enough and the ringed planet would bob like a cork.","","Saturn_during_Equinox.jpg"],
+ ["astro","fact","Neutron stars spin up to 700 times a second.","A city-sized corpse of a dead star, so dense a sugar-cube of it weighs a billion tons, whirling faster than a kitchen blender."],
+ ["astro","idea","We are made of dead stars.","The calcium in your bones, the iron in your blood, the oxygen you breathe — all forged inside stars that exploded billions of years ago. You are, literally, stardust with opinions."],
+ ["astro","fact","There's a giant storm on Jupiter older than the telescope.","The Great Red Spot is a hurricane wider than Earth that's been raging for at least 350 years.","","Jupiter_and_its_shrunken_Great_Red_Spot.jpg"],
+ ["astro","fact","In space, nobody can hear you scream — it's true.","Sound needs a medium to travel through. The vacuum of space is silent no matter how loud the explosion."],
+ ["astro","fact","Light from the Andromeda galaxy is 2.5 million years old.","When it left, our ancestors hadn't yet learned to make fire. You can see it with the naked eye — a window 2.5 million years into the past."],
+ ["astro","quote","Somewhere, something incredible is waiting to be known.","Carl Sagan","astronomer"],
+ ["astro","fact","The Moon is drifting away from us.","About 3.8 cm per year — the width of a fingernail's growth. One day, far in the future, total solar eclipses will no longer happen."],
+
+ /* ===== PHYSICS ===== */
+ ["physics","idea","Time runs slower for your feet than your head.","Gravity warps time. Clocks closer to Earth tick slightly slower. Live upstairs and you age a hair faster than someone on the ground floor — measurably."],
+ ["physics","fact","Nothing can move faster than light — and it's a law, not a limit.","At light speed, time stops and mass becomes infinite. The universe has a speed limit, and it's built into the fabric of reality itself."],
+ ["physics","idea","You can never touch anything.","The electrons in your hand repel the electrons in this screen. What you feel as 'touch' is force fields resisting — you hover a fraction of an atom above everything."],
+ ["physics","fact","A single quantum particle can be in two places at once.","Until you measure it. Reality at the smallest scale isn't solid — it's a cloud of probabilities that only picks a spot when observed."],
+ ["physics","quote","If you think you understand quantum mechanics, you don't understand quantum mechanics.","Richard Feynman","physicist","","Albert_Einstein_Head.jpg"],
+ ["physics","idea","Heat is just things jiggling.","Temperature is the average speed of vibrating atoms. 'Cold' is slow jiggling; absolute zero is when the jiggling almost stops entirely."],
+ ["physics","fact","Entropy is why time has a direction.","Eggs break but never un-break. The universe always trends from order to disorder, and that one-way slide is the closest thing to time's arrow."],
+ ["physics","idea","Every object with mass bends space around it.","Planets don't orbit because of a string — they roll along the curves that mass carves into spacetime, like marbles on a stretched sheet."],
+
+ /* ===== MATH ===== */
+ ["math","idea","The Mandelbrot set: infinite complexity from one tiny formula.","Zoom in forever and new worlds keep unfolding, never repeating. All of it born from z = z² + c. Simplicity can hide infinity.","","Mandel_zoom_00_mandelbrot_set.jpg"],
+ ["math","fact","The golden ratio hides in sunflowers, shells and galaxies.","1.618… shows up wherever nature packs things efficiently. Beauty and math are quietly the same subject.","","Fibonacci_spiral_34.svg"],
+ ["math","idea","There are different sizes of infinity.","The infinity of whole numbers is smaller than the infinity of decimals between 0 and 1. Some infinities are literally bigger than others — Cantor proved it."],
+ ["math","fact","23 people give a better-than-even chance two share a birthday.","The 'birthday paradox.' Because you're comparing every pair, the odds explode faster than intuition expects. Math laughs at your gut feeling."],
+ ["math","idea","Zero was a radical, dangerous idea.","For millennia, civilizations had no symbol for 'nothing.' Inventing zero unlocked algebra, calculus, and eventually every computer you've ever touched."],
+ ["math","fact","A piece of paper folded 42 times would reach the Moon.","Doubling is deceptively violent. 42 folds = 4 trillion times thicker. You can't actually fold it past ~7, but the math is real."],
+ ["math","idea","Statistics can be true and still lie.","A hospital with a higher death rate might treat the sickest patients. Numbers without context are a magician's favourite tool. Always ask what's hidden."],
+ ["math","quote","Pure mathematics is, in its way, the poetry of logical ideas.","Albert Einstein","physicist"],
+ ["math","fact","π has never repeated and never will.","Its digits go on forever with no pattern. Somewhere in π, in principle, sits your birthday, your name, and this sentence — encoded in numbers."],
+ ["math","idea","Prime numbers are the atoms of arithmetic.","Every number is built from primes multiplied together, in exactly one way. They thin out forever but never run out — and they guard your online banking."],
+
+ /* ===== ANATOMY ===== */
+ ["anatomy","fact","Your heart beats about 100,000 times a day.","Around 2.5 billion beats in a lifetime, never taking a break, pumping blood through 100,000 km of vessels — enough to wrap Earth twice.","","Heart_diagram-en.svg"],
+ ["anatomy","fact","Your brain runs on about 20 watts.","Less power than a dim lightbulb, yet it out-thinks supercomputers that need a building's worth of electricity. The most efficient machine known.","","Human_brain_NIH.jpg"],
+ ["anatomy","fact","You have a second 'brain' in your gut.","500 million neurons line your digestive tract, making and using the same chemicals as your head. That 'gut feeling' has real hardware.","","Human_brain_NIH.jpg"],
+ ["anatomy","fact","Your lungs have the surface area of a tennis court.","Folded into millions of tiny sacs, all that surface lets you swap oxygen for carbon dioxide with every breath, ~20,000 times a day.","","1801_The_Lungs_and_Pulmonary_System.jpg"],
+ ["anatomy","fact","Bone is stronger than steel by weight.","Your skeleton is a living, self-repairing scaffold — lighter than metal, tougher than concrete, and it rebuilds itself entirely every decade.","","Skeleton_diagram.svg"],
+ ["anatomy","fact","Your stomach acid could dissolve metal.","It's strong enough to burn skin, yet your stomach relines itself every few days so it doesn't digest itself. Biology's safety engineering is ruthless."],
+ ["anatomy","fact","You make about 1.5 litres of saliva a day.","Enough to fill a large bottle. It starts digestion, protects your teeth, and lets you taste — a fluid you never think about until it stops."],
+ ["anatomy","fact","Nerve signals travel up to 120 metres per second.","Faster than a race car. Touch a hot stove and the 'pull back' command reaches your muscles before the pain even reaches your brain."],
+ ["anatomy","idea","Your body replaces its skin every month.","You shed about 40,000 dead skin cells a minute. Much of the dust in your home is, quietly, former you."],
+ ["anatomy","fact","The eye can distinguish about 10 million colours.","Three types of cone cells mix signals into a spectrum richer than any screen. And your brain quietly edits out your own blind spot so you never notice it."],
+
+ /* ===== BIOLOGY ===== */
+ ["bio","fact","There are more bacterial cells on you than human cells.","You're walking an ecosystem. Trillions of microbes help you digest, defend, and even shape your mood. 'You' are a democracy, not a monarchy.","","DNA_orbit_animated_static_thumb.png"],
+ ["bio","fact","Your DNA would stretch to the Sun and back — many times.","Uncoiled, the DNA in your body would run about 10 billion miles. It's packed into cells you can't even see. Nature is a master of compression."],
+ ["bio","idea","Every cell in you carries the whole blueprint.","A skin cell holds the same full genome as a brain cell. They differ only in which pages they read. Identity is about what you switch on, not what you own."],
+ ["bio","fact","Trees talk through underground fungal networks.","Roots and fungi form a 'wood wide web,' trading sugar and warnings between trees. The quiet forest is actually a busy marketplace.","","Chloroplast.svg"],
+ ["bio","fact","Some jellyfish are effectively immortal.","One species can revert to its baby stage and start over, dodging old age indefinitely. Death, it turns out, isn't mandatory for everyone."],
+ ["bio","idea","Evolution has no goal — only what survives.","There's no ladder toward 'better.' Whatever reproduces, continues. Every living thing is just the current draft of a 4-billion-year experiment."],
+
+ /* ===== HISTORY + TIMELINES ===== */
+ ["history","timeline","Rome: from village to empire to ruin, in 4 acts.","753 BC a village on seven hills → 509 BC the Republic → 27 BC Augustus crowns the Empire → 476 AD the West falls. Twelve centuries, one long arc of rise and overreach.","","Colosseum_in_Rome,_Italy_-_April_2007.jpg"],
+ ["history","timeline","The 20th century in one breath.","1914 WWI → 1939 WWII → 1945 the atom & the UN → 1969 the Moon → 1989 the Wall falls → 1991 the web. Two generations rewrote the whole world.","","Berlin_Wall_1961-11-20.jpg"],
+ ["history","fact","Cleopatra lived closer to the iPhone than to the Pyramids.","The Great Pyramid was already ~2,500 years old in her day. The Moon landing is closer to her reign than she was to the pharaohs who built Giza.","","All_Gizah_Pyramids.jpg"],
+ ["history","fact","The Great Wall wasn't one wall — or fully successful.","Built over 2,000 years by many dynasties, it was breached repeatedly. Its real strength was slowing raids and moving troops, not being unbreakable.","","Great_Wall_of_China_at_Jinshanling-edit.jpg"],
+ ["history","idea","Empires die from the inside first.","Rome, the Ottomans, the USSR — the cracks were fiscal and political long before any enemy arrived. Watch the accounts and the trust, not just the borders."],
+ ["history","fact","Oxford University is older than the Aztec Empire.","Teaching began at Oxford around 1096. The Aztecs founded Tenochtitlán in 1325. 'Ancient' and 'medieval' overlap in ways school never mentioned."],
+ ["history","timeline","How writing changed everything.","~3200 BC Sumerian cuneiform → ~1200 BC alphabets → 1440 the printing press → 1990s the internet. Each leap made memory cheaper and ideas faster.","","Cassini_Map_of_France.jpg"],
+ ["history","fact","The Library of Alexandria didn't burn in one night.","It declined over centuries — funding cuts, neglect, scattered fires. The great loss of knowledge was slow bleeding, not a single blaze. Institutions rot quietly."],
+ ["history","quote","Those who cannot remember the past are condemned to repeat it.","George Santayana","philosopher"],
+ ["history","fact","Genghis Khan may have shaped the modern gene pool.","Roughly 1 in 200 men alive today may descend from his lineage. Few individuals have bent history — and demographics — so hard.","","Napoleon4.jpg"],
+ ["history","idea","Most 'sudden' revolutions were decades in the making.","The pressure builds invisibly — debt, injustice, new ideas — then one spark makes it look instant. The match gets the credit the kindling deserves."],
+ ["history","fact","The Black Death reshaped the modern world.","Killing a third of Europe, it shattered feudalism, raised the value of labour, and helped seed the Renaissance. Catastrophe and reinvention often travel together."],
+ ["history","timeline","The birth of Israel, in dates.","1917 the Balfour Declaration → 1947 the UN partition plan → 14 May 1948 independence declared → 1949 armistice lines. A modern state born under fire, fast.","","Equirectangular_projection_SW.jpg"],
+ ["history","fact","Ancient Egypt lasted longer than the time since it ended.","The civilization ran ~3,000 years — longer than the ~2,000 years between Cleopatra and today. Some things really were built to last."],
+
+ /* ===== STRATEGY / MILITARY / IDF ===== */
+ ["war","strategy","Sun Tzu: win before the battle begins.","The supreme art of war is to subdue the enemy without fighting. Position, timing and information decide most conflicts long before swords are drawn.","","Sun_Tzu.jpg"],
+ ["war","strategy","Maneuver beats attrition.","Don't grind into the enemy's strength — dislocate it. Hit where they're weak, move faster than they can react, and make their plan irrelevant rather than merely costly.","","Israel_Defense_Forces_-_Merkava_Mark_IV_(2).jpg"],
+ ["war","strategy","Combined arms: no single weapon wins alone.","Infantry, armour, artillery and air each cover the others' weakness. Tanks without infantry get ambushed; infantry without cover gets pinned. Strength is in the mix.","","Israel_Defense_Forces_-_Merkava_Mark_IV_(2).jpg"],
+ ["war","strategy","A small nation's doctrine: defensive depth, offensive tempo.","Lacking land to trade for time, Israel's General Staff (המטכ״ל) built a doctrine of fast reserve mobilization, seizing initiative early, and moving the fight onto enemy ground.","","Israel_Defense_Forces_-_Merkava_Mark_IV_(2).jpg"],
+ ["war","strategy","1967: the value of the first move.","In six days, a pre-emptive strike neutralized enemy air power on the ground, then armour exploited the opening. It became a textbook case of initiative and combined arms.","","Equirectangular_projection_SW.jpg"],
+ ["war","strategy","1973 taught the cost of surprise.","Caught off guard on Yom Kippur, early losses were reversed only by rapid mobilization and hard counterattacks. Lesson etched into doctrine: never be surprised again; keep reserves ready."],
+ ["war","strategy","Logistics wins wars quietly.","Amateurs talk tactics; professionals study supply. Fuel, ammunition and spare parts decide how far and how long any army can actually fight. The boring stuff is decisive."],
+ ["war","strategy","The OODA loop: out-think, then out-fight.","Observe, Orient, Decide, Act — faster than your opponent. Whoever cycles through decisions quicker forces the other to react, and reacting armies lose the initiative."],
+ ["war","strategy","Mission command: tell people the goal, not every step.","Give commanders intent and let them adapt on the ground. Rigid orders shatter on contact; trained initiative bends and holds. Trust scales faster than micromanagement."],
+ ["war","quote","In preparing for battle, plans are useless, but planning is indispensable.","Dwight D. Eisenhower","general & president"],
+ ["war","strategy","Terrain is a weapon you don't have to carry.","High ground, chokepoints, rivers and cities multiply a defender's strength. Reading the map is half of reading the fight.","","Hannibal_route_of_invasion-en.svg"],
+ ["war","strategy","Deterrence is winning the war you never fight.","If the cost you can impose looks higher than any prize, rational enemies stay home. The strongest victories leave no craters."],
+
+ /* ===== MAPS / GEOGRAPHY ===== */
+ ["maps","map","Every flat map lies — pick your distortion.","You can't peel a sphere onto paper without stretching something. Mercator keeps directions but bloats the poles; equal-area keeps sizes but bends shapes.","","Mercator_projection_SW.jpg"],
+ ["maps","map","Africa is bigger than it looks — much bigger.","On common maps it looks similar to Greenland. In reality Africa could swallow the US, China, India and most of Europe combined. The map shrank the equator.","","Equirectangular_projection_SW.jpg"],
+ ["maps","fact","The equator crosses 13 countries and two oceans.","A belt of rainforest, island and sea where day and night stay almost equal all year. Geography quietly sets the rhythm of life.","","World_map_-_low_resolution.svg"],
+ ["maps","map","Rivers built the first civilizations.","Nile, Tigris–Euphrates, Indus, Yellow River — cities rose where water made farming reliable. Follow the rivers and you find where history began.","","Cassini_Map_of_France.jpg"],
+ ["maps","fact","There's a point in the ocean farthest from any land.","Point Nemo, in the South Pacific, is so remote the nearest humans are often astronauts overhead on the space station. The empty places are enormous."],
+ ["maps","map","Chokepoints control the world's trade.","Suez, Panama, Hormuz, Malacca — narrow straits where a single blockage ripples through every economy. Whoever controls the neck controls the flow.","","Equirectangular_projection_SW.jpg"],
+ ["maps","idea","Borders are younger than they look.","Most national lines on today's map were drawn in the last 150 years, many with a ruler and little regard for the people underneath. Maps are frozen politics."],
+ ["geo","fact","Mount Everest isn't the tallest mountain — depending how you measure.","From base to peak, Hawaii's Mauna Kea beats it. From Earth's centre, Ecuador's Chimborazo wins. 'Tallest' depends entirely on where you start counting."],
+ ["geo","fact","Russia spans 11 time zones.","When it's morning on one edge it's evening on the other. A single country so wide the Sun can't light all of it at once."],
+ ["geo","fact","The Sahara was green just a few thousand years ago.","Lakes, grassland and hippos covered what's now the world's largest hot desert. Climate flips whole continents on timescales shorter than you'd think."],
+
+ /* ===== LONG STORIES ===== */
+ ["story","story","The two monks and the woman at the river.","Two monks meet a woman unable to cross a muddy river. The elder lifts her over, then walks on. Hours later the younger bursts out: 'We're forbidden to touch women — how could you?' The elder smiles: 'I set her down at the river. Why are you still carrying her?' We suffer most from what we refuse to put down."],
+ ["story","story","The farmer whose luck no one could judge.","A farmer's horse runs away. 'Bad luck,' say the neighbours. 'Maybe,' he replies. The horse returns with wild horses. 'Good luck!' 'Maybe.' His son breaks a leg taming one. 'Bad luck.' 'Maybe.' Soldiers come to draft the young men but pass over the injured son. Every event was a seed whose fruit no one could yet see. Judge less; wait more."],
+ ["story","story","The king who wanted the truth in one sentence.","A king asked his wisest advisors for a truth that held in good times and bad. They labored for years and returned with a ring engraved: 'This too shall pass.' In grief it comforted him; in triumph it humbled him. Nothing is permanent — which is exactly why nothing is worth despair, and everything is worth savouring."],
+ ["story","story","The professor, the jar and the rocks.","A teacher fills a jar with big rocks and asks, 'Full?' 'Yes.' He adds pebbles, then sand, then water — each time it fits. 'The lesson isn't that you can always fit more,' he says. 'It's that if you don't put the big rocks in first, they'll never fit at all.' Schedule what matters before the trivia fills your life."],
+ ["story","story","The apprentice who was told to make 100 pots.","Half a pottery class was graded on the single best pot; the other half on sheer quantity. At the end, the finest pots came from the quantity group. While the perfectionists theorized, the makers learned by failing fast, again and again. You don't think your way to mastery. You rep your way there."],
+ ["story","story","The Zen master's overflowing cup.","A scholar visited a master to learn, but kept interrupting with his own opinions. The master poured tea until the cup overflowed onto the table. 'Stop — it's full!' cried the scholar. 'Like this cup,' said the master, 'you are full of your own ideas. How can I show you anything until you empty your cup?' You can't learn what you think you already know."],
 ];
 
 /* ===== ARTICLES ===== */
@@ -1149,6 +1300,36 @@ const MAPS=[
    {l:"Defense",e:"🛡️",pts:["Immune system","Skin as a barrier","Fever fights invaders"]},
    {l:"Renewal",e:"🔁",pts:["~330B cells replaced daily","Sleep repairs & files","Food becomes you"]},
  ]},
+ {id:"mp12",topic:"war",img:"Israel_Defense_Forces_-_Merkava_Mark_IV_(2).jpg",root:"Principles of Strategy",emoji:"⚔️",sub:"Ideas that decide conflicts — on the field and off",branches:[
+   {l:"Initiative",e:"⚡",pts:["Act first, force reaction","Seize tempo (OODA loop)","Pre-empt, don't just respond"]},
+   {l:"Maneuver",e:"🎯",pts:["Hit weakness, not strength","Dislocate the enemy plan","Speed over brute force"]},
+   {l:"Combined arms",e:"🛡️",pts:["Infantry + armour + air","Each covers the others","No weapon wins alone"]},
+   {l:"Sustainment",e:"⛽",pts:["Logistics wins wars","Ready reserves","Deterrence > fighting"]},
+ ]},
+ {id:"mp13",topic:"war",img:"Equirectangular_projection_SW.jpg",root:"IDF Doctrine (מטכ״ל)",emoji:"🇮🇱",sub:"How a small state built its defense thinking",branches:[
+   {l:"Depth",e:"🗺️",pts:["Little land to trade for time","Move the fight to enemy ground","Defense in depth"]},
+   {l:"Reserves",e:"📣",pts:["Rapid mobilization","A nation-in-arms","Fight short, fight fast"]},
+   {l:"Intelligence",e:"🔎",pts:["Never be surprised (1973)","Early warning is survival","Know before you're hit"]},
+   {l:"Initiative",e:"⚡",pts:["Seize the first move (1967)","Combined arms breakthrough","Air superiority first"]},
+ ]},
+ {id:"mp14",topic:"maps",img:"Equirectangular_projection_SW.jpg",root:"Reading the World Map",emoji:"🗺️",sub:"What geography quietly decides",branches:[
+   {l:"Projections",e:"🌐",pts:["No flat map is 'true'","Mercator bloats the poles","Equal-area bends shapes"]},
+   {l:"Chokepoints",e:"⚓",pts:["Suez · Panama · Hormuz","Malacca strait","Control the neck, control trade"]},
+   {l:"Rivers",e:"🌊",pts:["Nile · Tigris · Indus","Water → farming → cities","Civilization follows rivers"]},
+   {l:"Borders",e:"✏️",pts:["Mostly < 150 years old","Often drawn by rulers, not people","Maps are frozen politics"]},
+ ]},
+ {id:"mp15",topic:"anatomy",img:"Human_brain_NIH.jpg",root:"The Human Body, Deeper",emoji:"🫀",sub:"Astonishing machines you carry everywhere",branches:[
+   {l:"Heart",e:"❤️",pts:["~100k beats a day","100,000 km of vessels","Never rests once"]},
+   {l:"Brain",e:"🧠",pts:["Runs on ~20 watts","86 billion neurons","Signals at 120 m/s"]},
+   {l:"Lungs",e:"🫁",pts:["Tennis-court surface","~20,000 breaths/day","Gas swap, every breath"]},
+   {l:"Renewal",e:"🔁",pts:["Skin replaced monthly","Bone stronger than steel","Rebuilds for a lifetime"]},
+ ]},
+ {id:"mp16",topic:"astro",img:"Solar_sys8.jpg",root:"The Cosmos, Zoomed Out",emoji:"🌌",sub:"Your address in the universe",branches:[
+   {l:"Star",e:"☀️",pts:["The Sun: 99.8% of mass","Light: 8 min to reach us","We're made of stardust"]},
+   {l:"System",e:"🪐",pts:["8 planets, countless moons","Asteroid & Kuiper belts","Oort cloud far beyond"]},
+   {l:"Galaxy",e:"🌀",pts:["~200 billion stars","We orbit the centre","Andromeda incoming (slowly)"]},
+   {l:"Beyond",e:"🔭",pts:["Billions of galaxies","13.8 billion years old","Still expanding"]},
+ ]},
 ];
 
 /* ===== STORIES (tap-through) ===== */
@@ -1313,7 +1494,7 @@ function renderHome(){
   <div class="sec"><h3>Four pillars</h3></div>
   <div class="pillars">${pills.map(p=>`<div class="pil" style="${grad(p[0])}" data-goto="${p[4]}"><span class="pe">${p[2]}</span><div class="pn">${p[1]}</div><div class="pd">${p[3]}</div></div>`).join("")}</div>
   <div class="sec"><h3>🧭 Explore by subject</h3></div>
-  <div class="explore">${[["geo","Geography"],["history","History"],["physics","Physics"],["astro","Astronomy"],["bio","Biology"],["math","Math"],["econ","Economy"],["animal","Animals"],["phil","Philosophy"],["money","Money"]].map(([k,l])=>{const t=T[k]||T.life;return`<div class="xtile" data-explore="${k}">${imgTag('subject-'+k,600,360)}<div class="xov" style="${grad(k)};opacity:.5"></div><span class="xe">${t.e}</span><div class="xn">${l}</div><div class="xc">Dive in →</div></div>`}).join("")}</div>
+  <div class="explore">${[["geo","Geography"],["history","History"],["physics","Physics"],["astro","Astronomy"],["bio","Biology"],["math","Math"],["econ","Economy"],["animal","Animals"],["phil","Philosophy"],["money","Money"]].map(([k,l])=>{const t=T[k]||T.life,iu=(IMGDB[k]&&IMGDB[k][0])?CMG(IMGDB[k][0],600):imgURL('subject-'+k,600,360);return`<div class="xtile" data-explore="${k}">${imgTagURL(iu,'','subject-'+k)}<div class="xov" style="${grad(k)};opacity:.5"></div><span class="xe">${t.e}</span><div class="xn">${l}</div><div class="xc">Dive in →</div></div>`}).join("")}</div>
   ${cont.length?`<div class="sec"><h3>⏳ Jump back in</h3></div><div class="hs">${cont.map(a=>`<div class="acard" data-open-art="${a.id}"><div class="th" style="${grad(a.topic)}">${imgTag(a.img||a.id,600,360,'thimg')}<div class="thov"></div><span class="em">${a.emoji}</span><span class="tp">${Math.round(S.readProgress[a.id])}% read</span></div><div class="rt">${esc(a.title)}</div><div class="rm">${a.minutes} min</div></div>`).join("")}</div>`:""}
   <div class="sec"><h3>📖 Long reads<span class="more" data-goto="learn">Feed</span></h3></div>
   <div class="hs">${ARTICLES.slice(0,8).map(a=>`<div class="acard" data-open-art="${a.id}"><div class="th" style="${grad(a.topic)}">${imgTag(a.img||a.id,600,360,'thimg')}<div class="thov"></div><span class="em">${a.emoji}</span><span class="tp">${T[a.topic].l}</span></div><div class="rt">${esc(a.title)}</div><div class="rd">${esc(a.dek)}</div><div class="rm">${a.minutes} min read</div></div>`).join("")}</div>
@@ -1322,7 +1503,7 @@ function renderHome(){
   <div class="sec"><h3>🧩 Test yourself<span class="more">${S.quizzes} taken</span></h3></div>
   <div class="hs">${QUIZZES.map(q=>{const best=S.quizBest[q.id];return`<div class="qcardh" data-open-quiz="${q.id}"><div class="qe">${q.emoji}</div><div class="qtt">${esc(q.title)}</div><div class="qmeta"><span>${q.qs.length} questions</span>${best!=null?`<span class="qbest">★ ${best}%</span>`:'<span>tap to start</span>'}</div></div>`}).join("")}</div>
   <div class="sec"><h3>🗺️ Knowledge maps<span class="more">${MAPS.length}</span></h3></div>
-  <div class="hs">${MAPS.map(m=>{const t=T[m.topic]||T.life;return`<div class="acard" data-open-map="${m.id}"><div class="th" style="${grad(m.topic)}">${imgTag('map-'+m.id,600,360,'thimg')}<div class="thov"></div><span class="em">${m.emoji}</span><span class="tp">${t.l}</span></div><div class="rt">${esc(m.root)}</div><div class="rd">${esc(m.sub)}</div><div class="rm">${m.branches.length} branches · ${S.mapsSeen[m.id]?'explored':'new'}</div></div>`}).join("")}</div>
+  <div class="hs">${MAPS.map(m=>{const t=T[m.topic]||T.life,iu=m.img?(/^https?:/.test(m.img)?m.img:CMG(m.img,600)):((IMGDB[m.topic]&&IMGDB[m.topic][0])?CMG(IMGDB[m.topic][0],600):imgURL('map-'+m.id,600,360));return`<div class="acard" data-open-map="${m.id}"><div class="th" style="${grad(m.topic)}">${imgTagURL(iu,'thimg','map-'+m.id)}<div class="thov"></div><span class="em">${m.emoji}</span><span class="tp">${t.l}</span></div><div class="rt">${esc(m.root)}</div><div class="rd">${esc(m.sub)}</div><div class="rm">${m.branches.length} branches · ${S.mapsSeen[m.id]?'explored':'new'}</div></div>`}).join("")}</div>
   <div class="sec"><h3>🎬 Workout videos<span class="more" data-goto="watch">Watch</span></h3></div>
   <div class="hs">${SEED_VIDEOS.slice(0,6).map(v=>{const t=T[v.topic]||T.life,ig=/instagram/.test(v.url);return`<div class="acard" data-goto="watch"><div class="th" style="${grad(v.topic||'fit')}">${imgTag('vid-'+v.id,600,360,'thimg')}<div class="thov"></div><span class="em">${ig?'📸':'▶️'}</span><span class="tp">${ig?'Instagram':'YouTube'}</span></div><div class="rt">${esc(v.title)}</div><div class="rm">${t.l}</div></div>`}).join("")}</div>
   <div class="credit">APEX · train your mind & body<br>A living library — it keeps growing.</div>`;
@@ -1339,13 +1520,13 @@ function startCine(cv){if(!cv)return;const x=cv.getContext("2d");let W,H,dpr,ps=
   cineRaf=requestAnimationFrame(fr)}cancelAnimationFrame(cineRaf);fr()}
 
 /* ===== LEARN (feed) ===== */
-let feedBuilt=false,feedMeta=[],feedIO=null;const counted=new Set();let feedLast=-1;
+let feedBuilt=false,feedMeta=[],feedIO=null,feedOrder=[],feedCursor=0;const FEED_PAGE=6,IMG_WIN=4;const counted=new Set();let feedLast=-1;
 function baseL(k){return 300+Math.floor(sd(k+"L")()*38000)}
 function fkey(i){return"f"+i}
 function feedHTML(i,inst){const f=FEED[i],[tp,ty,tx,ex,ex2]=f,t=T[tp],k=fkey(i);const liked=!!S.likes[k],saved=!!S.saves[k],own=(S.ownComments[k]||[]).length;const r=sd(k+"h"),h=pick(r,NAMES);
- const tl={fact:"Did you know",idea:"Principle",quote:"Words to keep",finance:"Money",story:"A small story"}[ty]||"";
+ const tl={fact:"Did you know",idea:"Principle",quote:"Words to keep",finance:"Money",story:"A small story",timeline:"Timeline",map:"On the map",strategy:"Strategy"}[ty]||"";
  let mid=ty==="quote"?`<div class="ctype">${tl}</div><h2 class="insight quote">"${esc(tx)}"</h2><div class="qauthor">${esc(ex)}<span class="role">${esc(ex2||"")}</span></div>`:`<div class="ctype">${tl}</div><h2 class="insight">${esc(tx)}</h2><p class="kicker">${esc(ex)}</p>`;
- return`<section class="card" data-key="${k}" data-i="${i}" data-inst="${inst}" data-topic="${tp}"><div class="bg hasimg" style="${grad(tp)}">${imgTag(tp+"-"+(i%8),900,1400,"cardimg")}</div><div class="grain"></div>
+ return`<section class="card" data-key="${k}" data-i="${i}" data-inst="${inst}" data-topic="${tp}"><div class="bg hasimg" data-loaded="1" style="${grad(tp)}">${imgTagURL(imgFor(i),"cardimg","f"+i)}</div><div class="grain"></div>
   <span class="ktag"><span class="dot" style="background:${t.c}"></span>${t.e} ${t.l}</span>${mid}
   <div class="meta"><div class="handle">@<span class="at">${h}</span></div><div class="source">APEX · daily</div></div>
   <div class="rail-a">
@@ -1356,21 +1537,32 @@ function feedHTML(i,inst){const f=FEED[i],[tp,ty,tx,ex,ex2]=f,t=T[tp],k=fkey(i);
    <button class="act" data-a="listen"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a3.5 3.5 0 0 0-2-3.15v6.3a3.5 3.5 0 0 0 2-3.15z"/></svg></span><span class="n">Listen</span></button>
    <button class="act" data-a="share"><span class="ico"><svg viewBox="0 0 24 24"><path d="M14 9V5l7 7-7 7v-4.1C9 12 6 13 3 17c1-6 5-8 11-8z"/></svg></span><span class="n">Share</span></button>
   </div>${inst===0?'<div class="hint" id="hint"><svg viewBox="0 0 24 24"><path d="M12 4l6 7h-4v9h-4v-9H6z"/></svg>swipe up for more</div>':''}</section>`}
+/* ===== FEED ALGORITHM =====
+   Ranks the whole library per session: your chosen interests + how you engage
+   (likes/saves/skips → affinity) + novelty (down-ranks recently-seen) + a dash of
+   exploration, then a diversity pass so you never see the same topic twice in a row. */
 function fseq(){const r=mul((hs("f")()^Date.now())>>>0);
  let idx=FEED.map((_,i)=>i);const q=(feedFilter.q||"").trim().toLowerCase();
  if(feedFilter.topic!=="all")idx=idx.filter(i=>FEED[i][0]===feedFilter.topic);
  if(feedFilter.diff&&feedFilter.diff!=="all")idx=idx.filter(i=>diffOf(FEED[i][0])===feedFilter.diff);
  if(q)idx=idx.filter(i=>((FEED[i][2]||"")+" "+(FEED[i][3]||"")+" "+(FEED[i][4]||"")).toLowerCase().includes(q));
  if(idx.length===0)idx=FEED.map((_,i)=>i);
+ if(feedFilter.topic!=="all"||q){for(let i=idx.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]]}return idx}
  const ints=(S.interests&&S.interests.length)?new Set(S.interests):null,aff=S.affinity||{};
- if(feedFilter.topic==="all"&&!q){const score=i=>{const tp=FEED[i][0];let s=r()*3;if(ints&&ints.has(tp))s+=4;s+=(aff[tp]||0)*0.5;return s};idx.sort((a,b)=>score(b)-score(a))}
- else{for(let i=idx.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]]}}
- return idx}
-function fappend(){const s=feedMeta.length,seq=fseq();let h="";seq.forEach((idx,k)=>{feedMeta.push(idx);h+=feedHTML(idx,s+k)});$("#feed").insertAdjacentHTML("beforeend",h);fobserve()}
-function buildFeed(){if(feedBuilt)return;feedBuilt=true;$("#feed").innerHTML="";feedMeta=[];fappend()}
+ const seen={};(S.history||[]).forEach((hh,n)=>{if(hh&&hh.id&&hh.id[0]==="f"){const fi=+hh.id.slice(1);if(!isNaN(fi)&&seen[fi]==null)seen[fi]=n}});
+ const score=i=>{const tp=FEED[i][0];let s=r()*2.4;if(ints&&ints.has(tp))s+=3.4;s+=Math.max(-3,Math.min(6,aff[tp]||0))*0.42;if(seen[i]!=null)s-=Math.max(0.4,2.4-seen[i]*0.05);return s};
+ idx.sort((a,b)=>score(b)-score(a));
+ const out=[],pool=idx.slice();let last=null;
+ while(pool.length){let k=pool.findIndex(i=>FEED[i][0]!==last);if(k<0)k=0;const p=pool.splice(k,1)[0];out.push(p);last=FEED[p][0]}
+ return out}
+/* append a small PAGE of cards at a time (never the whole library — that OOM-crashed mobile) */
+function fappend(n){n=n||FEED_PAGE;if(!feedOrder.length)feedOrder=fseq();let h="";for(let c=0;c<n;c++){if(feedCursor>=feedOrder.length)feedOrder=feedOrder.concat(fseq());const idx=feedOrder[feedCursor++];const inst=feedMeta.length;feedMeta.push(idx);h+=feedHTML(idx,inst)}if(h){$("#feed").insertAdjacentHTML("beforeend",h);fobserve()}}
+function buildFeed(lead){if(feedBuilt&&lead==null)return;feedBuilt=true;$("#feed").innerHTML="";feedMeta=[];feedCursor=0;feedOrder=fseq();if(lead!=null)feedOrder=[lead].concat(feedOrder.filter(x=>x!==lead));fappend(FEED_PAGE)}
 function fobserve(){if(!feedIO)feedIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.65)factive(e.target)}),{root:$("#feed"),threshold:[.66]});$("#feed").querySelectorAll(".card:not([data-obs])").forEach(c=>{c.setAttribute("data-obs","1");feedIO.observe(c)})}
-function factive(card){const inst=+card.dataset.inst;if(inst>=feedMeta.length-3)fappend();const fi=+card.dataset.i,ff=FEED[fi];if(ff)logHist("idea","f"+fi,ff[0],ff[2]);if(S.audioAuto&&ff)speak(ff[2]+". "+(ff[3]||""));if(!counted.has(inst)){counted.add(inst);if(feedLast>=0)S.streak+=0;bump();S.reads++;feedLast=inst;if(aiConfigured()&&S.reads%16===0)aiExpandFeed();const ms={5:"🔥 5 in a row",15:"🧠 15 read — big brain",30:"🏆 30! deep in it"}[S.reads];addXP(8,ms||`<span class="xp">+8 XP</span>`)}}
-function scrollFeedTo(i){buildFeed();let c=[...$("#feed").querySelectorAll(".card")].find(x=>+x.dataset.i===i);if(!c){fappend();c=[...$("#feed").querySelectorAll(".card")].reverse().find(x=>+x.dataset.i===i)}if(c)requestAnimationFrame(()=>c.scrollIntoView())}
+/* keep decoded photos bounded — only cards near the active one carry an <img> (the fix for the crash) */
+function trimImages(active){$("#feed").querySelectorAll(".card").forEach(c=>{const bg=c.querySelector(".bg");if(!bg)return;const d=Math.abs((+c.dataset.inst)-active);if(d>IMG_WIN){if(bg.dataset.loaded!=="0"){bg.dataset.loaded="0";const im=bg.querySelector("img");if(im)im.remove()}}else if(bg.dataset.loaded==="0"){bg.dataset.loaded="1";bg.insertAdjacentHTML("afterbegin",imgTagURL(imgFor(+c.dataset.i),"cardimg","f"+c.dataset.i))}})}
+function factive(card){const inst=+card.dataset.inst;if(inst>=feedMeta.length-3)fappend(FEED_PAGE);trimImages(inst);const fi=+card.dataset.i,ff=FEED[fi];if(ff)logHist("idea","f"+fi,ff[0],ff[2]);if(S.audioAuto&&ff)speak(ff[2]+". "+(ff[3]||""));if(!counted.has(inst)){counted.add(inst);if(feedLast>=0)S.streak+=0;bump();S.reads++;feedLast=inst;if(aiConfigured()&&S.reads%16===0)aiExpandFeed();const ms={5:"🔥 5 in a row",15:"🧠 15 read — big brain",30:"🏆 30! deep in it"}[S.reads];addXP(8,ms||`<span class="xp">+8 XP</span>`)}}
+function scrollFeedTo(i){feedBuilt=false;buildFeed(i);const c=$("#feed").querySelector('.card[data-i="'+i+'"]');if(c)requestAnimationFrame(()=>{c.scrollIntoView();trimImages(+c.dataset.inst)})}
 $("#feed").addEventListener("click",e=>{const b=e.target.closest(".act");if(!b)return;const card=b.closest(".card"),k=card.dataset.key,tp=card.dataset.topic,a=b.dataset.a;
  if(a==="like")like(k,b);else if(a==="save")sv(k,b);else if(a==="comment")openC(k,tp);else if(a==="ai"){const f=FEED[+card.dataset.i];openAI(f[2],(f[3]||f[4]||""),tp)}else if(a==="listen"){const f=FEED[+card.dataset.i];speak(f[2]+". "+(f[3]||f[4]||""));toast("🔊 reading aloud")}else if(a==="share"){const f=FEED[+card.dataset.i];openShare(f[0],f[2],f[1]==="quote"?(f[3]+(f[4]?" — "+f[4]:"")):f[3],f[1])}});
 let lastTap=0;$("#feed").addEventListener("click",e=>{if(e.target.closest(".act"))return;const n=Date.now();if(n-lastTap<300){const c=e.target.closest(".card");if(c){const lb=c.querySelector(".like");if(!S.likes[c.dataset.key])lb.click();else{lb.classList.add("pop");setTimeout(()=>lb.classList.remove("pop"),400)}}}lastTap=n});
@@ -1725,7 +1917,7 @@ function maybeDailyNotify(force){if(!S.notify||!("Notification" in window)||Noti
 
 /* ===== AI OVERVIEW (bring-your-own Gemini key) ===== */
 const aiSheet=$("#aiSheet");let aiCtx=null;
-function openAI(title,context,topic){aiCtx={title,context:context||"",topic};if(!S.geminiKey){renderAIKey()}else{renderAI("simple");runAI("simple")}openSheet(aiSheet)}
+function openAI(title,context,topic){aiCtx={title,context:context||"",topic};renderAI("simple");runAI("simple");openSheet(aiSheet)}
 function renderAIKey(){aiSheet.innerHTML=`<div class="grab"></div><h3><span>✨ AI Overview</span><span class="close" id="aiX">✕</span></h3>
   <div class="aikey"><b>Add your Gemini API key</b><p style="font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5">Get a free key at aistudio.google.com/apikey. It's stored only on this device and powers AI explanations of any idea.</p>
    <input id="aiKeyIn" type="password" placeholder="Paste your Gemini API key" autocomplete="off">
@@ -1741,27 +1933,37 @@ function aiPrompt(mode){const ins={simple:"Explain this idea simply and vividly 
  return `Topic: ${aiCtx.topic}. Idea: "${aiCtx.title}".${aiCtx.context?" Context: "+aiCtx.context:""}\n\n${ins} Be concrete and engaging. Plain text, no markdown, no headings.`;}
 function aiHTML(t){return t.split(/\n{2,}/).map(p=>`<p>${esc(p.trim())}</p>`).join("")}
 /* one call path: your own Gemini key, or a Cloudflare Worker proxy (S.apiBase) that hides the key */
-function aiConfigured(){return !!(S.apiBase||S.geminiKey)}
+let aiOK=false;
+function aiEndpoint(){return (S.apiBase||location.origin).replace(/\/+$/,"")+"/ai"}
+function aiConfigured(){return !!(S.geminiKey||S.apiBase||aiOK)}
 async function aiGenerate(prompt){
- if(S.apiBase){const r=await fetch(S.apiBase.replace(/\/+$/,"")+"/ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});if(!r.ok)throw new Error("http"+r.status);const j=await r.json();return (j.text||"").trim()}
- if(!S.geminiKey)throw new Error("nokey");
- const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(S.geminiKey)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
- if(!r.ok)throw new Error(r.status===400||r.status===403?"badkey":"http"+r.status);
- const j=await r.json();return (((j.candidates||[])[0]||{}).content||{}).parts?.map(p=>p.text||"").join("").trim()||"";}
+ // 1) a personal on-device key always wins when present
+ if(S.geminiKey){
+  const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(S.geminiKey)}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
+  if(!r.ok)throw new Error(r.status===400||r.status===403?"badkey":"http"+r.status);
+  const j=await r.json();aiOK=true;return (((j.candidates||[])[0]||{}).content||{}).parts?.map(p=>p.text||"").join("").trim()||"";
+ }
+ // 2) otherwise use the server proxy — the same-origin Worker by default, which keeps the key secret
+ let r;try{r=await fetch(aiEndpoint(),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})})}catch(e){throw new Error("fetch")}
+ const ct=r.headers.get("content-type")||"";
+ if(!/json/i.test(ct))throw new Error("noserver");/* got HTML — the /ai route isn't live */
+ const j=await r.json().catch(()=>({}));
+ if(j.error==="no key configured")throw new Error("nokey");
+ if(!r.ok||j.error)throw new Error("http"+(r.status||""));
+ aiOK=true;return (j.text||"").trim();}
 async function runAI(mode){const body=$("#aiBody");if(!body)return;const ck=aiCtx.title+"|"+mode;
  if(S.aiCache&&S.aiCache[ck]){body.innerHTML=aiHTML(S.aiCache[ck]);return}
  body.innerHTML=`<div class="aidots"><i></i><i></i><i></i></div>`;
  try{const txt=await aiGenerate(aiPrompt(mode));if(!txt)throw new Error("empty");S.aiCache[ck]=txt;save();body.innerHTML=aiHTML(txt);addXP(3);
- }catch(e){const m=(""+e.message);const msg=m==="badkey"?"That key was rejected — check it below.":m.includes("fetch")?"No connection — AI needs the internet.":"Couldn't reach the AI right now.";
-  body.innerHTML=`<p style="color:var(--muted)">${esc(msg)}</p>`;const btn=document.createElement("button");btn.className="aichip";btn.style.marginTop="8px";btn.textContent="Change API key";btn.onclick=()=>{S.geminiKey="";save();renderAIKey()};body.appendChild(btn);}}
+ }catch(e){const m=(""+e.message);const msg=m==="badkey"?"That key was rejected — check it below.":(m==="nokey"||m==="noserver")?"AI isn't switched on for this server yet. Add your own free Gemini key to turn it on for this device.":m.includes("fetch")?"No connection — AI needs the internet.":"Couldn't reach the AI right now — try again in a moment.";
+  body.innerHTML=`<p style="color:var(--muted)">${esc(msg)}</p>`;const btn=document.createElement("button");btn.className="aichip";btn.style.marginTop="8px";btn.textContent=S.geminiKey?"Change API key":"Add a free Gemini key";btn.onclick=()=>{S.geminiKey="";save();renderAIKey()};body.appendChild(btn);}}
 /* AI quiz-me: turn any idea into a fresh 3-question quiz */
 async function aiQuizMe(title,context,topic){openSheet(aiSheet);
  aiSheet.innerHTML=`<div class="grab"></div><h3><span>🧩 AI Quiz</span><span class="close" id="aiX">✕</span></h3><div class="aibody" id="aiBody"><div class="aidots"><i></i><i></i><i></i></div></div>`;$("#aiX").onclick=closeSheets;
- if(!aiConfigured()){renderAIKey();return}
  try{const txt=await aiGenerate(`Create 3 multiple-choice questions that test understanding of the idea: "${title}".${context?" Context: "+context:""} Return ONLY a JSON array like [{"q":"question","o":["a","b","c","d"],"a":0,"e":"one-line why"}]. Exactly 4 options each, "a" is the 0-based index of the correct one. No markdown.`);
   const m=txt.match(/\[[\s\S]*\]/);if(!m)throw 0;const qs=JSON.parse(m[0]).filter(x=>x&&x.q&&Array.isArray(x.o)&&x.o.length>=2&&typeof x.a==="number");if(!qs.length)throw 0;
   closeSheets();QZ={q:{id:"ai"+Date.now(),topic:topic||"genius",title:"Quiz · "+title.slice(0,26),emoji:"🧩",qs:qs.slice(0,4)},i:0,score:0,answered:false};quizEl.classList.add("show");drawQuiz();addXP(4);
- }catch(e){const body=$("#aiBody");if(body)body.innerHTML='<p style="color:var(--muted)">Couldn\'t generate a quiz right now. Try again in a moment.</p>'}}
+ }catch(e){const mm=(""+(e&&e.message));if(mm==="nokey"||mm==="noserver"||mm==="badkey"){renderAIKey();return}const body=$("#aiBody");if(body)body.innerHTML='<p style="color:var(--muted)">Couldn\'t generate a quiz right now. Try again in a moment.</p>'}}
 /* AI-infinite feed: quietly grow the feed with fresh on-topic ideas */
 let aiGenBusy=false;
 async function aiExpandFeed(){if(aiGenBusy||!aiConfigured())return;aiGenBusy=true;

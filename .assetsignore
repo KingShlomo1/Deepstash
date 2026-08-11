@@ -3,6 +3,7 @@
 .wrangler
 node_modules
 worker
+worker-site.js
 *.md
 wrangler.jsonc
 .gitignore
