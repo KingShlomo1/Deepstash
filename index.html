@@ -561,6 +561,100 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .app[data-theme="light"] .musicbar .mt{color:#151319}
 .app[data-theme="light"] .tab.on{color:#151319}
 .app[data-theme="light"] .aibody{color:#26242c}
+/* ============================================================
+   POLISH LAYER — cohesive depth, motion, and consistency pass
+   (appended last so it refines the components above by cascade)
+   ============================================================ */
+:root{
+  --shadow-1:0 6px 18px -10px rgba(0,0,0,.6);
+  --shadow-2:0 18px 44px -16px rgba(0,0,0,.7);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --ease:cubic-bezier(.4,0,.2,1);
+  --glass:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,0) 46%);
+}
+body{text-rendering:optimizeLegibility;-moz-osx-font-smoothing:grayscale}
+.top .h1{letter-spacing:-.035em}
+.sec h3{font-size:17.5px;letter-spacing:-.02em}
+.sec h3 .more{background:rgba(232,181,99,.13);color:var(--gold-2);padding:4px 11px;border-radius:999px;font-weight:800}
+
+/* keyboard focus ring (accessibility) */
+button:focus-visible,[role="switch"]:focus-visible,input:focus-visible,[data-explore]:focus-visible,.acard:focus-visible{outline:2px solid var(--gold-2);outline-offset:3px;border-radius:12px}
+
+/* glassy, elevated surfaces */
+.fcardh,.scell,.iconbox,.settingrow,.chartcard,.dcard,.qcardh,.vcard,.mbranch,.ba,.loadmore,.pill,.tlchip,.cmt+.loadmore{
+  background-image:var(--glass);box-shadow:var(--shadow-1);
+}
+.scell,.qcardh,.dcard,.chartcard,.fcardh{border-radius:18px}
+.acard .th{box-shadow:var(--shadow-1)}
+.cine{box-shadow:var(--shadow-2);border:1px solid var(--line-2)}
+.pil{box-shadow:var(--shadow-1)}
+
+/* tactile press feedback across tappable cards */
+.acard,.qcardh,.dcard,.pil,.xtile,.storyav,.scell,.fcardh,.settingrow,.row,.saveitem,.tlchip,.schip,.fchip{transition:transform .16s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease),border-color .2s var(--ease)}
+.acard:active,.qcardh:active,.dcard:active,.pil:active,.xtile:active,.storyav:active,.fcardh:active,.row:active,.saveitem:active{transform:scale(.972)}
+.go:active,.dl:active,.play2:active,.mpp:active,.send:active,.addbar button:active,.pbtn:active,.act:active{transform:scale(.94)}
+
+/* FIX: reusable pill button (was invisible outside .iconbox) */
+.dl{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--grad-gold);border:none;color:#1a1206;font-weight:850;font-size:13px;padding:10px 15px;border-radius:11px;box-shadow:0 8px 18px -8px rgba(232,181,99,.65);white-space:nowrap}
+.dl svg{width:14px;height:14px;fill:currentColor}
+.dl.ghost{background:rgba(255,255,255,.08);color:var(--text);box-shadow:none;border:1px solid var(--line-2)}
+
+/* header pills get a touch of depth */
+.pill{background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.04));border-color:var(--line-2)}
+
+/* chips: branded gold on-state (filters + train), consistent everywhere */
+.fchip.on{background:var(--grad-gold);color:#1a1206;border-color:transparent;box-shadow:0 8px 18px -9px rgba(232,181,99,.6)}
+.schip:active,.fchip:active{transform:scale(.95)}
+
+/* feed: glassier action rail + softer tag */
+.act .ico{background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.055));border-color:rgba(255,255,255,.24);box-shadow:0 8px 20px -10px rgba(0,0,0,.75);backdrop-filter:blur(12px)}
+.act:active .ico{transform:scale(.84)}
+.ktag{background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.32));box-shadow:0 6px 16px -8px rgba(0,0,0,.55)}
+.filtfab{box-shadow:0 10px 26px -10px rgba(0,0,0,.8)}
+.filtfab.filtered{background:var(--grad-gold);border-color:transparent}
+.filtfab.filtered svg{fill:#1a1206}
+
+/* stat cells: bigger, brighter numbers */
+.scell .sv{font-size:22px;background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* tab bar: soft glow on the active icon, larger safe tap area */
+.tabbar{box-shadow:0 -8px 24px -12px rgba(0,0,0,.7)}
+.tab.on svg{filter:drop-shadow(0 4px 10px rgba(232,181,99,.5))}
+.tab{min-height:48px}
+
+/* music bar refinement */
+.musicbar{background:rgba(12,12,18,.82);backdrop-filter:blur(22px) saturate(1.2)}
+.musicbar .mpp{box-shadow:0 8px 20px -8px rgba(232,181,99,.6)}
+.musicbar .mood button.on{box-shadow:0 6px 14px -7px rgba(232,181,99,.6)}
+
+/* overlays & sheets: deeper, cleaner */
+.sheet,.reader,.mapview,.tlview,.quiz{box-shadow:var(--shadow-2)}
+.scrim{background:rgba(4,4,8,.62);backdrop-filter:blur(4px) saturate(1.1)}
+.sheet{border-color:var(--line-2)}
+.grab{background:var(--line-2)}
+
+/* toasts: crisper */
+.toast{background:rgba(22,20,30,.96);box-shadow:0 16px 40px -12px rgba(0,0,0,.7)}
+
+/* smoother view cross-fade */
+.view{transition:opacity .32s var(--ease),transform .32s var(--ease),visibility .32s}
+
+/* timeline dots pulse subtly on the active viewer */
+.tlview.show .tlitem .tldot{box-shadow:0 0 0 2px currentColor,0 0 14px -2px currentColor}
+
+/* inputs: gold focus glow */
+.addbar input:focus,.composer input:focus,#sIn:focus,#filtQ:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,181,99,.14)}
+
+/* FIX: filter/collection sheet header had no layout — close button collided with the title */
+.filtsheet h3{display:flex;align-items:center;gap:8px;padding:14px 18px 12px;font-size:15.5px;font-weight:800;border-bottom:1px solid var(--line)}
+.filtsheet h3 .close{margin-left:auto;color:var(--muted);font-size:22px;line-height:1;cursor:pointer;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.06)}
+.filtsheet .grab{margin-bottom:2px}
+/* section labels inside the filter sheet */
+.filtsheet .fchips>div[style*="uppercase"]{color:var(--muted-2)!important}
+/* consistent, tappable close buttons on every sheet */
+.sheet h3 .close,.aisheet h3 .close,.sharemodal h3 .close{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.06);font-size:20px}
+
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.05s!important}}
 </style>
 </head>
 <body>
