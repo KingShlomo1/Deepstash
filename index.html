@@ -376,6 +376,41 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .mapfoot button svg{width:17px;height:17px;fill:currentColor}
 .mapfoot button.prim{background:var(--grad-gold);border:none;color:#1a1206}
 
+/* ===== TIMELINE VIEWER ===== */
+.tlview{position:absolute;inset:0;z-index:106;background:var(--ink);overflow-y:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.tlview.show{transform:none}
+.tlwrap{padding:6px 18px 48px;max-width:680px;margin:0 auto}
+.tlhead{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;margin:6px auto 12px}
+.tlhead .tlflag{font-size:40px;line-height:1}
+.tlhead .tlt{font-family:var(--serif);font-size:25px;font-weight:600}
+.tlhead .tls{font-size:13px;color:var(--muted);font-weight:600;max-width:34ch}
+.tlselect{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px;margin:0 -2px;scrollbar-width:none}
+.tlselect::-webkit-scrollbar{display:none}
+.tlchip{flex:0 0 auto;display:flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:700;white-space:nowrap;cursor:pointer}
+.tlchip.on{background:var(--grad-gold);border:none;color:#1a1206}
+.tline{position:relative;margin:4px 0 0;padding-left:8px}
+.tline::before{content:"";position:absolute;left:14px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--line-2),var(--line))}
+.tlitem{position:relative;padding:0 0 20px 42px;opacity:0;transform:translateY(8px);animation:mbin .4s forwards}
+.tlitem .tldot{position:absolute;left:7px;top:3px;width:16px;height:16px;border-radius:50%;border:3px solid var(--ink);box-shadow:0 0 0 2px currentColor}
+.tlitem .tlyear{font-size:12.5px;font-weight:900;letter-spacing:.02em;color:var(--gold-2);font-variant-numeric:tabular-nums}
+.tlitem .tlh{font-size:15.5px;font-weight:800;margin-top:2px;line-height:1.25}
+.tlitem .tlp{font-size:13.5px;line-height:1.5;color:#d7d4e2;margin-top:3px}
+.tlera{margin:10px 0 6px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2)}
+
+/* ===== CHARTS / GRAPHS ===== */
+.chartcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:15px 15px 12px;margin:0 0 14px;overflow:hidden}
+.chartcard .cct{font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
+.chartcard .ccs{font-size:12px;color:var(--muted);font-weight:600;margin-top:2px}
+.chartcard .ccfig{margin-top:12px;width:100%}
+.chartcard svg{display:block;width:100%;height:auto;overflow:visible}
+.chartcard .ccx{font-size:9.5px;fill:var(--muted-2);font-weight:700}
+.chartcard .ccval{font-size:10px;fill:var(--text);font-weight:800}
+.chartcard .ccnote{font-size:11.5px;color:var(--muted-2);margin-top:9px;line-height:1.45}
+.dcard{flex:0 0 auto;width:230px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:13px;cursor:pointer;position:relative;overflow:hidden}
+.dcard .de{font-size:22px}.dcard .dtt{font-size:14.5px;font-weight:800;margin-top:6px;line-height:1.25}
+.dcard .dm{font-size:11.5px;color:var(--muted-2);font-weight:700;margin-top:6px}
+.dcard .dmini{margin-top:10px;height:46px}
+
 /* shared: home quiz/map cards reuse .acard/.th; small quiz card */
 .qcardh{flex:0 0 auto;width:210px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px;cursor:pointer;position:relative;overflow:hidden}
 .qcardh .qe{font-size:24px}.qcardh .qtt{font-size:15px;font-weight:800;margin-top:8px;line-height:1.25}
@@ -563,6 +598,7 @@ button{font-family:inherit;color:inherit;cursor:pointer}
   <div class="stories" id="stories"></div>
   <div class="quiz" id="quiz"></div>
   <div class="mapview" id="mapview"></div>
+  <div class="tlview" id="tlview"></div>
   <div class="filtsheet" id="filtSheet"><div class="grab"></div><h3><span>Filter the feed</span><span class="close" data-closefilt>✕</span></h3><div class="fchips" id="filtChips"></div></div>
   <div class="sharemodal" id="shareModal"><div class="grab"></div><h3><span>📤 Share as image</span><span class="close" id="shClose">✕</span></h3><div class="shprev"><canvas id="shCanvas"></canvas></div><div class="shbtns"><button id="shDownload"><svg viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg>Download</button><button class="prim" id="shShare"><svg viewBox="0 0 24 24"><path d="M14 9V5l7 7-7 7v-4.1C9 12 6 13 3 17c1-6 5-8 11-8z"/></svg>Share</button></div></div>
   <div class="onboard" id="onboard"></div>
@@ -1028,6 +1064,158 @@ const FEED=[
  ["story","story","The professor, the jar and the rocks.","A teacher fills a jar with big rocks and asks, 'Full?' 'Yes.' He adds pebbles, then sand, then water — each time it fits. 'The lesson isn't that you can always fit more,' he says. 'It's that if you don't put the big rocks in first, they'll never fit at all.' Schedule what matters before the trivia fills your life."],
  ["story","story","The apprentice who was told to make 100 pots.","Half a pottery class was graded on the single best pot; the other half on sheer quantity. At the end, the finest pots came from the quantity group. While the perfectionists theorized, the makers learned by failing fast, again and again. You don't think your way to mastery. You rep your way there."],
  ["story","story","The Zen master's overflowing cup.","A scholar visited a master to learn, but kept interrupting with his own opinions. The master poured tea until the cup overflowed onto the table. 'Stop — it's full!' cried the scholar. 'Like this cup,' said the master, 'you are full of your own ideas. How can I show you anything until you empty your cup?' You can't learn what you think you already know."],
+
+ /* ========= BATCH 2: much longer feed across every subject ========= */
+ /* -- Discipline -- */
+ ["discipline","idea","Motivation gets you started; systems keep you going.","The pros don't rely on feeling inspired. They build a routine so simple it runs on autopilot, then let momentum do the heavy lifting."],
+ ["discipline","idea","Discomfort is a skill you can train.","Sit in the cold shower, hold the plank, send the scary email. Each rep raises your tolerance a notch. Toughness is a callus, not a gift."],
+ ["discipline","idea","Win the first hour, win the day.","Whatever you do right after waking sets the tone. Guard it: no phone, no news — one deliberate act of discipline before the world gets a vote."],
+ ["discipline","idea","Don't break the chain.","Mark an X on the calendar every day you do the thing. Soon the unbroken streak itself becomes the motivation. Protect the chain."],
+ ["discipline","quote","We are what we repeatedly do. Excellence, then, is not an act but a habit.","Will Durant (on Aristotle)","The Story of Philosophy"],
+ ["discipline","idea","The dip is where most people quit — and where the reward lives.","Every worthwhile pursuit has a valley of boredom and doubt. It exists precisely to filter out the uncommitted. Push through and the field thins."],
+ ["discipline","idea","Lower the bar to keep the streak.","Too tired for the full workout? Do one push-up. The goal isn't the rep — it's never letting yourself become a person who skips."],
+ /* -- Mindfulness -- */
+ ["mind","idea","Your attention is your life.","Where it goes, your experience follows. Whoever controls your attention controls your reality — make sure it's you, not an algorithm."],
+ ["mind","idea","Anxiety is excitement without breath.","Same racing heart, same energy. Slow, long exhales tell your body the story has changed from threat to challenge."],
+ ["mind","quote","Wherever you are, be there totally.","Eckhart Tolle","The Power of Now"],
+ ["mind","idea","The urge always passes if you surf it.","Cravings peak and fall like waves in a few minutes. You don't have to fight them — just watch, breathe, and let the wave break."],
+ ["mind","idea","Do one thing at a time, on purpose.","Multitasking is just switching quickly and paying a tax each time. Single-tasking is the quiet superpower of a fractured age."],
+ ["mind","idea","Notice three breaths before you react.","A tiny pause is enough to move the decision from your reflexes to your reason. Three breaths can save a relationship."],
+ /* -- Learning -- */
+ ["learn","idea","If you can't explain it simply, you don't understand it.","The Feynman test. Teaching a concept in plain words exposes every gap you were hiding — from yourself most of all."],
+ ["learn","idea","Difficulty is the feeling of learning.","When study feels smooth, you're usually just reviewing. When it feels effortful, that friction is the memory being carved. Chase the struggle."],
+ ["learn","idea","Sleep is the second half of studying.","Your brain replays and files the day's learning overnight. Pull an all-nighter and you erase much of what you just paid for."],
+ ["learn","idea","Interleave, don't block.","Mixing problem types feels messier but trains you to pick the right tool, not just repeat the last one. Real life never comes pre-sorted."],
+ ["learn","quote","Live as if you were to die tomorrow. Learn as if you were to live forever.","Mahatma Gandhi","—"],
+ ["learn","idea","A note you'll never reread is wasted ink.","Learning isn't collecting information; it's building recall. Test yourself on the notes, or don't bother taking them."],
+ /* -- Life -- */
+ ["life","idea","You become your defaults.","Willpower is rare; defaults run your life. Change what's easiest to reach — the snack, the app, the route — and you change who you are."],
+ ["life","idea","Most things are a five-minute task you've turned into a five-day dread.","Reply, book it, send it. The doing is usually smaller than the avoiding. Clear the small stuff and reclaim the headspace."],
+ ["life","quote","The two most important days in your life are the day you are born and the day you find out why.","Mark Twain (attrib.)","—"],
+ ["life","idea","Compare down before you compare up.","The instinct is to measure against those ahead. Occasionally look back at how far you've come — same data, opposite mood."],
+ ["life","idea","Say the kind thing out loud.","The compliment you think but don't say helps no one. Voiced appreciation is free to give and expensive to withhold."],
+ ["life","idea","Energy management beats time management.","You don't have more hours to find — you have better hours to protect. Match your hardest work to your sharpest window."],
+ ["life","idea","Boundaries are how you teach people to treat you.","Every 'yes' you resent is a boundary you skipped. A clear no now prevents a bitter one later."],
+ /* -- Genius / thinking -- */
+ ["genius","idea","First principles: build up from what must be true.","Stop reasoning by analogy ('this is like that'). Strip a problem to its physics and rebuild. It's how you get answers no one copied."],
+ ["genius","idea","Strong opinions, loosely held.","Commit hard enough to act, but stay ready to be wrong. Certainty feels good and blinds you; curiosity feels uneasy and keeps you sharp."],
+ ["genius","idea","Map the second-order effects.","Everyone sees the immediate result. The edge is asking 'and then what?' — the ripple after the splash is where the real consequences live."],
+ ["genius","quote","It is the mark of an educated mind to entertain a thought without accepting it.","Aristotle","—"],
+ ["genius","idea","Name your assumptions, then attack them.","Every plan rests on hidden beliefs. Write them down and ask which one, if wrong, breaks everything. Defend that one first."],
+ ["genius","idea","Simplicity is the final achievement, not the starting point.","Anyone can make it complicated. It takes deep understanding to make it simple. Clarity is compressed mastery."],
+ /* -- Psychology -- */
+ ["psych","fact","You remember the peak and the end, not the average.","The 'peak-end rule': experiences are judged by their most intense moment and how they finished. Design endings on purpose."],
+ ["psych","idea","Loss hurts about twice as much as the equal gain feels good.","Loss aversion quietly runs your decisions. Knowing it lets you see when fear of losing is outvoting a sensible risk."],
+ ["psych","fact","Your brain invents reasons after you've already decided.","Much of 'reasoning' is a press secretary justifying a choice your gut made first. Humility about your own motives is a superpower."],
+ ["psych","idea","What you focus on expands.","Scan for threats and the world looks dangerous; scan for good and it looks generous. Attention is a spotlight that paints the whole room."],
+ ["psych","fact","Merely naming a feeling calms the brain's alarm.","Brain scans show that labeling an emotion — 'this is anxiety' — shifts activity to the reasoning centre. Name it to tame it."],
+ ["psych","idea","The Zeigarnik effect: unfinished tasks haunt you.","Your mind clings to open loops. Write the task down and the nagging often stops — the brain trusts the paper to remember."],
+ /* -- Money -- */
+ ["money","finance","Compound interest is the eighth wonder — and it's boring on purpose.","Nothing seems to happen for years, then everything happens at once. The fortune hides in the final stretch. Start early, wait long."],
+ ["money","idea","Rich is a income; wealthy is options.","Rich is the car and the watch. Wealthy is not needing the job. Aim for assets that pay you, not stuff that bills you."],
+ ["money","finance","The market rewards patience and taxes panic.","The biggest gains often come in a handful of days you can't predict. Miss them by trying to time the market and returns collapse."],
+ ["money","idea","Pay yourself first.","Automate savings the day you're paid, before lifestyle eats it. Willpower fails; a standing transfer doesn't."],
+ ["money","idea","Every purchase has a price and a cost.","The price is the money. The cost is everything that money could have become. Wealth is the stuff you didn't buy."],
+ ["money","quote","Do not save what is left after spending; spend what is left after saving.","Warren Buffett","—"],
+ /* -- Philosophy -- */
+ ["phil","idea","Memento mori — remember you will die.","Not morbid — clarifying. A finite life makes trivial worries shrink and real priorities glow. Death is the editor of a well-lived day."],
+ ["phil","idea","The obstacle is the way.","The thing blocking your path can become the path. Adversity is raw material for the exact virtues you claim to want."],
+ ["phil","quote","He who has a why to live can bear almost any how.","Friedrich Nietzsche","—"],
+ ["phil","idea","Amor fati: love your fate.","Don't just accept what happens — will it. Treat every event as fuel. The strongest response to reality is to embrace it and act."],
+ ["phil","idea","You could leave life right now — let that decide what you do.","Marcus Aurelius' jolt. Not fear, focus. If this could be the last one, which grudges and delays suddenly look absurd?"],
+ ["phil","idea","The unexamined life is not worth living.","Socrates chose death over ceasing to question. A life run on autopilot and inherited opinions is barely yours at all."],
+ /* -- Science -- */
+ ["science","fact","A single bolt of lightning is five times hotter than the Sun's surface.","~30,000°C for a fraction of a second. The flash you barely glimpse is one of the hottest things on Earth."],
+ ["science","fact","Honey never spoils.","Archaeologists found 3,000-year-old honey in Egyptian tombs, still edible. Low water and natural acidity make it nearly immortal food."],
+ ["science","fact","Hot water can freeze faster than cold — sometimes.","The Mpemba effect, still debated, shows nature doesn't always obey common sense. The world is stranger than intuition allows."],
+ ["science","idea","Correlation is not causation — and it fools everyone.","Ice cream sales and drownings rise together (summer causes both). Before you connect two dots, look for the hidden third."],
+ ["science","fact","There's enough gold in the ocean to give everyone kilograms of it.","But it's so diluted that extracting it costs more than it's worth. Abundance and access are very different things."],
+ ["science","fact","Bananas are radioactive — harmlessly.","They contain potassium-40. You'd need to eat millions at once to be in danger. 'Radioactive' rarely means 'dangerous'."],
+ /* -- Health -- */
+ ["health","idea","Zone 2: the fitness most people skip.","Easy, conversational cardio builds the aerobic engine that powers everything else. You don't have to suffer to get healthier."],
+ ["health","fact","Your gut and brain talk constantly.","The vagus nerve carries more signals up from the gut than down to it. What you eat quietly shapes how you feel."],
+ ["health","idea","Sunlight in the morning sets your whole day.","Early light anchors your body clock, sharpening focus by day and sleep by night. Ten minutes outside beats another coffee."],
+ ["health","idea","Muscle is the organ of longevity.","Strength training past 40 protects bones, metabolism, and independence. Lifting isn't vanity — it's a retirement plan for your body."],
+ ["health","fact","Chronic stress and chronic inflammation are cousins.","Ongoing stress keeps your body in low-grade alarm, which ages you from the inside. Rest isn't lazy — it's maintenance."],
+ /* -- Fitness -- */
+ ["fit","idea","Progressive overload is the whole secret.","Do a little more over time — a rep, a kilo, a minute. The body adapts only to demands slightly beyond the comfortable."],
+ ["fit","idea","You can't out-train a bad diet.","Abs are revealed in the kitchen. Movement builds the engine; food decides what it runs on. Both matter; food usually more."],
+ ["fit","idea","Soreness is not the goal — progress is.","Chasing pain is a beginner's error. The point is getting stronger and moving better, not being wrecked the next day."],
+ ["fit","idea","The best exercise is the one you'll keep doing.","A 'perfect' plan you quit in three weeks loses to a decent plan you run for years. Pick something you can stand to repeat."],
+ /* -- Economy -- */
+ ["econ","fact","Inflation is a quiet tax on savings.","When prices rise, money in a low-interest account slowly loses value. Doing 'nothing' with cash isn't safe — it's shrinking."],
+ ["econ","idea","Incentives explain almost everything.","Want to predict behaviour? Ask what people are rewarded for. Systems don't run on good intentions — they run on incentives."],
+ ["econ","fact","Comparative advantage: trade helps even the 'worse' side.","Even if one country is better at everything, both gain by specializing in what they're relatively best at. Cooperation beats self-sufficiency."],
+ ["econ","idea","There's no such thing as a free lunch.","Every choice has a cost, even when it looks free. The question is never 'is it free?' but 'what am I giving up?'"],
+ ["econ","fact","Most money isn't printed — it's created by loans.","When a bank lends, it largely creates new deposits. Modern money is mostly digital promises, not paper in a vault."],
+ /* -- Geography -- */
+ ["geo","fact","Canada has more lakes than the rest of the world combined.","Over 60% of the planet's lakes sit in one country. The map hides just how much of Canada is water."],
+ ["geo","fact","The Pacific is wider than all the land on Earth put together.","At its widest, you could line up every continent across it and still have ocean to spare. We live on a water world."],
+ ["geo","fact","Mount Everest grows a few millimetres every year.","India is still crashing into Asia, pushing the Himalayas higher. The tallest mountain isn't finished being built."],
+ ["geo","idea","Latitude shaped history more than we admit.","Climate, crops, and disease followed the bands of the globe. Where a civilization sat on the map quietly set its starting hand."],
+ ["geo","fact","Istanbul is the only city on two continents.","Split by the Bosphorus, it stands in both Europe and Asia — a literal bridge between worlds for 2,000 years."],
+ /* -- Physics (more) -- */
+ ["physics","fact","If the Sun vanished, Earth would keep orbiting for 8 minutes.","Gravity travels at light speed. We'd feel the loss the same instant we saw the dark — not a second before."],
+ ["physics","idea","Energy is never created or destroyed, only moved.","The food you ate, the wind outside, the light on this screen — all the same currency, endlessly changing form. Nothing is truly used up."],
+ ["physics","fact","A hummingbird's wings and a galaxy obey the same laws.","The physics that spins water down a drain is the physics that spins galaxies. The rules scale from the tiny to the titanic."],
+ ["physics","idea","Absolute zero can be approached but never reached.","At −273.15°C atoms would stop entirely — and quantum rules forbid perfect stillness. The universe has a floor you can't quite touch."],
+ ["physics","fact","Most of an atom is empty space.","If the nucleus were a marble, the nearest electron would be a stadium away. The 'solid' world is mostly nothing, held by forces."],
+ /* -- Math (more) -- */
+ ["math","idea","A map of any country needs only four colours.","No matter how tangled the borders, four colours keep neighbours distinct. Proven by computer in 1976 — the first of its kind."],
+ ["math","fact","Zero factorial equals one.","0! = 1, because there's exactly one way to arrange nothing. Math's edge cases are where its logic shows its teeth."],
+ ["math","idea","Exponential growth breaks human intuition.","We think in straight lines; nature often doubles. That gap is why pandemics, savings, and viral posts all 'suddenly' explode."],
+ ["math","fact","There are exactly as many even numbers as whole numbers.","Both are infinite, and you can pair them one-to-one. At infinity, the part can equal the whole. Cantor's mind-bender."],
+ ["math","idea","Averages hide as much as they reveal.","A room's average wealth soars if a billionaire walks in — while everyone else is still broke. Always ask about the spread, not just the middle."],
+ ["math","quote","In mathematics you don't understand things. You just get used to them.","John von Neumann","—"],
+ /* -- History (more + timelines) -- */
+ ["history","timeline","The Industrial Revolution, in four sparks.","1712 the steam engine → 1769 Watt improves it → 1825 the railway → 1870s electricity. A century that traded muscle for machine and remade daily life.","","Berlin_Wall_1961-11-20.jpg"],
+ ["history","fact","The Ottoman Empire lasted over 600 years.","From 1299 to 1922, it spanned three continents. When it finally fell, it redrew the map of the modern Middle East — lines we still live with."],
+ ["history","idea","History is written by the victors — so read the losers too.","Every triumphant story has a silenced one. The fullest truth usually hides in the accounts no one had reason to celebrate."],
+ ["history","timeline","From wheel to web: tools that changed us.","~3500 BC the wheel → ~1440 the printing press → 1876 the telephone → 1969 the internet → 2007 the smartphone. Each shrank distance and time."],
+ ["history","fact","Vikings reached America 500 years before Columbus.","Around 1000 AD, Leif Erikson landed in Newfoundland. 'Discovery' usually means 'the version that got written down and remembered'."],
+ ["history","fact","Ancient Romans had concrete better than some modern kinds.","Their seawater concrete grew stronger over centuries. We lost the recipe for 1,500 years. Progress isn't always a straight line."],
+ ["history","idea","Revolutions eat their own children.","France, Russia, and more: the radicals who topple the old order often turn on each other next. Tearing down is easier than building up."],
+ ["history","quote","The only thing we learn from history is that we learn nothing from history.","Georg Hegel (attrib.)","—"],
+ /* -- Astronomy (more) -- */
+ ["astro","fact","The observable universe is 93 billion light-years across.","Yet it's only 13.8 billion years old — space itself stretched faster than light ever could. The map is bigger than the clock allows.","","Hubble_ultra_deep_field.jpg"],
+ ["astro","fact","A day on the Moon lasts about a month.","The Moon rotates once per orbit, so lunar 'days' and 'nights' each run roughly two Earth weeks. Time bends with your address.","","Full_Moon_Luc_Viatour.jpg"],
+ ["astro","idea","Every element heavier than iron was born in a catastrophe.","Gold, silver, uranium — forged in exploding stars and colliding neutron stars. Your ring is a fossil of ancient cosmic violence."],
+ ["astro","fact","Black holes don't 'suck' — they orbit like anything else.","Swap the Sun for a black hole of equal mass and Earth's orbit wouldn't change. They're just extremely concentrated gravity, not cosmic vacuums."],
+ ["astro","fact","There may be more planets than stars in our galaxy.","Most stars host worlds; some drift starless through the dark. The galaxy is less a scattering of suns than a crowd of planets."],
+ ["astro","quote","We are a way for the cosmos to know itself.","Carl Sagan","Cosmos","","Pillars_of_creation_2014_HST_WFC3-UVIS_full-res_denoised.jpg"],
+ /* -- Biology / Anatomy (more) -- */
+ ["bio","fact","Your body runs on a battery of electricity and salt.","Every thought and heartbeat is an electrical pulse driven by sodium and potassium crossing cell walls. You are, in part, a wet circuit."],
+ ["bio","idea","Life is a war against entropy, fought with food.","Everything tends toward disorder; living things spend constant energy to stay organized. To live is to swim upstream against physics."],
+ ["bio","fact","Octopuses have three hearts and blue blood.","Two hearts pump to the gills, one to the body; copper-based blood carries their oxygen. Intelligence evolved down a completely alien path."],
+ ["anatomy","fact","You breathe mostly through one nostril at a time.","The dominant side switches every few hours — the 'nasal cycle.' Your body quietly rotates the workload without telling you.","","1801_The_Lungs_and_Pulmonary_System.jpg"],
+ ["anatomy","fact","Your body has more bacteria than stars in the Milky Way.","Tens of trillions of microbes call you home, most of them helpful. You're less an individual than a walking, cooperating ecosystem."],
+ ["anatomy","fact","The strongest muscle for its size is in your jaw.","The masseter can clench with hundreds of newtons of force. Small, unassuming, and stronger than it has any right to be.","","Skeleton_diagram.svg"],
+ ["anatomy","fact","Your brain feels no pain.","It has no pain receptors of its own — surgeons operate on awake patients. The organ that processes all pain can't feel its own.","","Human_brain_NIH.jpg"],
+ /* -- Strategy / Military (more) -- */
+ ["war","strategy","Concentrate force at the decisive point.","Napoleon's core move: be weak everywhere that doesn't matter to be overwhelming where it does. Spreading thin loses; focusing wins.","","Napoleon4.jpg"],
+ ["war","strategy","Surprise multiplies strength.","Hitting where and when the enemy doesn't expect turns a small force into a decisive one. Predictability is the cheapest thing to give away.","","Israel_Defense_Forces_-_Merkava_Mark_IV_(2).jpg"],
+ ["war","strategy","Morale is to the physical as three to one.","Napoleon's estimate. Belief, cohesion and will decide battles that raw numbers say should go the other way. People fight, not spreadsheets."],
+ ["war","strategy","Know the ground before you need it.","Terrain, weather, and lines of supply favour whoever studied them first. Half of victory is homework done before contact.","","Hannibal_route_of_invasion-en.svg"],
+ ["war","strategy","The best general wins without a battle.","Sun Tzu again: break the enemy's will, alliances, and plans so fighting becomes unnecessary. Bloodless victory is the highest art.","","Sun_Tzu.jpg"],
+ ["war","quote","Amateurs talk about tactics, but professionals study logistics.","Gen. Robert H. Barrow","US Marine Corps"],
+ ["war","strategy","A defended nation needs early warning most of all.","For a small state, minutes matter. Intelligence and detection buy the time to mobilize — the difference between surprise and readiness.","","Equirectangular_projection_SW.jpg"],
+ /* -- Maps / Geopolitics (more) -- */
+ ["maps","map","Geography is the stage every nation must perform on.","Mountains, rivers, and coastlines shape who trades, who fights, and who thrives — long before politics gets a say. Read the land to read the story.","","World_map_-_low_resolution.svg"],
+ ["maps","map","Whoever controls the sea lanes controls trade.","90% of goods still move by ship. Navies and ports, not just armies, decide which economies breathe. The map of power is a map of water.","","Mercator_projection_SW.jpg"],
+ ["maps","fact","A country's shape can shape its fate.","Long, narrow nations are hard to defend and unify; compact ones are easier to govern. Borders aren't just lines — they're constraints."],
+ ["maps","map","Deserts, mountains and rivers make the most stubborn borders.","Where nature draws a hard line, nations tend to settle. The map's most permanent ink is written by geography, not treaties.","","Equirectangular_projection_SW.jpg"],
+ ["maps","fact","Time zones are a 19th-century invention of the railways.","Before trains, every town kept its own noon. Schedules forced the world onto a shared grid of time. Technology standardized the clock.","","Cassini_Map_of_France.jpg"],
+ /* -- Animals -- */
+ ["animal","fact","A shrimp's heart is in its head.","Along with much of its other organs. Nature keeps reinventing the body plan — 'where things go' is far more flexible than you'd think."],
+ ["animal","fact","Crows remember human faces — and hold grudges.","They can recognize and warn others about a person who wronged them, for years. Some birds run a better memory than we credit."],
+ ["animal","fact","An octopus can taste with its arms.","Each sucker is covered in chemical sensors. It explores the world by touching and tasting at once — an intelligence built on a different blueprint."],
+ ["animal","fact","Wombats produce cube-shaped poop.","Their intestines mould it so it won't roll off the rocks they mark. Evolution solves problems you'd never think to ask about."],
+ ["animal","fact","Tardigrades can survive space, radiation, and being boiled.","These microscopic 'water bears' shrug off conditions that kill almost everything. Life is tougher, and weirder, than fragile."],
+ /* -- More long stories -- */
+ ["story","story","The old man and the scorpion.","A monk kept rescuing a scorpion from the river; each time it stung him. 'Why save what keeps hurting you?' asked a boy. 'It is the scorpion's nature to sting,' the monk said, 'and mine to save. Why should I abandon my nature because it will not abandon its?' Your character isn't a reaction to others — it's a choice you keep making."],
+ ["story","story","Two wolves.","A grandfather tells his grandson: 'Inside every person, two wolves fight. One is anger, envy and fear. The other is joy, kindness and hope.' The boy asks, 'Which one wins?' The old man smiles: 'The one you feed.' Your daily attention is the food. Choose your thoughts like you choose your meals."],
+ ["story","story","The fisherman and the businessman.","A tycoon urges a village fisherman to work harder, build a fleet, get rich. 'Then what?' asks the fisherman. 'Then you could relax, fish a little, nap in the sun, play with your kids.' The fisherman replies, 'But that is exactly what I already do.' Sometimes the finish line is right where you're standing."],
+ ["story","story","The elephant and the rope.","A tiny rope held a huge circus elephant that could snap it in a heartbeat. Asked why it never tried, the trainer explained: as a baby it was tied with the same rope, and back then it truly couldn't break free. It grew up believing it still couldn't. Most cages we live in were locked long ago and never checked again."],
 ];
 
 /* ===== ARTICLES ===== */
@@ -1230,6 +1418,55 @@ const QUIZZES=[
    {q:"The Fermi Paradox asks…",o:["Why the sky is blue","If the universe is huge, where is everyone?","How stars form","Why Pluto isn't a planet"],a:1,e:"Given billions of worlds and years, the silence is a genuine puzzle."},
    {q:"Saturn is unusual because it…",o:["Has no moons","Would float in water","Is the hottest planet","Spins backward"],a:1,e:"It's less dense than water — a giant, light ball of gas."},
  ]},
+ {id:"qz7",topic:"math",title:"Math That Bends Your Brain",emoji:"🔢",qs:[
+   {q:"How many people give a >50% chance that two share a birthday?",o:["183","100","57","23"],a:3,e:"The 'birthday paradox' — because you compare every pair, the odds rise far faster than intuition expects."},
+   {q:"How many colours are ever needed to colour any map so neighbours differ?",o:["Four","Seven","Ten","It depends"],a:0,e:"The Four Colour Theorem — proven with computer help in 1976."},
+   {q:"Which describes the digits of π?",o:["They repeat every 7","They end eventually","Infinite, non-repeating","All the same"],a:2,e:"π is irrational: its decimals never end and never settle into a pattern."},
+   {q:"Comparing even numbers to all whole numbers, there are…",o:["Half as many evens","The same amount","Twice as many wholes","Can't compare"],a:1,e:"Both are infinite and pair one-to-one — at infinity the part can equal the whole."},
+   {q:"'Exponential growth' fools people because humans think in…",o:["Curves","Straight lines","Circles","Fractions"],a:1,e:"We expect steady addition; exponential doubling explodes 'suddenly' after a slow start."},
+ ]},
+ {id:"qz8",topic:"anatomy",title:"Your Astonishing Body",emoji:"🫀",qs:[
+   {q:"About how many times does your heart beat per day?",o:["10,000","100,000","1 million","5,000"],a:1,e:"~100,000 beats a day, ~2.5 billion in a lifetime, without a break."},
+   {q:"Roughly how much power does your brain run on?",o:["20 watts","200 watts","2 watts","500 watts"],a:0,e:"About 20 watts — less than a dim bulb, yet it out-thinks supercomputers."},
+   {q:"Why can surgeons operate on an awake brain?",o:["Anaesthetic magic","The brain has no pain receptors","It's frozen","It's asleep"],a:1,e:"The brain processes all pain but feels none of its own."},
+   {q:"Your lungs' internal surface is about the size of…",o:["A dinner plate","A door","A tennis court","A postage stamp"],a:2,e:"Folded into millions of tiny sacs for efficient gas exchange."},
+   {q:"The 'second brain' in your gut has roughly…",o:["A few hundred neurons","500 million neurons","No neurons","More than your head"],a:1,e:"~500 million neurons — enough to run digestion and sway your mood."},
+ ]},
+ {id:"qz9",topic:"history",title:"Timelines & Turning Points",emoji:"🏺",qs:[
+   {q:"Cleopatra lived closer in time to…",o:["The building of the Pyramids","The Moon landing","Both equally","Neither"],a:1,e:"The Pyramids were ~2,500 years old in her day; the Moon landing is nearer to her than she was to them."},
+   {q:"Who reached the Americas around 1000 AD, before Columbus?",o:["The Romans","The Vikings","The Chinese","The Egyptians"],a:1,e:"Leif Erikson landed in Newfoundland ~500 years before 1492."},
+   {q:"The printing press (c.1440) mainly changed the world by…",o:["Making paper","Spreading ideas cheaply and fast","Ending war","Inventing writing"],a:1,e:"It slashed the cost of copying knowledge — a revolution in memory and reach."},
+   {q:"Rome's fall is best described as…",o:["A single night","A slow fade over centuries","A myth","An earthquake"],a:1,e:"Compounding fiscal, political and military strain over ~300 years."},
+   {q:"The modern state of Israel declared independence in…",o:["1917","1948","1967","1922"],a:1,e:"14 May 1948, after the 1947 UN partition plan."},
+ ]},
+ {id:"qz10",topic:"war",title:"Principles of Strategy",emoji:"⚔️",qs:[
+   {q:"Sun Tzu's highest form of victory is…",o:["The biggest army","Winning without fighting","Fighting longest","The best weapons"],a:1,e:"Break the enemy's will and plans so battle becomes unnecessary."},
+   {q:"'Combined arms' means…",o:["One elite unit","Infantry, armour, artillery and air covering each other","More soldiers","Fighting at night"],a:1,e:"Each arm offsets the others' weaknesses; none wins alone."},
+   {q:"The OODA loop is about…",o:["Marching in step","Deciding and acting faster than the enemy","Building walls","Counting supplies"],a:1,e:"Observe–Orient–Decide–Act; out-cycle your opponent and they're stuck reacting."},
+   {q:"For a small state with little territory, what matters most?",o:["Slow defence","Early warning and fast mobilization","Ignoring borders","Huge navies only"],a:1,e:"Minutes count: intelligence buys the time to mobilize reserves."},
+   {q:"'Amateurs talk tactics; professionals study…'",o:["Uniforms","Logistics","Flags","Speeches"],a:1,e:"Fuel, ammo and supply decide how far and long any force can fight."},
+ ]},
+ {id:"qz11",topic:"physics",title:"How Reality Works",emoji:"⚛️",qs:[
+   {q:"Nothing can travel faster than…",o:["Sound","Light","The Earth","A rocket"],a:1,e:"Light speed is built into the fabric of spacetime as a hard limit."},
+   {q:"Most of an atom is…",o:["Solid metal","Empty space","Water","Light"],a:1,e:"If the nucleus were a marble, the nearest electron would be a stadium away."},
+   {q:"Gravity, in Einstein's picture, is…",o:["A pulling string","Mass curving spacetime","Magnetism","A myth"],a:1,e:"Objects roll along the curves that mass carves into spacetime."},
+   {q:"Entropy explains why…",o:["Time has a direction","Water is wet","The sky is blue","Metals rust"],a:0,e:"The universe trends from order to disorder — that one-way slide is time's arrow."},
+   {q:"Energy in a closed system is…",o:["Created constantly","Destroyed by use","Conserved — only changes form","Random"],a:2,e:"It's never created or destroyed, only moved and transformed."},
+ ]},
+ {id:"qz12",topic:"geo",title:"Reading the World",emoji:"🗺️",qs:[
+   {q:"On a Mercator map, Greenland looks as big as Africa, but Africa is…",o:["About the same","~14× larger","Smaller","Twice as big"],a:1,e:"Mercator inflates areas near the poles; the equator gets shrunk."},
+   {q:"Which city sits on two continents?",o:["Cairo","Istanbul","Moscow","Athens"],a:1,e:"The Bosphorus splits Istanbul between Europe and Asia."},
+   {q:"Most of the world's goods travel by…",o:["Air","Rail","Ship","Truck"],a:2,e:"~90% moves by sea, which is why chokepoints and sea lanes are strategic."},
+   {q:"Which is a critical maritime chokepoint?",o:["Strait of Hormuz","Lake Victoria","The Alps","The Amazon"],a:0,e:"Suez, Panama, Hormuz and Malacca can bottleneck global trade."},
+   {q:"Time zones were standardized largely because of…",o:["Kings","Railways","Farmers","Sailors"],a:1,e:"Train schedules forced towns off local noon onto a shared grid."},
+ ]},
+ {id:"qz13",topic:"science",title:"Everyday Science Myths",emoji:"🔬",qs:[
+   {q:"Old window glass is thicker at the bottom because…",o:["Glass slowly flows","Of how it was made","Gravity over centuries","It melted"],a:1,e:"Glass is a solid; the thickness is a manufacturing artefact, not flow."},
+   {q:"'Correlation is not causation' warns that…",o:["Numbers lie","Two linked things may share a hidden cause","Math is useless","Averages are fake"],a:1,e:"Ice cream and drownings both rise in summer — heat causes both."},
+   {q:"Honey found in ancient tombs was…",o:["Turned to stone","Still edible","Poisonous","Gold"],a:1,e:"Low water and acidity make honey nearly immortal."},
+   {q:"Lightning is about how hot compared to the Sun's surface?",o:["Cooler","Same","~5× hotter","Twice as cold"],a:2,e:"~30,000°C for a split second — hotter than the Sun's surface."},
+   {q:"Bananas are slightly radioactive because of…",o:["Pesticides","Potassium-40","Sunlight","Sugar"],a:1,e:"Harmlessly so — 'radioactive' rarely means 'dangerous'."},
+ ]},
 ];
 
 /* ===== KNOWLEDGE MAPS ===== */
@@ -1370,7 +1607,209 @@ const STORIES=[
    {e:"🕯️",h:"Picture the loss.",p:"Briefly imagine what you'd hate to lose. It re-colours the ordinary and makes gratitude vivid again."},
    {e:"🏹",h:"Commit to one thing.",p:"Name one action within your control and do it well. That's the whole practice. Repeat daily; become hard to rattle."},
  ]},
+ {id:"st7",topic:"astro",title:"A Tour of the Cosmos",emoji:"🌌",slides:[
+   {e:"☀️",h:"Start with the Sun.",p:"It holds 99.8% of the Solar System's mass and fuses 600 million tons of hydrogen every second. Its light takes 8 minutes to reach your eyes."},
+   {e:"🪐",h:"Eight worlds, wild variety.",p:"Rocky inner planets, giant gas and ice worlds beyond. Saturn would float in water; a day on Venus outlasts its year."},
+   {e:"🌟",h:"You are stardust.",p:"The calcium in your bones and iron in your blood were forged inside stars that exploded long before the Sun was born."},
+   {e:"🌀",h:"Our galaxy.",p:"The Milky Way holds ~200 billion stars, and we orbit its centre once every ~230 million years — a 'galactic year'."},
+   {e:"🔭",h:"Then, everything.",p:"Billions of galaxies fill an observable universe 93 billion light-years across, still expanding after 13.8 billion years."},
+   {e:"🌍",h:"And back home.",p:"In all that vastness, one pale blue dot carries every human who ever lived. It looks precious because it is."},
+ ]},
+ {id:"st8",topic:"history",title:"The Story of Rome",emoji:"🏛️",slides:[
+   {e:"🐺",h:"A village on seven hills.",p:"Legend says 753 BC. A small settlement by the Tiber that no one would have bet on to rule the world."},
+   {e:"⚖️",h:"The Republic, 509 BC.",p:"Rome expelled its kings and built a system of elected officials and checks — an idea that still echoes in modern democracies."},
+   {e:"👑",h:"The Empire, 27 BC.",p:"After civil wars, Augustus became the first emperor. Two centuries of relative peace — the Pax Romana — followed."},
+   {e:"🛣️",h:"Engineers of the world.",p:"Roads, aqueducts, concrete and law spread across three continents. 'All roads lead to Rome' was nearly literal."},
+   {e:"📉",h:"The long fade.",p:"Overreach, debased money and blurred frontiers wore it down over ~300 years. The West fell in 476 AD — slowly, then all at once."},
+   {e:"🏛️",h:"It never really left.",p:"Its law, language, calendar and architecture are woven into daily life. Empires end; their operating systems can outlive them."},
+ ]},
+ {id:"st9",topic:"anatomy",title:"A Day Inside Your Body",emoji:"🫀",slides:[
+   {e:"❤️",h:"~100,000 heartbeats.",p:"Your heart pushes blood through 100,000 km of vessels — enough to circle the Earth twice — and never takes a break."},
+   {e:"🫁",h:"~20,000 breaths.",p:"Lungs with the surface area of a tennis court trade oxygen for carbon dioxide, quietly, all day and all night."},
+   {e:"🧠",h:"20 watts of thought.",p:"On less power than a dim bulb, 86 billion neurons fire signals at up to 120 m/s to run everything you are."},
+   {e:"🦴",h:"A living scaffold.",p:"Bone rebuilds itself constantly and, by weight, is stronger than steel. You get a nearly new skeleton every decade."},
+   {e:"🔁",h:"Constant renewal.",p:"You shed ~40,000 skin cells a minute and replace ~330 billion cells a day. You're a pattern, not fixed matter."},
+ ]},
+ {id:"st10",topic:"money",title:"How Wealth Actually Grows",emoji:"📈",slides:[
+   {e:"🪙",h:"The doubling penny.",p:"A penny that doubles daily beats a million dollars by day 30 — but only crosses $5k by day 20. Compounding hides, then erupts."},
+   {e:"🤖",h:"Pay yourself first.",p:"Automate savings the moment you're paid. Willpower is unreliable; a standing transfer never forgets."},
+   {e:"📉",h:"Beware lifestyle creep.",p:"Every raise whispers 'upgrade.' Bank the raise, keep the life, and buy freedom instead of stuff."},
+   {e:"⏳",h:"Time in the market.",p:"Not timing it. The biggest gains land on a few unpredictable days — miss them and returns collapse. Stay invested."},
+   {e:"🧘",h:"Do nothing, on purpose.",p:"The hardest skill is patience through the ugly years. The penny only doubles if you let it. Wealth rewards the calm."},
+ ]},
+ {id:"st11",topic:"war",title:"Timeless Rules of Strategy",emoji:"⚔️",slides:[
+   {e:"🧠",h:"Win before fighting.",p:"Sun Tzu's ideal: break the enemy's plans and alliances so battle becomes unnecessary. The best victory spills no blood."},
+   {e:"🎯",h:"Concentrate force.",p:"Be weak where it doesn't matter to be overwhelming where it does. Spreading thin loses; focusing at the decisive point wins."},
+   {e:"⚡",h:"Speed and surprise.",p:"Move faster than the enemy can react and hit where they don't expect. Tempo turns a small force into a decisive one."},
+   {e:"🛡️",h:"Combine your arms.",p:"Infantry, armour, artillery and air each cover the others' weakness. Strength is in the mix, never one weapon alone."},
+   {e:"⛽",h:"Logistics decides.",p:"Amateurs talk tactics; professionals study supply. Fuel and ammunition set the real limits of any campaign."},
+ ]},
 ];
+
+/* ===== CHARTS / GRAPHS (illustrative data, evenly spaced by year label) ===== */
+const CHARTS={
+ worldpop:{title:"World population",emoji:"👪",unit:"billion",topic:"history",type:"area",note:"Flat for millennia, then a vertical century. Most humans who ever lived did so recently.",data:[["10000 BC",0.004],["1 AD",0.19],["1000",0.29],["1500",0.46],["1800",0.99],["1900",1.65],["1950",2.5],["2000",6.1],["2024",8.1]]},
+ lifeexp:{title:"Global life expectancy",emoji:"🫀",unit:"years",topic:"health",type:"line",note:"For most of history, about 30. Medicine and sanitation more than doubled a human life in ~150 years.",data:[["1800",29],["1900",32],["1950",46],["1980",61],["2000",67],["2021",71]]},
+ internet:{title:"Internet users",emoji:"🌐",unit:"% of world",topic:"science",type:"area",note:"From a lab curiosity to most of humanity in one generation.",data:[["1995",0.4],["2000",6.7],["2005",16],["2010",29],["2015",43],["2020",59],["2024",67]]},
+ literacy:{title:"Global literacy",emoji:"📚",unit:"% of adults",topic:"learn",type:"line",note:"In 1800, ~1 in 8 could read. Today, ~6 in 7. Knowledge went from elite to universal.",data:[["1800",12],["1900",21],["1950",36],["1980",68],["2000",82],["2020",87]]},
+ co2:{title:"Atmospheric CO₂",emoji:"🌡️",unit:"ppm",topic:"science",type:"line",note:"Stable for millennia near 280 ppm, then a sharp climb since the Industrial Revolution.",data:[["1850",285],["1900",296],["1950",311],["1980",339],["2000",369],["2024",422]]},
+ gwp:{title:"Gross world product",emoji:"📈",unit:"trillion $ (real)",topic:"econ",type:"area",note:"Human output was nearly flat for centuries, then exploded with industry and trade.",data:[["1500",0.25],["1820",0.7],["1900",2],["1950",5.3],["1980",19],["2000",50],["2022",100]]},
+ israelpop:{title:"Israel population",emoji:"🇮🇱",unit:"million",topic:"history",type:"area",note:"From ~800,000 at independence in 1948 to nearly 10 million today.",data:[["1948",0.8],["1960",2.1],["1970",3],["1990",4.8],["2010",7.6],["2024",9.8]]},
+ empires:{title:"Largest empires by land",emoji:"🗺️",unit:"million km²",topic:"history",type:"bar",note:"The biggest empires in history, at their peak land area.",data:[["British",35.5],["Mongol",24],["Russian",22.8],["Qing",14.7],["Spanish",13.7],["Roman",5]]},
+};
+
+/* ===== TIMELINES (world + specific countries) ===== */
+const TIMELINES=[
+ {id:"tl-world",scope:"World",flag:"🌍",topic:"history",title:"A Timeline of the World",sub:"From the first cities to the age of AI",chart:"worldpop",events:[
+   {y:-10000,t:"Farming begins",d:"The Agricultural Revolution lets humans settle, store food, and build the first villages."},
+   {y:-3200,t:"Writing is invented",d:"Sumerian cuneiform in Mesopotamia records the first laws, accounts, and stories."},
+   {y:-2560,t:"The Great Pyramid",d:"Egypt raises the largest stone monument of the ancient world at Giza."},
+   {y:-776,t:"First Olympic Games",d:"Greek city-states compete at Olympia; the traditional start of recorded Greek history."},
+   {y:-509,t:"The Roman Republic",d:"Rome expels its kings and builds a system of elected officials and checks."},
+   {y:-221,t:"China is unified",d:"The Qin dynasty forges the first unified Chinese empire under its first emperor."},
+   {y:-27,t:"The Roman Empire",d:"Augustus becomes the first emperor, beginning two centuries of Pax Romana."},
+   {y:476,t:"Western Rome falls",d:"After centuries of decline, the last Western Roman emperor is deposed."},
+   {y:610,t:"Islam begins",d:"Muhammad's teachings launch a faith and empire that reshape three continents."},
+   {y:1215,t:"Magna Carta",d:"English barons force limits on the king — an early seed of constitutional government."},
+   {y:1347,t:"The Black Death",d:"Plague kills a third of Europe, shattering feudalism and reshaping society."},
+   {y:1440,t:"The printing press",d:"Gutenberg makes copying knowledge cheap, igniting literacy and the Reformation."},
+   {y:1492,t:"Columbus reaches America",d:"European contact with the Americas begins a global exchange — and conquest."},
+   {y:1687,t:"Newton's Principia",d:"Laws of motion and gravity launch the modern scientific worldview."},
+   {y:1776,t:"American independence",d:"Thirteen colonies declare a republic founded on inalienable rights."},
+   {y:1789,t:"The French Revolution",d:"'Liberty, equality, fraternity' topples a monarchy and shakes all of Europe."},
+   {y:1859,t:"Darwin's Origin of Species",d:"Evolution by natural selection transforms how humanity sees life and itself."},
+   {y:1914,t:"World War I",d:"Industrial-scale war engulfs the globe and ends the old European order."},
+   {y:1939,t:"World War II",d:"The deadliest conflict in history; ends with the atomic age and the UN."},
+   {y:1969,t:"The Moon landing",d:"Humans walk on another world — the peak of the Space Age."},
+   {y:1989,t:"The Berlin Wall falls",d:"The Cold War thaws; a divided Europe begins to reunite."},
+   {y:1991,t:"The World Wide Web",d:"The internet opens to the public, rewiring how humanity connects and knows."},
+   {y:2007,t:"The smartphone era",d:"The iPhone puts the internet in every pocket, remaking daily life."},
+   {y:2023,t:"The AI revolution",d:"General-purpose AI moves from labs into billions of hands."},
+ ]},
+ {id:"tl-israel",scope:"Israel",flag:"🇮🇱",topic:"history",title:"Timeline of Israel",sub:"Ancient roots to the modern state",chart:"israelpop",events:[
+   {y:-1000,t:"Kingdom of Israel",d:"King David makes Jerusalem the capital; Solomon later builds the First Temple."},
+   {y:-586,t:"Babylonian exile",d:"Babylon destroys the First Temple and exiles the people of Judah."},
+   {y:-516,t:"The Second Temple",d:"Returning exiles rebuild the Temple in Jerusalem."},
+   {y:-63,t:"Roman rule",d:"Rome takes control of Judea, ending Jewish independence."},
+   {y:70,t:"The Second Temple falls",d:"Rome destroys the Temple after a revolt; the long diaspora deepens."},
+   {y:132,t:"Bar Kokhba revolt",d:"A final major Jewish revolt against Rome is crushed."},
+   {y:1897,t:"First Zionist Congress",d:"Theodor Herzl convenes in Basel, launching modern political Zionism."},
+   {y:1917,t:"The Balfour Declaration",d:"Britain backs 'a national home for the Jewish people' in Palestine."},
+   {y:1920,t:"The British Mandate",d:"Britain administers Palestine after the Ottoman Empire's collapse."},
+   {y:1947,t:"UN Partition Plan",d:"The UN votes to divide the land into Jewish and Arab states."},
+   {y:1948,t:"Independence",d:"Israel declares statehood on 14 May; war with neighbours follows."},
+   {y:1967,t:"The Six-Day War",d:"A pre-emptive war reshapes the region's borders in less than a week."},
+   {y:1973,t:"The Yom Kippur War",d:"A surprise attack is repelled; the shock reshapes Israeli doctrine."},
+   {y:1979,t:"Peace with Egypt",d:"The Camp David treaty makes Egypt the first Arab state to recognize Israel."},
+   {y:1994,t:"Peace with Jordan",d:"Israel and Jordan sign a formal peace treaty."},
+   {y:2020,t:"The Abraham Accords",d:"Normalization agreements with several Arab states."},
+ ]},
+ {id:"tl-usa",scope:"USA",flag:"🇺🇸",topic:"history",title:"Timeline of the United States",sub:"Colony to superpower",chart:"gwp",events:[
+   {y:1607,t:"Jamestown",d:"The first permanent English settlement in North America."},
+   {y:1776,t:"Declaration of Independence",d:"Thirteen colonies break from Britain."},
+   {y:1787,t:"The Constitution",d:"A durable framework of federal government and checks is written."},
+   {y:1803,t:"Louisiana Purchase",d:"The young nation doubles in size overnight."},
+   {y:1861,t:"The Civil War",d:"A war over slavery and union kills more Americans than any other."},
+   {y:1863,t:"Emancipation",d:"Lincoln declares enslaved people in rebel states free."},
+   {y:1869,t:"Transcontinental railroad",d:"Rails bind the continent from coast to coast."},
+   {y:1920,t:"Women win the vote",d:"The 19th Amendment enfranchises American women."},
+   {y:1929,t:"The Great Depression",d:"A market crash triggers a decade of hardship."},
+   {y:1941,t:"Pearl Harbor",d:"The attack draws the US into World War II."},
+   {y:1963,t:"'I Have a Dream'",d:"Martin Luther King Jr. galvanizes the civil rights movement."},
+   {y:1969,t:"The Moon landing",d:"Apollo 11 puts the first humans on the Moon."},
+   {y:1991,t:"The Cold War ends",d:"The Soviet collapse leaves the US the sole superpower."},
+   {y:2008,t:"A milestone election",d:"The US elects its first Black president."},
+ ]},
+ {id:"tl-rome",scope:"Rome",flag:"🏛️",topic:"history",title:"Timeline of Rome",sub:"Village, republic, empire",events:[
+   {y:-753,t:"Rome is founded",d:"By legend, on seven hills beside the Tiber."},
+   {y:-509,t:"The Republic",d:"Rome expels its kings and elects its leaders."},
+   {y:-264,t:"The Punic Wars",d:"A century of war with Carthage for control of the Mediterranean."},
+   {y:-49,t:"Caesar crosses the Rubicon",d:"'The die is cast' — civil war brings Caesar to power."},
+   {y:-44,t:"Caesar assassinated",d:"Senators kill Caesar on the Ides of March."},
+   {y:-27,t:"The Empire begins",d:"Augustus becomes the first emperor."},
+   {y:80,t:"The Colosseum opens",d:"Rome's great arena hosts 100 days of games."},
+   {y:117,t:"Peak of empire",d:"Under Trajan, Rome reaches its greatest extent."},
+   {y:313,t:"Christianity tolerated",d:"The Edict of Milan ends the persecution of Christians."},
+   {y:410,t:"Rome is sacked",d:"Visigoths breach the eternal city for the first time in 800 years."},
+   {y:476,t:"The West falls",d:"The last Western Roman emperor is deposed."},
+   {y:1453,t:"The East falls",d:"Constantinople falls to the Ottomans, ending the Roman world for good."},
+ ]},
+ {id:"tl-china",scope:"China",flag:"🐉",topic:"history",title:"Timeline of China",sub:"Dynasties, invention, revolution",events:[
+   {y:-1600,t:"The Shang dynasty",d:"Early Chinese civilization; the first written records appear."},
+   {y:-551,t:"Confucius is born",d:"His philosophy will shape East Asia for millennia."},
+   {y:-221,t:"China unified",d:"The Qin emperor unifies the warring states and standardizes writing."},
+   {y:-206,t:"The Han dynasty",d:"A golden age that gives the majority Chinese ethnicity its name."},
+   {y:105,t:"Paper is invented",d:"A Chinese innovation that will remake human memory."},
+   {y:618,t:"The Tang golden age",d:"Poetry, trade, and cosmopolitan cities flourish."},
+   {y:1271,t:"The Mongol Yuan",d:"Kublai Khan rules China as part of the vast Mongol empire."},
+   {y:1405,t:"Zheng He's voyages",d:"Enormous treasure fleets reach Africa decades before Columbus."},
+   {y:1644,t:"The Qing dynasty",d:"The last imperial dynasty begins."},
+   {y:1912,t:"The empire ends",d:"Revolution replaces 2,000 years of dynasties with a republic."},
+   {y:1949,t:"The People's Republic",d:"Mao proclaims the modern Chinese state."},
+   {y:1978,t:"Reform and opening",d:"Market reforms begin China's rise to economic superpower."},
+ ]},
+ {id:"tl-egypt",scope:"Egypt",flag:"🔺",topic:"history",title:"Timeline of Egypt",sub:"Pharaohs to nation",events:[
+   {y:-3100,t:"Egypt unified",d:"Upper and Lower Egypt join under the first pharaoh."},
+   {y:-2560,t:"The Great Pyramid",d:"Built for Khufu at Giza, a wonder for 3,800 years."},
+   {y:-1279,t:"Ramesses II",d:"Egypt's most powerful pharaoh reigns for 66 years."},
+   {y:-1274,t:"The Battle of Kadesh",d:"History's first battle with a detailed record — and first peace treaty."},
+   {y:-332,t:"Alexander conquers Egypt",d:"He founds Alexandria, a future centre of learning."},
+   {y:-30,t:"Cleopatra's death",d:"Egypt becomes a Roman province, ending 3,000 years of pharaohs."},
+   {y:641,t:"The Arab conquest",d:"Islam and Arabic spread across Egypt."},
+   {y:1869,t:"The Suez Canal",d:"A new sea route links the Mediterranean and Red Sea."},
+   {y:1922,t:"Independence",d:"Egypt gains independence from Britain."},
+   {y:1952,t:"The Republic",d:"A revolution ends the monarchy and founds modern Egypt."},
+ ]},
+ {id:"tl-uk",scope:"Britain",flag:"🇬🇧",topic:"history",title:"Timeline of Britain",sub:"Islands that shaped the world",events:[
+   {y:43,t:"Roman conquest",d:"Rome invades and rules Britain for nearly four centuries."},
+   {y:1066,t:"The Norman Conquest",d:"William of Normandy wins at Hastings and remakes England."},
+   {y:1215,t:"Magna Carta",d:"Barons force King John to accept limits on royal power."},
+   {y:1534,t:"The English Reformation",d:"Henry VIII breaks with Rome and founds the Church of England."},
+   {y:1588,t:"The Spanish Armada",d:"England defeats a vast invasion fleet."},
+   {y:1707,t:"Great Britain",d:"England and Scotland unite into one kingdom."},
+   {y:1760,t:"The Industrial Revolution",d:"Steam and factories begin in Britain and change the world."},
+   {y:1815,t:"Waterloo",d:"Britain and allies end Napoleon's reign."},
+   {y:1837,t:"The Victorian era",d:"Empire, industry, and reform at their height."},
+   {y:1940,t:"The Battle of Britain",d:"The RAF holds off invasion in World War II."},
+   {y:1973,t:"Joins Europe",d:"Britain enters the European Community."},
+   {y:2020,t:"Brexit",d:"Britain leaves the European Union."},
+ ]},
+ {id:"tl-greece",scope:"Greece",flag:"🏺",topic:"history",title:"Timeline of Greece",sub:"The cradle of Western thought",events:[
+   {y:-776,t:"First Olympics",d:"Games at Olympia mark the start of recorded Greek history."},
+   {y:-508,t:"Athenian democracy",d:"Athens invents rule by the citizens — a first in the world."},
+   {y:-490,t:"The Battle of Marathon",d:"Athens repels the mighty Persian Empire."},
+   {y:-480,t:"Thermopylae & Salamis",d:"300 Spartans hold the pass; the Greek navy turns the war."},
+   {y:-447,t:"The Parthenon",d:"Athens builds its masterpiece on the Acropolis."},
+   {y:-399,t:"Socrates dies",d:"The philosopher chooses death over silence."},
+   {y:-336,t:"Alexander the Great",d:"He spreads Greek culture from Egypt to India."},
+   {y:-146,t:"Roman conquest",d:"Greece falls to Rome — but conquers it culturally."},
+   {y:1821,t:"War of Independence",d:"Greeks rise against Ottoman rule."},
+   {y:1832,t:"Modern Greece",d:"An independent Greek state is recognized."},
+ ]},
+ {id:"tl-japan",scope:"Japan",flag:"🗾",topic:"history",title:"Timeline of Japan",sub:"Samurai to superpower",events:[
+   {y:538,t:"Buddhism arrives",d:"New faith and writing reach Japan from the mainland."},
+   {y:1192,t:"The first shogun",d:"Military rule by shoguns begins, lasting nearly 700 years."},
+   {y:1543,t:"Europeans arrive",d:"Portuguese traders bring guns and Christianity."},
+   {y:1603,t:"The Edo period",d:"The Tokugawa shogunate brings 250 years of isolation and peace."},
+   {y:1853,t:"The black ships",d:"US Commodore Perry forces Japan to open to the world."},
+   {y:1868,t:"The Meiji Restoration",d:"Japan rapidly modernizes and industrializes."},
+   {y:1945,t:"World War II ends",d:"Atomic bombs end the war; Japan rebuilds as a peaceful democracy."},
+   {y:1964,t:"The economic miracle",d:"The Tokyo Olympics announce Japan's stunning recovery."},
+ ]},
+ {id:"tl-russia",scope:"Russia",flag:"🇷🇺",topic:"history",title:"Timeline of Russia",sub:"Rus to superpower",events:[
+   {y:862,t:"The Rus",d:"The first Russian state forms around Novgorod and Kyiv."},
+   {y:988,t:"Christianization",d:"Prince Vladimir adopts Orthodox Christianity."},
+   {y:1237,t:"The Mongol invasion",d:"The Golden Horde dominates the Russian lands for two centuries."},
+   {y:1547,t:"The first Tsar",d:"Ivan the Terrible crowns himself Tsar of all Russia."},
+   {y:1712,t:"St Petersburg",d:"Peter the Great builds a 'window to Europe' and modernizes Russia."},
+   {y:1812,t:"Napoleon defeated",d:"The harsh winter and scorched earth destroy the French invasion."},
+   {y:1917,t:"The Revolution",d:"The Tsar falls; the Bolsheviks seize power."},
+   {y:1922,t:"The Soviet Union",d:"The USSR is founded."},
+   {y:1961,t:"First human in space",d:"Yuri Gagarin orbits the Earth."},
+   {y:1991,t:"The USSR dissolves",d:"Fifteen republics become independent; the Cold War ends."},
+ ]},
+];
+function tlYear(y){return y<0?Math.abs(y)+" BC":""+y}
 
 /* ===== WATCH (curated safe searches — creators open on the real platform) ===== */
 const WATCH_TOPICS=["Home workout","HIIT no equipment","Ab workout","Yoga & mobility","Meditation guided","Kurzgesagt","Veritasium","Crash Course history","TED-Ed","Physics explained","Math visualized","Astronomy documentary","Ancient history","Biology basics","Economics explained","Philosophy crash course","Animal facts","Deep focus music"];
@@ -1419,7 +1858,7 @@ function addXP(n,m){const b=levelFor(S.xp);S.xp+=n;const a=levelFor(S.xp);save()
 function savedIds(){return Object.keys(S.saves).filter(k=>S.saves[k])}
 function toast(h){const e=document.createElement("div");e.className="toast";e.innerHTML=h;$("#toasts").appendChild(e);setTimeout(()=>e.remove(),2200)}
 function updateHUD(){document.querySelectorAll("[data-streak]").forEach(e=>e.textContent=S.streak);document.querySelectorAll("[data-lvl]").forEach(e=>e.textContent=levelFor(S.xp))}
-function itemText(k){if(k[0]==='f'){const it=FEED[+k.slice(1)];return it?{t:it[0],x:it[2]}:null}const a=ARTICLES.find(x=>x.id===k);if(a)return{t:a.topic,x:a.title};const v=S.videos.find(x=>x.id===k);if(v)return{t:v.topic||'life',x:v.title};const st=STORIES.find(x=>x.id===k);if(st)return{t:st.topic,x:st.title+" · story"};const mp=MAPS.find(x=>x.id===k);if(mp)return{t:mp.topic,x:mp.root+" · map"};return null}
+function itemText(k){if(k[0]==='f'){const it=FEED[+k.slice(1)];return it?{t:it[0],x:it[2]}:null}const tl=TIMELINES.find(x=>x.id===k);if(tl)return{t:tl.topic,x:tl.title+" · timeline"};const a=ARTICLES.find(x=>x.id===k);if(a)return{t:a.topic,x:a.title};const v=S.videos.find(x=>x.id===k);if(v)return{t:v.topic||'life',x:v.title};const st=STORIES.find(x=>x.id===k);if(st)return{t:st.topic,x:st.title+" · story"};const mp=MAPS.find(x=>x.id===k);if(mp)return{t:mp.topic,x:mp.root+" · map"};return null}
 
 /* ===== MUSIC ENGINE (generative, royalty-free) ===== */
 const Music=(function(){
@@ -1504,6 +1943,10 @@ function renderHome(){
   <div class="hs">${QUIZZES.map(q=>{const best=S.quizBest[q.id];return`<div class="qcardh" data-open-quiz="${q.id}"><div class="qe">${q.emoji}</div><div class="qtt">${esc(q.title)}</div><div class="qmeta"><span>${q.qs.length} questions</span>${best!=null?`<span class="qbest">★ ${best}%</span>`:'<span>tap to start</span>'}</div></div>`}).join("")}</div>
   <div class="sec"><h3>🗺️ Knowledge maps<span class="more">${MAPS.length}</span></h3></div>
   <div class="hs">${MAPS.map(m=>{const t=T[m.topic]||T.life,iu=m.img?(/^https?:/.test(m.img)?m.img:CMG(m.img,600)):((IMGDB[m.topic]&&IMGDB[m.topic][0])?CMG(IMGDB[m.topic][0],600):imgURL('map-'+m.id,600,360));return`<div class="acard" data-open-map="${m.id}"><div class="th" style="${grad(m.topic)}">${imgTagURL(iu,'thimg','map-'+m.id)}<div class="thov"></div><span class="em">${m.emoji}</span><span class="tp">${t.l}</span></div><div class="rt">${esc(m.root)}</div><div class="rd">${esc(m.sub)}</div><div class="rm">${m.branches.length} branches · ${S.mapsSeen[m.id]?'explored':'new'}</div></div>`}).join("")}</div>
+  <div class="sec"><h3>🕰️ Timelines<span class="more">${TIMELINES.length}</span></h3></div>
+  <div class="hs">${TIMELINES.map(tl=>{const t=T[tl.topic]||T.life,iu=(IMGDB[tl.topic]&&IMGDB[tl.topic][0])?CMG(IMGDB[tl.topic][0],600):imgURL('tl-'+tl.id,600,360);return`<div class="acard" data-open-tl="${tl.id}"><div class="th" style="${grad(tl.topic)}">${imgTagURL(iu,'thimg','tl-'+tl.id)}<div class="thov"></div><span class="em">${tl.flag}</span><span class="tp">${esc(tl.scope)}</span></div><div class="rt">${esc(tl.title)}</div><div class="rd">${esc(tl.sub)}</div><div class="rm">${tl.events.length} events</div></div>`}).join("")}</div>
+  <div class="sec"><h3>📊 Data & graphs<span class="more">${Object.keys(CHARTS).length}</span></h3></div>
+  <div class="hs">${Object.keys(CHARTS).map(id=>{const c=CHARTS[id],t=T[c.topic]||T.life;return`<div class="dcard" data-open-chart="${id}"><div class="de">${c.emoji||t.e}</div><div class="dtt">${esc(c.title)}</div><div class="dm">${esc(c.unit)}</div><div class="dmini">${svgChart(c,{w:200,h:46,mini:true,color:t.c})}</div></div>`}).join("")}</div>
   <div class="sec"><h3>🎬 Workout videos<span class="more" data-goto="watch">Watch</span></h3></div>
   <div class="hs">${SEED_VIDEOS.slice(0,6).map(v=>{const t=T[v.topic]||T.life,ig=/instagram/.test(v.url);return`<div class="acard" data-goto="watch"><div class="th" style="${grad(v.topic||'fit')}">${imgTag('vid-'+v.id,600,360,'thimg')}<div class="thov"></div><span class="em">${ig?'📸':'▶️'}</span><span class="tp">${ig?'Instagram':'YouTube'}</span></div><div class="rt">${esc(v.title)}</div><div class="rm">${t.l}</div></div>`}).join("")}</div>
   <div class="credit">APEX · train your mind & body<br>A living library — it keeps growing.</div>`;
@@ -1542,11 +1985,16 @@ function feedHTML(i,inst){const f=FEED[i],[tp,ty,tx,ex,ex2]=f,t=T[tp],k=fkey(i);
    (likes/saves/skips → affinity) + novelty (down-ranks recently-seen) + a dash of
    exploration, then a diversity pass so you never see the same topic twice in a row. */
 function fseq(){const r=mul((hs("f")()^Date.now())>>>0);
- let idx=FEED.map((_,i)=>i);const q=(feedFilter.q||"").trim().toLowerCase();
- if(feedFilter.topic!=="all")idx=idx.filter(i=>FEED[i][0]===feedFilter.topic);
- if(feedFilter.diff&&feedFilter.diff!=="all")idx=idx.filter(i=>diffOf(FEED[i][0])===feedFilter.diff);
- if(q)idx=idx.filter(i=>((FEED[i][2]||"")+" "+(FEED[i][3]||"")+" "+(FEED[i][4]||"")).toLowerCase().includes(q));
- if(idx.length===0)idx=FEED.map((_,i)=>i);
+ const q=(feedFilter.q||"").trim().toLowerCase();
+ const byTopic=i=>feedFilter.topic==="all"||FEED[i][0]===feedFilter.topic;
+ const byDiff=i=>!feedFilter.diff||feedFilter.diff==="all"||diffOf(FEED[i][0])===feedFilter.diff;
+ const byQ=i=>!q||((FEED[i][2]||"")+" "+(FEED[i][3]||"")+" "+(FEED[i][4]||"")).toLowerCase().includes(q);
+ let idx=FEED.map((_,i)=>i).filter(i=>byTopic(i)&&byDiff(i)&&byQ(i));
+ // graceful fallbacks so a filter never shows an empty (or wrong) feed:
+ if(!idx.length&&q&&feedFilter.topic!=="all")idx=FEED.map((_,i)=>i).filter(i=>byTopic(i)&&byQ(i)); // relax depth
+ if(!idx.length&&feedFilter.topic!=="all")idx=FEED.map((_,i)=>i).filter(byTopic); // keep the topic, drop the rest
+ if(!idx.length&&q)idx=FEED.map((_,i)=>i).filter(byQ);
+ if(!idx.length)idx=FEED.map((_,i)=>i);
  if(feedFilter.topic!=="all"||q){for(let i=idx.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]]}return idx}
  const ints=(S.interests&&S.interests.length)?new Set(S.interests):null,aff=S.affinity||{};
  const seen={};(S.history||[]).forEach((hh,n)=>{if(hh&&hh.id&&hh.id[0]==="f"){const fi=+hh.id.slice(1);if(!isNaN(fi)&&seen[fi]==null)seen[fi]=n}});
@@ -1848,6 +2296,60 @@ function openMap(id){const m=MAPS.find(x=>x.id===id);if(!m)return;const t=T[m.to
 }
 function closeMap(){mapEl.classList.remove("show");setTimeout(()=>{mapEl.innerHTML=""},300);if(cur==="home")renderHome();if(cur==="you")renderYou()}
 
+/* ===== CHARTS / GRAPHS (inline SVG, theme-aware) ===== */
+function svgChart(chart,opt){opt=opt||{};const W=opt.w||320,H=opt.h||150,mini=!!opt.mini;
+ const padL=mini?3:8,padR=mini?3:10,padT=mini?4:16,padB=mini?3:22;
+ const col=opt.color||((T[chart.topic]||T.life).c);
+ const d=chart.data,n=d.length,ys=d.map(p=>p[1]);
+ let mn=Math.min.apply(null,ys),mx=Math.max.apply(null,ys);
+ if(chart.type!=="line")mn=Math.min(0,mn);
+ if(mx===mn)mx=mn+1;
+ const iw=W-padL-padR,ih=H-padT-padB;
+ const X=i=>padL+(n<=1?iw/2:iw*i/(n-1)),Xb=i=>padL+iw*(i+0.5)/n,Y=v=>padT+ih*(1-(v-mn)/(mx-mn));
+ let body="",axis="";
+ if(chart.type==="bar"){const bw=iw/n*0.6;
+  body=d.map((p,i)=>{const y=Y(p[1]),h=Math.max(1,padT+ih-y);return`<rect x="${(Xb(i)-bw/2).toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${col}" opacity="0.9"/>`+(mini?"":`<text class="ccval" x="${Xb(i).toFixed(1)}" y="${(y-4).toFixed(1)}" text-anchor="middle">${p[1]}</text>`)}).join("");
+ }else{const pts=d.map((p,i)=>`${X(i).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(" ");
+  if(chart.type==="area")body+=`<polygon points="${padL},${(padT+ih).toFixed(1)} ${pts} ${(padL+iw).toFixed(1)},${(padT+ih).toFixed(1)}" fill="${col}" opacity="0.15"/>`;
+  body+=`<polyline points="${pts}" fill="none" stroke="${col}" stroke-width="${mini?2:2.4}" stroke-linejoin="round" stroke-linecap="round"/>`;
+  if(!mini)body+=d.map((p,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(p[1]).toFixed(1)}" r="2.5" fill="${col}"/>`).join("");
+ }
+ if(!mini){axis+=`<line x1="${padL}" y1="${(padT+ih).toFixed(1)}" x2="${(padL+iw).toFixed(1)}" y2="${(padT+ih).toFixed(1)}" stroke="var(--line-2)" stroke-width="1"/>`;
+  const labs=chart.type==="bar"?d.map((p,i)=>[Xb(i),p[0]]):[[X(0),d[0][0]],[X((n-1)>>1),d[(n-1)>>1][0]],[X(n-1),d[n-1][0]]];
+  axis+=labs.map(a=>`<text class="ccx" x="${a[0].toFixed(1)}" y="${(H-6).toFixed(1)}" text-anchor="middle">${esc(a[1])}</text>`).join("");
+  if(chart.type!=="bar"){const li=n-1;axis+=`<text class="ccval" x="${X(li).toFixed(1)}" y="${(Y(d[li][1])-6).toFixed(1)}" text-anchor="end">${d[li][1]}</text>`}
+ }
+ return`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(chart.title)}">${body}${axis}</svg>`}
+function chartCard(id){const c=CHARTS[id];if(!c)return"";const t=T[c.topic]||T.life;
+ return`<div class="chartcard" data-chart="${id}"><div class="cct">${c.emoji||t.e} ${esc(c.title)}</div><div class="ccs">${esc(c.unit)}</div><div class="ccfig">${svgChart(c,{color:t.c})}</div><div class="ccnote">${esc(c.note||"")}</div></div>`}
+
+/* ===== TIMELINE VIEWER (world + countries) ===== */
+const tlEl=$("#tlview");
+const BACKSVG='<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function openTimeline(id){const tl=TIMELINES.find(x=>x.id===id)||TIMELINES[0];const t=T[tl.topic]||T.life;logHist("timeline",tl.id,tl.topic,tl.title);
+ const chips=TIMELINES.map(x=>`<button class="tlchip ${x.id===tl.id?'on':''}" data-tl="${x.id}">${x.flag} ${esc(x.scope)}</button>`).join("");
+ const chart=(tl.chart&&CHARTS[tl.chart])?chartCard(tl.chart):"";
+ const items=tl.events.map((e,i)=>`<div class="tlitem" style="animation-delay:${Math.min(i*0.03,0.5)}s;color:${t.c}"><span class="tldot"></span><div class="tlyear">${esc(tlYear(e.y))}</div><div class="tlh">${esc(e.t)}</div><div class="tlp">${esc(e.d)}</div></div>`).join("");
+ tlEl.innerHTML=`<div class="qtop"><button id="tlX" aria-label="Close">${BACKSVG}</button><div class="qbar"><i style="width:100%;background:${t.c}"></i></div><span class="qn">${tl.flag} ${tl.events.length} events</span></div>
+  <div class="tlwrap"><div class="tlhead"><div class="tlflag">${tl.flag}</div><div class="tlt">${esc(tl.title)}</div><div class="tls">${esc(tl.sub)}</div></div>
+   <div class="tlselect">${chips}</div>
+   ${chart}
+   <div class="tlera">The timeline</div>
+   <div class="tline">${items}</div>
+   <div class="mapfoot"><button id="tlSave" class="${S.saves[tl.id]?'prim':''}"><svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>${S.saves[tl.id]?'Saved':'Save'}</button><button class="prim" id="tlDone">Done</button></div>
+  </div>`;
+ tlEl.classList.add("show");tlEl.scrollTop=0;
+ $("#tlX").onclick=closeTimeline;$("#tlDone").onclick=closeTimeline;
+ tlEl.querySelectorAll("[data-tl]").forEach(b=>b.onclick=()=>openTimeline(b.dataset.tl));
+ $("#tlSave").onclick=()=>{S.saves[tl.id]=!S.saves[tl.id];save();toast(S.saves[tl.id]?"🔖 timeline saved":"removed");openTimeline(tl.id)};
+ if(!S.mapsSeen["tl:"+tl.id]){S.mapsSeen["tl:"+tl.id]=true;bump();addXP(8,"🕰️ timeline explored · <span class=xp>+8 XP</span>");save()}
+}
+function openChart(id){const c=CHARTS[id];if(!c)return;const t=T[c.topic]||T.life;logHist("chart","ch:"+id,c.topic,c.title);
+ tlEl.innerHTML=`<div class="qtop"><button id="tlX" aria-label="Close">${BACKSVG}</button><div class="qbar"><i style="width:100%;background:${t.c}"></i></div><span class="qn">📊 graph</span></div>
+  <div class="tlwrap">${chartCard(id)}<div class="ccnote" style="padding:0 2px">Tap the graphs on Home to explore more data stories.</div><div class="mapfoot" style="margin-top:14px"><button class="prim" id="tlDone">Done</button></div></div>`;
+ tlEl.classList.add("show");tlEl.scrollTop=0;$("#tlX").onclick=closeTimeline;$("#tlDone").onclick=closeTimeline;addXP(3)}
+function closeTimeline(){tlEl.classList.remove("show");setTimeout(()=>{tlEl.innerHTML=""},300);if(cur==="home")renderHome();if(cur==="you")renderYou()}
+
 /* ===== ONBOARDING ===== */
 const onboardEl=$("#onboard");
 function renderOnboard(){const keys=["discipline","mind","learn","money","health","fit","genius","psych","phil","science","life","story"];const sel=new Set(S.interests||[]);
@@ -1889,7 +2391,7 @@ $("#shShare").onclick=()=>{if(shareCv)shareCanvas($("#shCanvas"),shareCv.title)}
 
 /* ===== FEED filter / search ===== */
 let feedFilter={topic:"all",q:"",diff:"all"};
-function openFilter(){const keys=["all","discipline","mind","learn","money","health","fit","genius","psych","phil","science","life","story","geo","physics","math","history","bio","econ","astro","animal"];
+function openFilter(){const keys=["all"].concat(Object.keys(T));
  const diffs=[["all","All levels"],["quick","⚡ Quick"],["core","📘 Core"],["deep","🧠 Deep"]];
  $("#filtChips").innerHTML=`<input id="filtQ" placeholder="Search ideas…" value="${esc(feedFilter.q)}" autocomplete="off" style="width:100%;height:44px;background:var(--surface);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:0 14px;font-size:14px;outline:none;margin-bottom:6px">
   <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-2);width:100%;margin:2px 0 -2px">Depth</div>
@@ -1992,12 +2494,14 @@ function doSearch(q){q=(q||"").trim().toLowerCase();const res=$("#sRes");if(!res
  QUIZZES.forEach(z=>{if((z.title+" "+z.qs.map(x=>x.q).join(" ")).toLowerCase().includes(q))rows.push(srRow(z.topic,"Quiz",z.title,()=>{closeSearch();openQuiz(z.id)}))});
  MAPS.forEach(m=>{if((m.root+" "+m.sub).toLowerCase().includes(q))rows.push(srRow(m.topic,"Map",m.root,()=>{closeSearch();openMap(m.id)}))});
  STORIES.forEach(s=>{if((s.title+" "+s.slides.map(sl=>sl.h+sl.p).join(" ")).toLowerCase().includes(q))rows.push(srRow(s.topic,"Story",s.title,()=>{closeSearch();openStories(s.id)}))});
+ TIMELINES.forEach(tl=>{if((tl.title+" "+tl.scope+" "+tl.sub+" "+tl.events.map(e=>e.t+" "+e.d).join(" ")).toLowerCase().includes(q))rows.push(srRow(tl.topic,"Timeline",tl.title,()=>{closeSearch();openTimeline(tl.id)}))});
+ Object.keys(CHARTS).forEach(id=>{const c=CHARTS[id];if((c.title+" "+c.unit+" "+(c.note||"")).toLowerCase().includes(q))rows.push(srRow(c.topic,"Graph",c.title,()=>{closeSearch();openChart(id)}))});
  (S.videos||[]).forEach(v=>{if((v.title||"").toLowerCase().includes(q))rows.push(srRow(v.topic||"fit","Video",v.title,()=>{closeSearch();setTab("watch")}))});
- if(!rows.length){res.innerHTML=`<div class="shint">No matches for “${esc(q)}”.<br>Try “space”, “money”, “rome”, or “habit”.</div>`;return}
+ if(!rows.length){res.innerHTML=`<div class="shint">No matches for “${esc(q)}”.<br>Try “space”, “rome”, “israel”, “timeline”, or “population”.</div>`;return}
  res.innerHTML="";rows.slice(0,50).forEach(r=>res.appendChild(r));}
 
 /* ===== COLLECTIONS ===== */
-function openSavedKey(k){if(k[0]==="f"){setTab("learn");scrollFeedTo(+k.slice(1))}else if(STORIES.some(s=>s.id===k))openStories(k);else if(MAPS.some(m=>m.id===k))openMap(k);else if(QUIZZES.some(z=>z.id===k))openQuiz(k);else if((S.videos||[]).some(v=>v.id===k))setTab("watch");else openReader(k)}
+function openSavedKey(k){if(k[0]==="f"){setTab("learn");scrollFeedTo(+k.slice(1))}else if(TIMELINES.some(tl=>tl.id===k))openTimeline(k);else if(STORIES.some(s=>s.id===k))openStories(k);else if(MAPS.some(m=>m.id===k))openMap(k);else if(QUIZZES.some(z=>z.id===k))openQuiz(k);else if((S.videos||[]).some(v=>v.id===k))setTab("watch");else openReader(k)}
 function openCollPicker(itemId){const cc=$("#collChips");
  cc.innerHTML=(S.collections.length?S.collections.map(c=>`<button class="fchip ${c.items.includes(itemId)?'on':''}" data-c="${c.id}">${c.items.includes(itemId)?'✓ ':''}${esc(c.name)}</button>`).join(""):`<div class="shint" style="padding:8px 4px 14px">No collections yet — create one below.</div>`)+`<button class="fchip" data-newc style="border-style:dashed">＋ New collection</button>`;
  cc.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{const c=S.collections.find(x=>x.id===b.dataset.c);if(!c)return;if(c.items.includes(itemId))c.items=c.items.filter(x=>x!==itemId);else{c.items.push(itemId);toast("added to "+c.name)}save();openCollPicker(itemId)});
@@ -2027,6 +2531,8 @@ function wire(root){
  root.querySelectorAll("[data-open-story]").forEach(e=>e.onclick=()=>openStories(e.dataset.openStory));
  root.querySelectorAll("[data-open-quiz]").forEach(e=>e.onclick=()=>openQuiz(e.dataset.openQuiz));
  root.querySelectorAll("[data-open-map]").forEach(e=>e.onclick=()=>openMap(e.dataset.openMap));
+ root.querySelectorAll("[data-open-tl]").forEach(e=>e.onclick=()=>openTimeline(e.dataset.openTl));
+ root.querySelectorAll("[data-open-chart]").forEach(e=>e.onclick=()=>openChart(e.dataset.openChart));
  root.querySelectorAll("[data-start]").forEach(e=>{if(!e.classList.contains("row"))e.onclick=()=>startWorkout(e.dataset.start)});
 }
 let cur="home";
@@ -2034,7 +2540,7 @@ function setTab(name){cur=name;document.querySelectorAll(".tab").forEach(t=>t.cl
  if(name==="home")renderHome();else if(name==="learn")buildFeed();else if(name==="train")renderTrain();else if(name==="watch")renderWatch();else if(name==="you")renderYou();
  $("#v-"+name).scrollTop=name==="learn"?$("#v-"+name).scrollTop:0}
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>setTab(t.dataset.tab));
-window.addEventListener("keydown",e=>{if(e.key==="Escape"){if(searchEl.classList.contains("show"))closeSearch();else if(storiesEl.classList.contains("show"))closeStories();else if(quizEl.classList.contains("show"))closeQuiz();else if(mapEl.classList.contains("show"))closeMap();else if(reader.classList.contains("show"))closeReader();else if(TT)stopTimer();else closeSheets()}
+window.addEventListener("keydown",e=>{if(e.key==="Escape"){if(searchEl.classList.contains("show"))closeSearch();else if(storiesEl.classList.contains("show"))closeStories();else if(quizEl.classList.contains("show"))closeQuiz();else if(mapEl.classList.contains("show"))closeMap();else if(tlEl.classList.contains("show"))closeTimeline();else if(reader.classList.contains("show"))closeReader();else if(TT)stopTimer();else closeSheets()}
  if(storiesEl.classList.contains("show")){if(e.key==="ArrowRight")stepStory(1);if(e.key==="ArrowLeft")stepStory(-1)}
  if(cur==="learn"){const f=$("#feed"),h=f.clientHeight,c=Math.round(f.scrollTop/h);if(e.key==="ArrowDown"){e.preventDefault();f.scrollTo({top:(c+1)*h,behavior:"smooth"})}if(e.key==="ArrowUp"){e.preventDefault();f.scrollTo({top:Math.max(0,(c-1)*h),behavior:"smooth"})}}});
 
