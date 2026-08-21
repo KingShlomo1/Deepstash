@@ -1,12 +1,12 @@
 {
   // Static-assets deploy for the APEX web app (Cloudflare Workers Static Assets).
-  // `npx wrangler deploy` serves everything in this folder as a static site.
+  // Run `npm run build` first — Vite emits the site into ./dist.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "deepstash",
   "compatibility_date": "2024-11-01",
   "assets": {
-    "directory": ".",
-    // Single-page app: serve index.html for any unknown path (replaces _redirects).
+    "directory": "./dist",
+    // Single-page app: serve index.html for any unknown path.
     "not_found_handling": "single-page-application"
   }
 }

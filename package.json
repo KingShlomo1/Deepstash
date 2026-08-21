@@ -1,0 +1,26 @@
+{
+  "name": "apex",
+  "version": "4.0.0",
+  "private": true,
+  "type": "module",
+  "description": "APEX — train your mind & body. A microlearning PWA.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 8099",
+    "test": "vitest run --project unit",
+    "test:watch": "vitest --project unit",
+    "test:worker": "vitest run --project worker",
+    "test:e2e": "playwright test",
+    "coverage": "vitest run --project unit --coverage",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "jsdom": "^25.0.1",
+    "vite": "^6.0.7",
+    "vitest": "^2.1.8",
+    "wrangler": "^3.99.0"
+  }
+}
