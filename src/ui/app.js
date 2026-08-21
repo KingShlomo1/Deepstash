@@ -15,6 +15,7 @@ import { parseVideo, searchURL, PLAT_COLOR } from "../lib/video.js";
 import { levelFor, xpIn, dayKey, advanceStreak } from "../lib/progress.js";
 import { steps, wMin } from "../lib/workout.js";
 import { parseBackup } from "../lib/backup.js";
+import { feedIndex, migrateKeys } from "../lib/feedkey.js";
 const $=s=>document.querySelector(s);
 
 /* ===== TOPICS ===== */
@@ -74,13 +75,20 @@ let S={xp:0,streak:0,lastActive:null,reads:0,workouts:0,minutes:0,sessions:0,qui
 try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
 if(Array.isArray(S.aiIdeas)&&S.aiIdeas.length)FEED.push(...S.aiIdeas);
 if(S.seedV!==SEED_V){const userAdded=(S.videos||[]).filter(v=>!v.seed);S.videos=SEED_VIDEOS.concat(userAdded);S.seedV=SEED_V;S.seeded=true}
+/* Content-derived keys for feed ideas. Rebuilt on every load so AI-generated
+   ideas appended above get keys too. */
+let FKEYS=feedIndex(FEED);
+/* One-time move off array-index keys. Runs against the catalogue those indices
+   referred to, so existing saves keep pointing at the same ideas. */
+const SCHEMA_V=2;
+if((S.schemaV|0)<2){migrateKeys(S,FKEYS.keys);S.schemaV=SCHEMA_V;}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function bump(){const n=advanceStreak(S,Date.now());S.streak=n.streak;S.lastActive=n.lastActive}
 function addXP(n,m){const b=levelFor(S.xp);S.xp+=n;const a=levelFor(S.xp);save();updateHUD();if(a>b)setTimeout(()=>toast(`⚡ Level ${a}!`),260);if(m)toast(m)}
 function savedIds(){return Object.keys(S.saves).filter(k=>S.saves[k])}
 function toast(h){const e=document.createElement("div");e.className="toast";e.innerHTML=h;$("#toasts").appendChild(e);setTimeout(()=>e.remove(),2200)}
 function updateHUD(){document.querySelectorAll("[data-streak]").forEach(e=>e.textContent=S.streak);document.querySelectorAll("[data-lvl]").forEach(e=>e.textContent=levelFor(S.xp))}
-function itemText(k){if(k[0]==='f'){const it=FEED[+k.slice(1)];return it?{t:it[0],x:it[2]}:null}const a=ARTICLES.find(x=>x.id===k);if(a)return{t:a.topic,x:a.title};const v=S.videos.find(x=>x.id===k);if(v)return{t:v.topic||'life',x:v.title};const st=STORIES.find(x=>x.id===k);if(st)return{t:st.topic,x:st.title+" · story"};const mp=MAPS.find(x=>x.id===k);if(mp)return{t:mp.topic,x:mp.root+" · map"};return null}
+function itemText(k){const fi=fidx(k);if(fi>=0){const it=FEED[fi];return it?{t:it[0],x:it[2]}:null}const a=ARTICLES.find(x=>x.id===k);if(a)return{t:a.topic,x:a.title};const v=S.videos.find(x=>x.id===k);if(v)return{t:v.topic||'life',x:v.title};const st=STORIES.find(x=>x.id===k);if(st)return{t:st.topic,x:st.title+" · story"};const mp=MAPS.find(x=>x.id===k);if(mp)return{t:mp.topic,x:mp.root+" · map"};return null}
 
 /* ===== MUSIC ENGINE (generative, royalty-free) ===== */
 const Music=(function(){
@@ -181,7 +189,9 @@ let feedBuilt=false,feedMeta=[],feedIO=null;const counted=new Set();let feedLast
    sequence up front built 257 cards and ~578KB of DOM before first paint. */
 const FEED_PAGE=12;let feedSeq=[],feedCursor=0;
 function baseL(k){return 300+Math.floor(sd(k+"L")()*38000)}
-function fkey(i){return"f"+i}
+function fkey(i){return FKEYS.keys[i]||("f"+i)}
+function fidx(k){const i=FKEYS.byKey.get(k);return i===undefined?-1:i}
+function refreshFeedKeys(){FKEYS=feedIndex(FEED)}
 function feedHTML(i,inst){const f=FEED[i],[tp,ty,tx,ex,ex2]=f,t=T[tp],k=fkey(i);const liked=!!S.likes[k],saved=!!S.saves[k],own=(S.ownComments[k]||[]).length;const r=sd(k+"h"),h=pick(r,NAMES);
  const tl={fact:"Did you know",idea:"Principle",quote:"Words to keep",finance:"Money",story:"A small story"}[ty]||"";
  let mid=ty==="quote"?`<div class="ctype">${tl}</div><h2 class="insight quote">"${esc(tx)}"</h2><div class="qauthor">${esc(ex)}<span class="role">${esc(ex2||"")}</span></div>`:`<div class="ctype">${tl}</div><h2 class="insight">${esc(tx)}</h2><p class="kicker">${esc(ex)}</p>`;
@@ -218,7 +228,7 @@ function fappend(n){
 }
 function buildFeed(){if(feedBuilt)return;feedBuilt=true;$("#feed").innerHTML="";feedMeta=[];feedSeq=[];feedCursor=0;counted.clear();feedLast=-1;fappend()}
 function fobserve(){if(!feedIO)feedIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.65)factive(e.target)}),{root:$("#feed"),threshold:[.66]});$("#feed").querySelectorAll(".card:not([data-obs])").forEach(c=>{c.setAttribute("data-obs","1");feedIO.observe(c)})}
-function factive(card){const inst=+card.dataset.inst;if(inst>=feedMeta.length-3)fappend();const fi=+card.dataset.i,ff=FEED[fi];if(ff)logHist("idea","f"+fi,ff[0],ff[2]);if(S.audioAuto&&ff)speak(ff[2]+". "+(ff[3]||""));if(!counted.has(inst)){counted.add(inst);if(feedLast>=0)S.streak+=0;bump();S.reads++;feedLast=inst;if(aiConfigured()&&S.reads%16===0)aiExpandFeed();const ms={5:"🔥 5 in a row",15:"🧠 15 read — big brain",30:"🏆 30! deep in it"}[S.reads];addXP(8,ms||`<span class="xp">+8 XP</span>`)}}
+function factive(card){const inst=+card.dataset.inst;if(inst>=feedMeta.length-3)fappend();const fi=+card.dataset.i,ff=FEED[fi];if(ff)logHist("idea",fkey(fi),ff[0],ff[2]);if(S.audioAuto&&ff)speak(ff[2]+". "+(ff[3]||""));if(!counted.has(inst)){counted.add(inst);if(feedLast>=0)S.streak+=0;bump();S.reads++;feedLast=inst;if(aiConfigured()&&S.reads%16===0)aiExpandFeed();const ms={5:"🔥 5 in a row",15:"🧠 15 read — big brain",30:"🏆 30! deep in it"}[S.reads];addXP(8,ms||`<span class="xp">+8 XP</span>`)}}
 function scrollFeedTo(i){
  buildFeed();
  const find=()=>$("#feed").querySelector(`.card[data-i="${i}"]`);
@@ -625,7 +635,7 @@ async function aiExpandFeed(){if(aiGenBusy||!aiConfigured())return;aiGenBusy=tru
   const txt=await aiGenerate(`Write 6 fresh, surprising micro-ideas about ${T[pick]?T[pick].l:pick} for a bite-size learning feed. Each has a punchy one-sentence title and a 1–2 sentence explanation. Return ONLY JSON: [{"title":"...","text":"..."}] with exactly 6 items. No markdown.`);
   const m=txt.match(/\[[\s\S]*\]/);if(!m)return;const arr=JSON.parse(m[0]);const added=[];
   arr.forEach(o=>{if(o&&o.title&&o.text){const it=[pick,"idea",(""+o.title).slice(0,150),(""+o.text).slice(0,340)];FEED.push(it);added.push(it)}});
-  if(added.length){S.aiIdeas=(S.aiIdeas||[]).concat(added).slice(-150);save();toast("✨ "+added.length+" fresh ideas added")}
+  if(added.length){refreshFeedKeys();S.aiIdeas=(S.aiIdeas||[]).concat(added).slice(-150);save();toast("✨ "+added.length+" fresh ideas added")}
  }catch(e){}finally{aiGenBusy=false}}
 /* text-to-speech */
 function speak(text){if(!("speechSynthesis"in window)){toast("audio not supported here");return}try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=1;u.pitch=1;speechSynthesis.speak(u)}catch(e){}}
@@ -651,7 +661,7 @@ function doSearch(q){q=(q||"").trim().toLowerCase();const res=$("#sRes");if(!res
  res.innerHTML="";rows.slice(0,50).forEach(r=>res.appendChild(r));}
 
 /* ===== COLLECTIONS ===== */
-function openSavedKey(k){if(k[0]==="f"){setTab("learn");scrollFeedTo(+k.slice(1))}else if(STORIES.some(s=>s.id===k))openStories(k);else if(MAPS.some(m=>m.id===k))openMap(k);else if(QUIZZES.some(z=>z.id===k))openQuiz(k);else if((S.videos||[]).some(v=>v.id===k))setTab("watch");else openReader(k)}
+function openSavedKey(k){const fi=fidx(k);if(fi>=0){setTab("learn");scrollFeedTo(fi)}else if(STORIES.some(s=>s.id===k))openStories(k);else if(MAPS.some(m=>m.id===k))openMap(k);else if(QUIZZES.some(z=>z.id===k))openQuiz(k);else if((S.videos||[]).some(v=>v.id===k))setTab("watch");else openReader(k)}
 function openCollPicker(itemId){const cc=$("#collChips");
  cc.innerHTML=(S.collections.length?S.collections.map(c=>`<button class="fchip ${c.items.includes(itemId)?'on':''}" data-c="${c.id}">${c.items.includes(itemId)?'✓ ':''}${esc(c.name)}</button>`).join(""):`<div class="shint" style="padding:8px 4px 14px">No collections yet — create one below.</div>`)+`<button class="fchip" data-newc style="border-style:dashed">＋ New collection</button>`;
  cc.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{const c=S.collections.find(x=>x.id===b.dataset.c);if(!c)return;if(c.items.includes(itemId))c.items=c.items.filter(x=>x!==itemId);else{c.items.push(itemId);toast("added to "+c.name)}save();openCollPicker(itemId)});
