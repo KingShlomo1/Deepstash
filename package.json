@@ -3,16 +3,15 @@
   "version": "4.0.0",
   "private": true,
   "type": "module",
-  "description": "APEX — train your mind & body. A microlearning PWA.",
+  "description": "APEX \u2014 train your mind & body. A microlearning PWA.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 8099",
-    "test": "vitest run --project unit",
-    "test:watch": "vitest --project unit",
-    "test:worker": "vitest run --project worker",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "coverage": "vitest run --project unit --coverage",
+    "coverage": "vitest run --coverage",
     "deploy": "npm run build && wrangler deploy"
   },
   "devDependencies": {
