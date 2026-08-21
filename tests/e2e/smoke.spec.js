@@ -50,7 +50,10 @@ test("the learn feed builds cards and they are interactive", async ({ page }) =>
   await page.click('.tab[data-tab="learn"]');
   const cards = page.locator("#feed .card");
   await expect(cards.first()).toBeVisible();
-  expect(await cards.count()).toBeGreaterThan(50);
+  // The feed renders a page at a time, not the whole 257-item sequence.
+  const initial = await cards.count();
+  expect(initial).toBeGreaterThan(0);
+  expect(initial).toBeLessThan(30);
 
   await cards.first().locator('[data-a="like"]').click();
   await cards.first().locator('[data-a="save"]').click();
@@ -103,4 +106,32 @@ test("no console errors on a full pass", async ({ page }) => {
   await onboard(page);
   for (const tab of ["home", "learn", "train", "watch", "you"]) await page.click(`.tab[data-tab="${tab}"]`);
   expect(errors).toEqual([]);
+});
+
+test("the feed pages in more cards as you scroll", async ({ page }) => {
+  await onboard(page);
+  await page.click('.tab[data-tab="learn"]');
+  const cards = page.locator("#feed .card");
+  await expect(cards.first()).toBeVisible();
+  const initial = await cards.count();
+
+  // The next page is pulled in when you get within 3 cards of the end, so
+  // scroll until the count grows rather than guessing a fixed number.
+  for (let i = 0; i < 20 && (await cards.count()) === initial; i++) {
+    await page.evaluate(() => {
+      const f = document.querySelector("#feed");
+      f.scrollTop += f.clientHeight;
+    });
+    await page.waitForTimeout(160);
+  }
+  await expect.poll(() => cards.count(), { timeout: 5000 }).toBeGreaterThan(initial);
+});
+
+test("the feed never renders the whole catalogue up front", async ({ page }) => {
+  await onboard(page);
+  await page.click('.tab[data-tab="learn"]');
+  await expect(page.locator("#feed .card").first()).toBeVisible();
+  // Rendering all 257 ideas eagerly built ~578KB of DOM before first paint.
+  const bytes = await page.evaluate(() => document.querySelector("#feed").innerHTML.length);
+  expect(bytes).toBeLessThan(120_000);
 });

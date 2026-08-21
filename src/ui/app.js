@@ -176,6 +176,10 @@ function startCine(cv){if(!cv)return;const x=cv.getContext("2d");let W,H,dpr,ps=
 
 /* ===== LEARN (feed) ===== */
 let feedBuilt=false,feedMeta=[],feedIO=null;const counted=new Set();let feedLast=-1;
+/* The feed is paged: fappend() renders a page at a time and the observer
+   pulls the next one in as you approach the end. Rendering the whole
+   sequence up front built 257 cards and ~578KB of DOM before first paint. */
+const FEED_PAGE=12;let feedSeq=[],feedCursor=0;
 function baseL(k){return 300+Math.floor(sd(k+"L")()*38000)}
 function fkey(i){return"f"+i}
 function feedHTML(i,inst){const f=FEED[i],[tp,ty,tx,ex,ex2]=f,t=T[tp],k=fkey(i);const liked=!!S.likes[k],saved=!!S.saves[k],own=(S.ownComments[k]||[]).length;const r=sd(k+"h"),h=pick(r,NAMES);
@@ -202,11 +206,28 @@ function fseq(){const r=mul((hs("f")()^Date.now())>>>0);
  if(feedFilter.topic==="all"&&!q){const score=i=>{const tp=FEED[i][0];let s=r()*3;if(ints&&ints.has(tp))s+=4;s+=(aff[tp]||0)*0.5;return s};idx.sort((a,b)=>score(b)-score(a))}
  else{for(let i=idx.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]]}}
  return idx}
-function fappend(){const s=feedMeta.length,seq=fseq();let h="";seq.forEach((idx,k)=>{feedMeta.push(idx);h+=feedHTML(idx,s+k)});$("#feed").insertAdjacentHTML("beforeend",h);fobserve()}
-function buildFeed(){if(feedBuilt)return;feedBuilt=true;$("#feed").innerHTML="";feedMeta=[];fappend()}
+function fappend(n){
+ const want=n||FEED_PAGE;let h="",added=0;
+ while(added<want){
+  if(feedCursor>=feedSeq.length){feedSeq=fseq();feedCursor=0;if(!feedSeq.length)break}
+  const idx=feedSeq[feedCursor++],inst=feedMeta.length;
+  feedMeta.push(idx);h+=feedHTML(idx,inst);added++;
+ }
+ if(!added)return 0;
+ $("#feed").insertAdjacentHTML("beforeend",h);fobserve();return added;
+}
+function buildFeed(){if(feedBuilt)return;feedBuilt=true;$("#feed").innerHTML="";feedMeta=[];feedSeq=[];feedCursor=0;counted.clear();feedLast=-1;fappend()}
 function fobserve(){if(!feedIO)feedIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.65)factive(e.target)}),{root:$("#feed"),threshold:[.66]});$("#feed").querySelectorAll(".card:not([data-obs])").forEach(c=>{c.setAttribute("data-obs","1");feedIO.observe(c)})}
 function factive(card){const inst=+card.dataset.inst;if(inst>=feedMeta.length-3)fappend();const fi=+card.dataset.i,ff=FEED[fi];if(ff)logHist("idea","f"+fi,ff[0],ff[2]);if(S.audioAuto&&ff)speak(ff[2]+". "+(ff[3]||""));if(!counted.has(inst)){counted.add(inst);if(feedLast>=0)S.streak+=0;bump();S.reads++;feedLast=inst;if(aiConfigured()&&S.reads%16===0)aiExpandFeed();const ms={5:"🔥 5 in a row",15:"🧠 15 read — big brain",30:"🏆 30! deep in it"}[S.reads];addXP(8,ms||`<span class="xp">+8 XP</span>`)}}
-function scrollFeedTo(i){buildFeed();let c=[...$("#feed").querySelectorAll(".card")].find(x=>+x.dataset.i===i);if(!c){fappend();c=[...$("#feed").querySelectorAll(".card")].reverse().find(x=>+x.dataset.i===i)}if(c)requestAnimationFrame(()=>c.scrollIntoView())}
+function scrollFeedTo(i){
+ buildFeed();
+ const find=()=>$("#feed").querySelector(`.card[data-i="${i}"]`);
+ let c=find();
+ // Page forward until the target is rendered, bounded by one full pass so a
+ // filtered-out index cannot spin forever.
+ for(let guard=0;!c&&guard<Math.ceil(FEED.length/FEED_PAGE)+1;guard++){if(!fappend())break;c=find()}
+ if(c)requestAnimationFrame(()=>c.scrollIntoView());
+}
 $("#feed").addEventListener("click",e=>{const b=e.target.closest(".act");if(!b)return;const card=b.closest(".card"),k=card.dataset.key,tp=card.dataset.topic,a=b.dataset.a;
  if(a==="like")like(k,b);else if(a==="save")sv(k,b);else if(a==="comment")openC(k,tp);else if(a==="ai"){const f=FEED[+card.dataset.i];openAI(f[2],(f[3]||f[4]||""),tp)}else if(a==="listen"){const f=FEED[+card.dataset.i];speak(f[2]+". "+(f[3]||f[4]||""));toast("🔊 reading aloud")}else if(a==="share"){const f=FEED[+card.dataset.i];openShare(f[0],f[2],f[1]==="quote"?(f[3]+(f[4]?" — "+f[4]:"")):f[3],f[1])}});
 let lastTap=0;$("#feed").addEventListener("click",e=>{if(e.target.closest(".act"))return;const n=Date.now();if(n-lastTap<300){const c=e.target.closest(".card");if(c){const lb=c.querySelector(".like");if(!S.likes[c.dataset.key])lb.click();else{lb.classList.add("pop");setTimeout(()=>lb.classList.remove("pop"),400)}}}lastTap=n});
