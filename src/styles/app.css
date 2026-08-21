@@ -496,3 +496,42 @@ button{font-family:inherit;color:inherit;cursor:pointer}
 .app[data-theme="light"] .musicbar .mt{color:#151319}
 .app[data-theme="light"] .tab.on{color:#151319}
 .app[data-theme="light"] .aibody{color:#26242c}
+
+/* ===== Accessibility ===================================================== */
+
+/* Every interactive control gets a visible keyboard focus ring. The app had
+   none, so keyboard and switch-control users could not see where they were. */
+:where(button, a, input, select, textarea, [tabindex], [role="button"], [role="switch"]):focus-visible {
+  outline: 3px solid var(--gold, #e8b563);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+/* Rows built from divs opt in via [data-open-saved] etc. — see wireA11y(). */
+:where([data-open-saved], [data-open-coll], [data-open-hist], [data-explore], .sr, .coll, .histrow):focus-visible {
+  outline: 3px solid var(--gold, #e8b563);
+  outline-offset: -3px;
+}
+
+/* Follow the OS theme until the user picks one explicitly. The app only ever
+   honoured its own toggle, so a light-mode device still opened in the dark. */
+@media (prefers-color-scheme: light) {
+  .app:not([data-theme]) { color-scheme: light; }
+}
+
+/* Respect a reduced-motion preference across the whole app, not just the few
+   animations that previously opted in. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Screen-reader-only text for icon-only controls. */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}

@@ -661,10 +661,29 @@ function wire(root){
  root.querySelectorAll("[data-open-quiz]").forEach(e=>e.onclick=()=>openQuiz(e.dataset.openQuiz));
  root.querySelectorAll("[data-open-map]").forEach(e=>e.onclick=()=>openMap(e.dataset.openMap));
  root.querySelectorAll("[data-start]").forEach(e=>{if(!e.classList.contains("row"))e.onclick=()=>startWorkout(e.dataset.start)});
+ wireA11y(root);
+}
+/* Many rows and tiles are plain <div>s with an onclick, which keyboard and
+   switch-control users cannot reach at all. Give anything that behaves like a
+   button the role, the tab stop, and Enter/Space activation to match. */
+const CLICKABLE = "[data-open-art],[data-open-feed],[data-goto],[data-open-story],[data-open-quiz],[data-open-map],[data-open-saved],[data-open-coll],[data-open-hist],[data-explore],[data-start],.sr,.coll,.saveitem,.histrow,.storycard";
+function wireA11y(root){
+ root.querySelectorAll(CLICKABLE).forEach(e=>{
+  if(e.tagName==="BUTTON"||e.tagName==="A"||e.dataset.a11y)return;
+  e.dataset.a11y="1";
+  if(!e.hasAttribute("role"))e.setAttribute("role","button");
+  if(!e.hasAttribute("tabindex"))e.setAttribute("tabindex","0");
+  e.addEventListener("keydown",ev=>{
+   if(ev.key!=="Enter"&&ev.key!==" ")return;
+   ev.preventDefault();
+   e.click();
+  });
+ });
 }
 let cur="home";
 function setTab(name){cur=name;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.tab===name));document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$("#v-"+name).classList.add("active");
  if(name==="home")renderHome();else if(name==="learn")buildFeed();else if(name==="train")renderTrain();else if(name==="watch")renderWatch();else if(name==="you")renderYou();
+ wireA11y($("#v-"+name));
  $("#v-"+name).scrollTop=name==="learn"?$("#v-"+name).scrollTop:0}
 document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>setTab(t.dataset.tab));
 window.addEventListener("keydown",e=>{if(e.key==="Escape"){if(searchEl.classList.contains("show"))closeSearch();else if(storiesEl.classList.contains("show"))closeStories();else if(quizEl.classList.contains("show"))closeQuiz();else if(mapEl.classList.contains("show"))closeMap();else if(reader.classList.contains("show"))closeReader();else if(TT)stopTimer();else closeSheets()}
