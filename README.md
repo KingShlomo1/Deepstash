@@ -80,19 +80,63 @@ stored in the browser via `localStorage`.
   ~5 min (see `worker/README.md`) and paste the URL into Settings → "Connect your
   server". Everything works without it too; the Worker just adds the shared pieces.
 
+## Development
+
+The app is plain ES modules bundled by Vite — no framework, no TypeScript.
+
+```bash
+npm install
+npm run dev        # dev server with HMR on :8099
+npm test           # unit tests (vitest)
+npm run coverage   # unit tests + coverage thresholds
+npm run test:e2e   # browser tests (playwright)
+npm run build      # production build into dist/
+npm run icons      # regenerate PWA icons + og-image from the app artwork
+```
+
+### Layout
+
+```
+index.html          app shell only (6KB)
+src/
+  main.js           entry point
+  styles/app.css    the stylesheet
+  content/          the catalogue — ideas, articles, quizzes, maps, stories,
+                    workouts, videos. Edit copy here.
+  lib/              pure logic: no DOM, no globals, 100% test coverage
+  ui/app.js         rendering and interaction
+worker/             optional Cloudflare Worker (shared comments, leaderboard,
+                    keyless AI). Everything works without it.
+tests/unit/         vitest — the lib modules
+tests/e2e/          playwright — onboarding, tabs, feed, migration, a11y
+scripts/            asset generation
+```
+
+`src/lib` is the part worth testing: it holds XP and streak maths, video link
+parsing, backup validation, stable content keys, workout timing, formatting and
+the seeded RNG. Coverage thresholds are enforced in `vitest.config.js`, so a
+drop fails CI.
+
+### Editing content
+
+All copy lives in `src/content/`. Feed ideas are keyed by their topic and
+title, not their array position, so you can insert, remove and reorder entries
+without disturbing anyone's saved items. Rewording an idea's *title* does
+change its key; rewording the body does not.
+
 ## Deploy to Cloudflare
 
 This is a static site — no framework, no build. Two ways to ship it:
 
 ### A) Workers (Git-connected, `wrangler deploy`) — recommended
 
-The repo includes a root **`wrangler.jsonc`** so `npx wrangler deploy` "just works":
-it serves this folder as static assets with single-page-app fallback. An
-**`.assetsignore`** keeps `.git`, `worker/` and docs out of the upload.
+The root **`wrangler.jsonc`** serves the built site from `dist/` with
+single-page-app fallback.
 
-- Deploy command: `npx wrangler deploy`
-- No build command, no `_redirects` needed (SPA fallback is set in `wrangler.jsonc`
-  via `not_found_handling: "single-page-application"`).
+- Build command: `npm run build`
+- Deploy command: `npx wrangler deploy` (or `npm run deploy`, which does both)
+- No `_redirects` needed — SPA fallback is set in `wrangler.jsonc` via
+  `not_found_handling: "single-page-application"`.
 
 > Note: don't ship a Pages-style `_redirects` file with the Workers deploy — a
 > `/* /index.html 200` rule is rejected by Workers as an infinite loop. SPA fallback
@@ -101,8 +145,8 @@ it serves this folder as static assets with single-page-app fallback. An
 ### B) Cloudflare Pages (dashboard)
 
 1. **Workers & Pages → Create → Pages → Connect to Git**, pick this repo.
-2. Build settings: **Framework preset** `None`, **Build command** *(empty)*,
-   **Build output directory** `/`.
+2. Build settings: **Framework preset** `None`, **Build command** `npm run build`,
+   **Build output directory** `dist`.
 3. Deploy. Cloudflare serves `index.html` directly; `manifest.webmanifest` + `sw.js`
    make it installable. (Pages provides SPA fallback automatically.)
 
@@ -129,12 +173,10 @@ Then open the printed URL. (Service worker and the root-absolute asset paths req
 
 ## Customize
 
-- **Ideas / articles / stories / quizzes / maps:** edit the `FEED`, `ARTICLES`,
-  `STORIES`, `QUIZZES` and `MAPS` arrays near the top of the `<script>` in `index.html`.
-- **Workout videos:** edit `SEED_VIDEOS` — paste any YouTube, Instagram, TikTok, Vimeo
-  or direct `.mp4` link; the app auto-detects the platform.
-- **Icon / theme:** `icon.svg`, `favicon.svg`, and the `--gold` / color tokens at the
-  top of the stylesheet.
-
-All content lives in the single `index.html`; the other files are the icons, manifest,
-service worker and SPA redirect.
+- **Ideas / articles / stories / quizzes / maps:** edit the matching file in
+  `src/content/`.
+- **Workout videos:** edit `src/content/videos.js` — paste any YouTube, Instagram,
+  TikTok, Vimeo or direct `.mp4` link; the app auto-detects the platform.
+- **Icon / theme:** `public/icon.svg`, `public/favicon.svg`, and the `--gold` /
+  color tokens at the top of `src/styles/app.css`. Run `npm run icons` after
+  changing the brand colors to regenerate the PNG set.
